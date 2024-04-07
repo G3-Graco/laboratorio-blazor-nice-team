@@ -5,6 +5,7 @@ project.lock.json
 *.pyc
 
 # Visual Studio Code
+.vs
 .vscode
 
 # User-specific files
@@ -42,3 +43,4 @@ msbuild.wrn
 
 # Built Visual Studio Code Extensions
 *.vsix
+*.vsidx
