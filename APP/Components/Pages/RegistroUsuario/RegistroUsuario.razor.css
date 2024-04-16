@@ -1,0 +1,16 @@
+﻿.formregistrar {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+
+    margin: 15px;
+}
+
+.formregistrar > div{
+    width: 35vw;
+}

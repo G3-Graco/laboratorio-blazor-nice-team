@@ -1,0 +1,85 @@
+﻿@page "/registrarusuario"
+@rendermode InteractiveServer
+
+<h3>Regístrate</h3>
+
+<Modal @ref="modal" IsVerticallyCentered="true">
+	<BodyTemplate>
+		@modalMensaje
+	</BodyTemplate>
+	<FooterTemplate>
+		<Button Color="ButtonColor.Primary" @onclick="CerrarModal" >Cerrar</Button>
+	</FooterTemplate>
+</Modal>
+
+<p>holaaaa: @modalMensaje</p>
+
+<EditForm  Model="@modeloRegistrarUsuario" OnValidSubmit="Registrar">
+	<DataAnnotationsValidator />
+	<div class ="formregistrar">
+		<div>
+			<div class="form-group">
+				<label>Cedula: </label>
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Cedula" />
+			</div>
+
+			<div class="form-group">
+				<label>Nombre: </label>
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Nombre" />
+			</div>
+
+			<div class="form-group">
+				<label>Apellido: </label>
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Apellido" />
+			</div>
+
+			<div class="form-group">
+				<label>Cedula: </label>
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Cedula" />
+			</div>
+
+			<div class="form-group">
+				<label>Correo: </label>
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Correo" />
+			</div>
+		</div>
+
+		<div>
+			<div class="form-group">
+				<label>Fecha nacimiento: </label>
+				<DateInput class="form-control" @bind-Value="@modeloRegistrarUsuario.FechaNacimiento" />
+			</div>
+
+			<div class="form-group">
+				<label>Telefono: </label>
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Telefono" />
+			</div>
+
+			<div class="form-group">
+				<label>Telefono: </label>
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Direccion" />
+			</div>
+
+			<div class="form-group">
+				<label>Nombre usuario: </label>
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.NombreUsuario" />
+			</div>
+
+			<div class="form-group">
+				<label>Contraseña: </label>
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Contrasena" />
+			</div>
+
+			<div>
+				<input type="submit" class="btn btn-success" value="Registrar" />
+			</div>
+		</div>
+	</div>
+
+	<ValidationSummary />
+</EditForm>
+
+<p>Entered date: @modeloRegistrarUsuario.FechaNacimiento.ToString()</p>
+
+<p>¿Ya tienes cuenta? <a href="">¡Inicia sesión!</a></p>
+

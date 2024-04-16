@@ -1,10 +1,15 @@
 using APP.Components;
+using APP.Data.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddBlazorBootstrap();
+
+builder.Services.AddScoped<UsuarioServicio>();
 
 var app = builder.Build();
 
@@ -23,5 +28,7 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+
 
 app.Run();
