@@ -1,0 +1,41 @@
+﻿@page "/iniciarsesion"
+@rendermode InteractiveServer
+
+<Modal @ref="modal" IsVerticallyCentered="true">
+	<BodyTemplate>
+		@modalMensaje
+	</BodyTemplate>
+	<FooterTemplate>
+		<Button Color="ButtonColor.Primary" @onclick="CerrarModal">Cerrar</Button>
+	</FooterTemplate>
+</Modal>
+
+
+<h3>Iniciar sesión</h3>
+
+<EditForm Model="@usuario" OnValidSubmit="InicioSesion">
+	<DataAnnotationsValidator />
+
+	<article class="forminiciarsesion">
+
+	<div class="form-group">
+		<label>Nombre de usuario: </label>
+		<InputText class="form-control" @bind-Value="usuario.NombreUsuario" />
+	</div>
+
+	<div class="form-group">
+		<label>Contraseña: </label>
+		<InputText type="password" class="form-control" @bind-Value="usuario.Contrasena" />
+	</div>
+
+	<div>
+		<input type="submit" class="btn btn-success" value="Iniciar sesion" />
+	</div>
+
+	</article>
+
+	<ValidationSummary />
+</EditForm>
+
+<p>¿No tienes cuenta? <a href="">¡Regístrate!</a></p>
+

@@ -12,11 +12,9 @@
 	</FooterTemplate>
 </Modal>
 
-<p>holaaaa: @modalMensaje</p>
-
 <EditForm  Model="@modeloRegistrarUsuario" OnValidSubmit="Registrar">
 	<DataAnnotationsValidator />
-	<div class ="formregistrar">
+	<article class="formregistrar">
 		<div>
 			<div class="form-group">
 				<label>Cedula: </label>
@@ -74,12 +72,10 @@
 				<input type="submit" class="btn btn-success" value="Registrar" />
 			</div>
 		</div>
-	</div>
+	</article>
 
 	<ValidationSummary />
 </EditForm>
-
-<p>Entered date: @modeloRegistrarUsuario.FechaNacimiento.ToString()</p>
 
 <p>¿Ya tienes cuenta? <a href="">¡Inicia sesión!</a></p>
 

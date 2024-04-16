@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Newtonsoft.Json;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace APP.Data
@@ -32,32 +33,54 @@ namespace APP.Data
 			}
 		}
 
-		public static async Task<Respuesta<Tout>> Execute<Tin, Tout>(string url, MethodHttp method, Tin objectRequest, string jwt = "")
+		public static async Task<RespuestaConsumidor<Tout>> Execute<Tin, Tout>(string url, MethodHttp method, Tin objectRequest, ProtectedLocalStorage protectedLocalStorage = null, bool habiaMasDatosEnQuery = false)
 		{
 
-			Respuesta<Tout> respuesta = new Respuesta<Tout>();
+			RespuestaConsumidor<Tout> respuesta = new RespuestaConsumidor<Tout>();
 			try
 			{
 				using (HttpClient client = new HttpClient())
 				{
 
 					var myContent = JsonConvert.SerializeObject((method != MethodHttp.GET) ? method != MethodHttp.DELETE ? objectRequest : "" : "");
-					//var myContent = JsonConvert.SerializeObject(objectRequest);
+
 					var bytecontent = new ByteArrayContent(Encoding.UTF8.GetBytes(myContent));
 
 					bytecontent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
-					//Si es get o delete no le mandamos bytecontent. Tremenda línea.
-					var request = new HttpRequestMessage(CreateHttpMethod(method), url)
+					//esto es para pasar el url con el id del usuario sesion en el path, ya que siempre que hacemos esto es cuando necesitamos el token
+					//entonces verifico si se pasó el localstorage para validar esto.
+					string newUrl = url;
+					if (protectedLocalStorage != null)
 					{
-						//Por regla general de las peticiones HTTP las peticiones tipo GET y DELETE no se le puede establecer el body
-						//Entonces valido, si method es distinta de GET y DELETE le asigno el contenido codificado, sino le asigno null
+						var jwt = await protectedLocalStorage.GetAsync<int>("idusuariosesion");
+						int idusuario = jwt.Success ? jwt.Value : 0;
+
+						//Esto es por si cuando se pasa el url, resulta que se había agregado otro dato en el query, entonces para que no haya conflictos en la url agregué esa validación
+						if (habiaMasDatosEnQuery)
+						{
+							newUrl += $"&idusuariosesion={idusuario}";
+						}
+						else
+						{
+							newUrl += $"?idusuariosesion={idusuario}";
+						}
+
+						
+					}
+
+					var request = new HttpRequestMessage(CreateHttpMethod(method), newUrl)
+					{
 						Content = (method != MethodHttp.GET) ? method != MethodHttp.DELETE ? bytecontent : null : null
 					};
 
-					if (jwt != "")
+					//Igual, si pasan esto es porque es un método que requiere autorización.
+					if (protectedLocalStorage != null)
 					{
-						request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwt);
+						var jwt = await protectedLocalStorage.GetAsync<string>("jwt");
+						string token = jwt.Success ? jwt.Value : "";
+
+						request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 					}
 
 					using (HttpResponseMessage res = await client.SendAsync(request))
@@ -75,7 +98,7 @@ namespace APP.Data
 
 								if (data != null)
 								{
-									if (typeof(Tout) == typeof(string)) //JsonConvert tonto da error al deserializar strings
+									if (typeof(Tout) == typeof(string)) //JsonConvert tonto da error al deserializar strings así que esto es por si acaso
 									{
 										respuesta.Data = (Tout)Convert.ChangeType(data, typeof(Tout));
 									}
@@ -87,9 +110,14 @@ namespace APP.Data
 							}
 							else
 							{
+								//La idea es que cuando ocurra un badrequest pase por aquí
 								respuesta.Ok = false;
-								var mensajeerror = JsonConvert.DeserializeObject<MensajeErrorAPI>(data);
-								respuesta.Mensaje = mensajeerror.message;
+								if (data != null)
+								{
+									var mensajeerror = JsonConvert.DeserializeObject<MensajeErrorAPI>(data);
+									respuesta.Mensaje = mensajeerror.message;
+								}
+									
 							}
 
 
@@ -105,14 +133,19 @@ namespace APP.Data
 				if (res != null)
 					respuesta.StatusCode = respuesta.StatusCode.ToString();
 				respuesta.Ok = false; //?
-				if (!respuesta.Ok) respuesta.Mensaje = $"Response not OK\nStatus code: {respuesta.StatusCode}"; //asd
+				if (!respuesta.Ok)
+				{
+					respuesta.Mensaje = $"Error en el servidor.\nStatus code: {respuesta.StatusCode}"; //asd
+				}
 			}
 			catch (JsonSerializationException) 
 			{
-			
-				respuesta.StatusCode = "Token invalid";
-				respuesta.Mensaje = "Token invalid error, sign in again";
-				respuesta.Ok = false;
+				//
+			}
+			catch (CryptographicException ex) //Este excepción sucedía cuando alguien cambia manualmente algo en el local storage y la librería no puede descifrar los datos.
+			{
+				await protectedLocalStorage.DeleteAsync("jwt");
+				await protectedLocalStorage.DeleteAsync("idusuariosesion");
 			}
 			catch (Exception ex)
 			{

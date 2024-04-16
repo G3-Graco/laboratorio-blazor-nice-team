@@ -3,29 +3,25 @@ using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 
-namespace APP.Components.Pages.RegistroUsuario
+namespace APP.Components.Pages.IniciarSesion
 {
-    public partial class RegistroUsuario : ComponentBase
-    {
+	public partial class IniciarSesion : ComponentBase
+	{
 		[Inject]
 		public NavigationManager Navigation { get; set; }
 
 		[Inject]
 		public UsuarioServicio UsuarioServicio { get; set; }
 
-		public ModeloRegistrarUsuario modeloRegistrarUsuario = new ModeloRegistrarUsuario();
+		public Usuario usuario = new Usuario();
 
 		private Modal modal = default!;
 		public string modalMensaje = "";
 
-		protected override async Task OnInitializedAsync()
-        {
-            modeloRegistrarUsuario.FechaNacimiento = DateOnly.FromDateTime(DateTime.Now);
-        }
-        public async void Registrar()
-        {
+		public async void InicioSesion()
+		{
 
-			RespuestaConsumidor<RespuestaAPI<ModeloRegistrarUsuario>> respuesta = await UsuarioServicio.RegistrarUsuario(modeloRegistrarUsuario);
+			RespuestaConsumidor<RespuestaAPI<RespuestaIniciarSesion>> respuesta = await UsuarioServicio.IniciarSesion(usuario);
 
 			if (respuesta.Ok)
 			{
@@ -38,7 +34,6 @@ namespace APP.Components.Pages.RegistroUsuario
 					modalMensaje = respuesta.Data.Mensaje;
 					await modal.ShowAsync();
 				}
-				
 			}
 			else
 			{
@@ -52,5 +47,6 @@ namespace APP.Components.Pages.RegistroUsuario
 		{
 			await modal.HideAsync();
 		}
-    }
+
+	}
 }

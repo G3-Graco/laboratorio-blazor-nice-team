@@ -1,6 +1,6 @@
 ﻿namespace APP.Data.Modelos
 {
-	public class Respuesta<Entidad>
+	public class RespuestaConsumidor<Entidad>
 	{
 		public string? StatusCode { get; set; }
 		public bool Ok { get; set; }
