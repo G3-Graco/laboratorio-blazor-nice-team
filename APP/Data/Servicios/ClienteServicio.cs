@@ -1,16 +1,23 @@
 ﻿using APP.Data.Modelos;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace APP.Data.Servicios
 {
 	public class ClienteServicio
 	{
-		public async Task<RespuestaConsumidor<RespuestaAPI<Cliente>>> ConsultarCliente()
+        public readonly ProtectedLocalStorage _protectedLocalStorage;
+        public ClienteServicio(ProtectedLocalStorage protectedLocalStorage)
+        {
+            _protectedLocalStorage = protectedLocalStorage;
+
+        }
+        public async Task<RespuestaConsumidor<RespuestaAPI<Cliente>>> ConsultarCliente()
 		{
 			RespuestaConsumidor<RespuestaAPI<Cliente>> respuesta = new();
 
 			try
 			{
-				respuesta = await Consumidor.Execute<Cliente, RespuestaAPI<Cliente>>($"https://localhost:7181/api/Usuario/registrarse", MethodHttp.POST, null);
+				respuesta = await Consumidor.Execute<Cliente, RespuestaAPI<Cliente>>($"https://localhost:7181/api/Cliente/consultarcliente", MethodHttp.GET, null);
 			}
 			catch (Exception ex)
 			{
