@@ -94,3 +94,30 @@ main {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+footer {
+    background-color: darkslategray;
+    color: azure;
+}
+
+/* .circulo {
+    border-radius: 50%;
+    background-color: azure;
+    color: aquamarine;
+    font-size: xx-large;
+    font-weight: bolder;
+} */
+
+.circulo {
+    display: inline-block;
+    background-color: azure;
+    color: darkcyan;
+    border-radius: 50%;
+    font-size: xx-large;
+    font-weight: bolder;
+    font-size: 22px;
+    line-height: 30px; /* set to same size as width, height */
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
