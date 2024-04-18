@@ -115,9 +115,9 @@ footer {
     border-radius: 50%;
     font-size: xx-large;
     font-weight: bolder;
-    font-size: 22px;
-    line-height: 30px; /* set to same size as width, height */
-    width: 30px;
-    height: 30px;
+    /* font-size: 32px; */
+    line-height: 50px; /* set to same size as width, height */
+    width: 50px;
+    height: 50px;
     text-align: center;
 }
