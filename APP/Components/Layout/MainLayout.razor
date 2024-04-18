@@ -1,9 +1,9 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
+    @* <div class="sidebar">
         <NavMenu />
-    </div>
+    </div> *@
 
     <main>
         <div class="top-row px-4">
@@ -25,13 +25,19 @@
 <footer>
     <section>
         <span class="circulo">B</span>
-        <div class="circulo">
+        @* <div class="circulo">
             <p>B</p>
-        </div>
+        </div> *@
     </section>
     <section>
-        <p>Contáctanos</p>
-        <p>Copyright 2024</p>
-        <p>Términos de servicio</p>
+        <div>
+            <p>Contáctanos</p>
+        </div>
+        <div>
+            <p>Copyright 2024</p>
+        </div>
+        <div>
+            <p>Términos de servicio</p>
+        </div>
     </section>
 </footer>

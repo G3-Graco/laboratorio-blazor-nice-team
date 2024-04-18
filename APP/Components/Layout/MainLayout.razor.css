@@ -98,7 +98,28 @@ main {
 footer {
     background-color: darkslategray;
     color: azure;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 1200px;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    flex-direction: row;
+    text-align: left;
 }
+
+/* footer section {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 1200px;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+} */
 
 /* .circulo {
     border-radius: 50%;
