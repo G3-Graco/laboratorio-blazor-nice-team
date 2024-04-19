@@ -12,69 +12,44 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
 
         [Inject]
         public NavigationManager Navigation { get; set; }
-
-        [Inject]
+		[Inject]
+		public ClienteServicio ClienteServicio { get; set; }
+		[Inject]
         public CuentaServicio CuentaServicio { get; set; }
+		[Inject]
+		public PrestamoServicio PrestamoServicio { get; set; }
 
-        private Modal modal = default!;
+		private Modal modal = default!;
         public string ModalTitulo = "";
         public string ModalMensaje = "";
+
         public bool OcurrioError = false;
+
         public string NombreCliente = "";//bienvenido async
 
         public List<Cuenta>? cuentas;
 
+		public List<Prestamo>? prestamos;
 
 
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+
+		protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
                 isConnected = true;
 
-                await ObtenerCuentas();
+                await ObtenerNombreCliente();
+				await VerificarError();
+
+				await ObtenerCuentas();
                 await VerificarError();
 
+				await ObtenerPrestamosActivos();
+				await VerificarError();
+
                 StateHasChanged();
-            }
-        }
-
-
-        private async Task<GridDataProviderResult<Cuenta>> CuentasDataProvider(GridDataProviderRequest<Cuenta> request)
-            {
-                //if (cuentas is null) // pull employees only one time for client-side filtering, sorting, and paging
-                //    cuentas = ObtenerCuentas(); // call a service or an API to pull the employees
-
-                return await Task.FromResult(request.ApplyTo(cuentas));
-            }
-
-        private async Task ObtenerCuentas()
-        {
-            cuentas = new List<Cuenta>();
-
-            RespuestaConsumidor<RespuestaAPI<Cuenta>> respuesta = await CuentaServicio.ConsultarCuenta();
-
-            if (respuesta.Ok)
-            {
-                if (respuesta.Data.Ok)
-                {
-                    cuentas.Add(respuesta.Data.Datos);
-                    OcurrioError = false;
-                }
-                else 
-                {
-                    ModalTitulo = "Error";
-                    ModalMensaje = respuesta.Data.Mensaje;
-                    OcurrioError = true;
-                }
-            }
-            else
-            {
-                ModalTitulo = $"Error: \"{respuesta.StatusCode}\"";
-                ModalMensaje = respuesta.Mensaje;
-                OcurrioError = true;
-
             }
         }
 
@@ -92,5 +67,94 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
             await modal.HideAsync();
         }
 
-    }
+        public bool GestionarRespuesta<Entidad>(RespuestaConsumidor<RespuestaAPI<Entidad>> respuesta)
+        {
+			if (respuesta.Ok)
+			{
+				if (respuesta.Data.Ok)
+				{
+					OcurrioError = false;			
+				}
+				else
+				{
+					ModalTitulo = "Error";
+					ModalMensaje = respuesta.Data.Mensaje;
+					OcurrioError = true;
+				}
+			}
+			else
+			{
+				ModalTitulo = $"Error: \"{respuesta.StatusCode}\"";
+				ModalMensaje = respuesta.Mensaje;
+				OcurrioError = true;
+
+			}
+
+            return OcurrioError;
+		}
+		private async Task ObtenerNombreCliente()
+		{
+			RespuestaConsumidor<RespuestaAPI<Cliente>> respuesta = await ClienteServicio.ConsultarCliente();
+
+            GestionarRespuesta<Cliente>(respuesta);
+
+            if (!OcurrioError)
+            {
+				NombreCliente = $"{respuesta.Data.Datos.Nombre} {respuesta.Data.Datos.Apellido}";
+			}		
+		}
+
+        private async Task ObtenerCuentas()
+        {
+            cuentas = new List<Cuenta>();
+
+            RespuestaConsumidor<RespuestaAPI<Cuenta>> respuesta = await CuentaServicio.ConsultarCuenta();
+
+			GestionarRespuesta<Cuenta>(respuesta);
+
+			if (!OcurrioError)
+			{
+				cuentas.Add(respuesta.Data.Datos);
+			}
+        }
+
+		private async Task<GridDataProviderResult<Cuenta>> CuentasDataProvider(GridDataProviderRequest<Cuenta> request)
+        {
+            if (cuentas is null)
+            {
+				ObtenerCuentas();
+				VerificarError();
+			}
+               
+			return await Task.FromResult(request.ApplyTo(cuentas));
+        }
+
+		private async Task ObtenerPrestamosActivos()
+		{
+			prestamos = new List<Prestamo>();
+			//
+			RespuestaConsumidor<RespuestaAPI<IEnumerable<Prestamo>>> respuesta = await PrestamoServicio.ConsultarPrestamos();
+
+			GestionarRespuesta<IEnumerable<Prestamo>>(respuesta);
+
+			if (!OcurrioError)
+			{
+				prestamos = respuesta.Data.Datos.ToList();
+                prestamos = prestamos.Where(p => p.IdEstado != 3).ToList();
+			}
+		}
+
+		private async Task<GridDataProviderResult<Prestamo>> PrestamosDataProvider(GridDataProviderRequest<Prestamo> request)
+		{
+			if (cuentas is null)
+			{
+				ObtenerPrestamosActivos();
+				VerificarError();
+			}
+
+			return await Task.FromResult(request.ApplyTo(prestamos));
+		}
+
+
+	}
 }

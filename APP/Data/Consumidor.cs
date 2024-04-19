@@ -108,16 +108,24 @@ namespace APP.Data
 							}
 							else
 							{
-								//La idea es que cuando ocurra un badrequest pase por aquí
-								respuesta.Ok = false;
-								if (data != null)
+                                respuesta.Ok = false;
+                                if (res.StatusCode == HttpStatusCode.BadRequest)
 								{
-									var mensajeerror = JsonConvert.DeserializeObject<MensajeErrorAPI>(data);
-									respuesta.Mensaje = mensajeerror.message;
+                                    
+                                    if (data != null)
+                                    {
+                                        var mensajeerror = JsonConvert.DeserializeObject<MensajeErrorAPI>(data);
+                                        respuesta.Mensaje = mensajeerror.message;
+                                    }
+                                }
+								else //este sería un error no controlado
+								{
+									respuesta.Mensaje = $"Ocurrió un error no controlado (perdon)\n{data}";
 								}
-									
-							}
-						}
+
+
+                            }
+                        }
 					}
 				}
 			}

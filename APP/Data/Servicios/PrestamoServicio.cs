@@ -10,8 +10,7 @@ namespace APP.Data.Servicios
 
 			try
 			{
-				//no es el controlador, editar cuando este disponible el controlador de préstamos en la api
-				respuesta = await Consumidor.Execute<Cuenta, RespuestaAPI<IEnumerable<Prestamo>>>($"https://localhost:7181/api/Cuenta/cuentacliente", MethodHttp.POST, null);
+				respuesta = await Consumidor.Execute<Prestamo, RespuestaAPI<IEnumerable<Prestamo>>>($"https://localhost:7181/api/Prestamo", MethodHttp.GET, null);
 			}
 			catch (Exception ex)
 			{
