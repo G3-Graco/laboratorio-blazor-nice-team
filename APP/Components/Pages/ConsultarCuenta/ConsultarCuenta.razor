@@ -1,6 +1,16 @@
 ﻿@page "/cuenta"
 @rendermode InteractiveServer
 
+<Modal @ref="modal" IsVerticallyCentered="true" Title=@ModalTitulo Message=@ModalMensaje>
+    <BodyTemplate>
+
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Primary" @onclick="CerrarModal">Cerrar</Button>
+    </FooterTemplate>
+</Modal>
+
+
 <h3>ConsultarCuenta</h3>
 
 

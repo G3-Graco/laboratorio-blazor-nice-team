@@ -9,7 +9,6 @@ namespace APP.Data.Servicios
         public ClienteServicio(ProtectedLocalStorage protectedLocalStorage)
         {
             _protectedLocalStorage = protectedLocalStorage;
-
         }
         public async Task<RespuestaConsumidor<RespuestaAPI<Cliente>>> ConsultarCliente()
 		{
@@ -17,7 +16,7 @@ namespace APP.Data.Servicios
 
 			try
 			{
-				respuesta = await Consumidor.Execute<Cliente, RespuestaAPI<Cliente>>($"https://localhost:7181/api/Cliente/consultarcliente", MethodHttp.GET, null);
+				respuesta = await Consumidor.Execute<Cliente, RespuestaAPI<Cliente>>($"https://localhost:7181/api/Cliente/consultarcliente", MethodHttp.GET, null, _protectedLocalStorage);
 			}
 			catch (Exception ex)
 			{

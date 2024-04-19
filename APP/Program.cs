@@ -13,6 +13,8 @@ builder.Services.AddScoped<UsuarioServicio>();
 builder.Services.AddScoped<ClienteServicio>();
 builder.Services.AddScoped<CuentaServicio>();
 builder.Services.AddScoped<PrestamoServicio>();
+builder.Services.AddScoped<MovimientoServicio>();
+builder.Services.AddScoped<PagoServicio>();
 
 var app = builder.Build();
 

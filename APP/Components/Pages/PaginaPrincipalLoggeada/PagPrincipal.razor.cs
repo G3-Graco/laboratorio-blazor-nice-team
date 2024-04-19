@@ -10,8 +10,6 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
     {
         private bool isConnected;
 
-        [Inject]
-        public NavigationManager Navigation { get; set; }
 		[Inject]
 		public ClienteServicio ClienteServicio { get; set; }
 		[Inject]
@@ -30,8 +28,6 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
         public List<Cuenta>? cuentas;
 
 		public List<Prestamo>? prestamos;
-
-
 
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)

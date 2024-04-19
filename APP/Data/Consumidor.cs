@@ -118,9 +118,9 @@ namespace APP.Data
                                         respuesta.Mensaje = mensajeerror.message;
                                     }
                                 }
-								else //este sería un error no controlado
+								else //este sería un error no controlado de la API
 								{
-									respuesta.Mensaje = $"Ocurrió un error no controlado (perdon)\n{data}";
+									respuesta.Mensaje = $"Ocurrió un error no controlado en la API (perdon)\n{data}";
 								}
 
 
