@@ -102,6 +102,6 @@ header a:link, header a:visited, header a:hover, header a:active {
     display: none;
 }
 
-.prueba {
-    display: flex;
+.prueba2 {
+    visibility: hidden;   
 }
