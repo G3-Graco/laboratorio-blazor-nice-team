@@ -1,4 +1,17 @@
 @page "/transferencia"
 @rendermode InteractiveServer
 
+<p>Bienvenido usuario</p>
 <h3>Transferencias</h3>
+
+<fieldset>
+    <label for="cuenta">Cuenta: </label>
+    <input id="cuenta" type="text"><br>
+    <label for="saldo">Saldo disponible: </label>
+    <input id="saldo" type="text">        
+</fieldset>
+
+<EditForm Model="@transferencia" OnValidSubmit="@Transferir">
+    <DataAnnotationsValidator/>
+    
+</EditForm>
