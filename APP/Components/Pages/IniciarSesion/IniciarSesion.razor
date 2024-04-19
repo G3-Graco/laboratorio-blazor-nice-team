@@ -1,9 +1,9 @@
 ﻿@page "/iniciarsesion"
 @rendermode InteractiveServer
 
-<Modal @ref="modal" IsVerticallyCentered="true">
+<Modal @ref="modal" IsVerticallyCentered="true" @* Title=@modalTitulo Message="@modalMensaje" *@>
 	<BodyTemplate>
-		@modalMensaje
+		
 	</BodyTemplate>
 	<FooterTemplate>
 		<Button Color="ButtonColor.Primary" @onclick="CerrarModal">Cerrar</Button>

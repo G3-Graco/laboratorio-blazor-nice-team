@@ -1,0 +1,36 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<Modal @ref="modal" IsVerticallyCentered="true" Title=@ModalTitulo Message=@ModalMensaje>
+    <BodyTemplate>
+
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Primary" @onclick="CerrarModal">Cerrar</Button>
+    </FooterTemplate>
+</Modal>
+
+@if (cuentas == null)
+{
+    <p><em>Cargando datos...</em></p>
+}
+
+<h4>Bienvenido @NombreCliente</h4>
+
+<h2>Resumen</h2>
+
+<h3>Cuentas</h3>
+
+<Grid TItem="Cuenta" class="table table-hover table-bordered table-striped" DataProvider="CuentasDataProvider" EmptyText="No hay ninguna cuenta para mostrar">
+    
+    <GridColumn TItem="Cuenta" HeaderText="Identificador">
+        @context.Identificador
+    </GridColumn>
+    <GridColumn TItem="Cuenta" HeaderText="Saldo">
+        @context.Saldo
+    </GridColumn>
+</Grid>+
+
+
+<h3>Préstamos activos</h3>
+
