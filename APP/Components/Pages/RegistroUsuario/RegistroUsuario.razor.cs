@@ -50,7 +50,7 @@ namespace APP.Components.Pages.RegistroUsuario
 				//modalTitulo = "Error";
 				//modalMensaje = $"statuscode:{respuesta.StatusCode}, ok:{respuesta.Ok}, data:{respuesta.Data}, mensaje:{respuesta.Mensaje}";
 				//await modal.ShowAsync();
-				await modal.ShowAsync<string>("Error", respuesta.Mensaje);
+				await modal.ShowAsync<string>($"Error: {respuesta.StatusCode}", respuesta.Mensaje);
 			}
 		}
 

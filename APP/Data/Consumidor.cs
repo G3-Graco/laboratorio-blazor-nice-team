@@ -64,9 +64,7 @@ namespace APP.Data
 						else
 						{
 							newUrl += $"?idusuariosesion={idusuario}";
-						}
-
-						
+						}						
 					}
 
 					var request = new HttpRequestMessage(CreateHttpMethod(method), newUrl)
@@ -119,9 +117,6 @@ namespace APP.Data
 								}
 									
 							}
-
-
-
 						}
 					}
 				}
