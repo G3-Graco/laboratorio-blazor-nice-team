@@ -10,7 +10,7 @@
     </FooterTemplate>
 </Modal>
 
-@if (cuentas == null)
+@if (cuentas == null || NombreCliente == null || prestamos == null)
 {
     <p><em>Cargando datos...</em></p>
 }
@@ -29,8 +29,28 @@
     <GridColumn TItem="Cuenta" HeaderText="Saldo">
         @context.Saldo
     </GridColumn>
-</Grid>+
+</Grid>
 
 
 <h3>Préstamos activos</h3>
+<Grid TItem="Prestamo" class="table table-hover table-bordered table-striped" DataProvider="PrestamosDataProvider" EmptyText="No hay ningún préstamo activo para mostrar">
 
+    <GridColumn TItem="Prestamo" HeaderText="Id">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="Prestamo" HeaderText="Número de cuotas">
+        @context.NumeroCuotas
+    </GridColumn>   
+    <GridColumn TItem="Prestamo" HeaderText="Monto cuota">
+        @context.CuotaMensual
+    </GridColumn>
+
+    <GridColumn TItem="Prestamo" HeaderText="Monto total">
+        @context.MontoTotal
+    </GridColumn>
+
+    <GridColumn TItem="Prestamo" HeaderText="Estado del préstamo">
+        @context.Estado.Nombre
+    </GridColumn>
+</Grid>
+ 

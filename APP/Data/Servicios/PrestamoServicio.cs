@@ -1,4 +1,5 @@
 ﻿using APP.Data.Modelos;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace APP.Data.Servicios
 {
@@ -7,11 +8,9 @@ namespace APP.Data.Servicios
 		public async Task<RespuestaConsumidor<RespuestaAPI<IEnumerable<Prestamo>>>> ConsultarPrestamos()
 		{
 			RespuestaConsumidor<RespuestaAPI<IEnumerable<Prestamo>>> respuesta = new();
-
-			try
-			{
-				//no es el controlador, editar cuando este disponible el controlador de préstamos en la api
-				respuesta = await Consumidor.Execute<Cuenta, RespuestaAPI<IEnumerable<Prestamo>>>($"https://localhost:7181/api/Cuenta/cuentacliente", MethodHttp.POST, null);
+            try
+            {
+				respuesta = await Consumidor.Execute<Prestamo, RespuestaAPI<IEnumerable<Prestamo>>>($"https://localhost:7181/api/Prestamo", MethodHttp.GET, null, _protectedLocalStorage);
 			}
 			catch (Exception ex)
 			{
