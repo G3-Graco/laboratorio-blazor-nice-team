@@ -31,7 +31,7 @@ namespace APP.Components.Pages.ConsultarCuenta
                 await ObtenerNombreCliente();
                 await VerificarError();
 
-                await ObtenerCuentas();
+                // await ObtenerCuentas();
                 await VerificarError();
 
                 StateHasChanged();
