@@ -1,23 +1,69 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+    <header>
+        <NavLink href="" Match="NavLinkMatch.All">
+            <span class="circulo">B</span>
+        </NavLink>
+        <div class="opciones">
+            <div>
+                <a href="iniciarsesion">
+                    <p>Inicia Sesión</p>
+                </a>
+            </div>
+            <div>
+                <a href="registrarusuario">
+                    <p>Regístrate</p>
+                </a>
+            </div>
+            <div class="ocultar">
+                <a href="http://">
+                    <span class="boton">Cerrar Sesión</span>
+                </a>
+            </div>
         </div>
-
-        <article class="content px-4">
+    </header>
+    <main>
+        <nav class="sidebar">
+            <NavMenu />
+        </nav>
+        <article class="contenido">
             @Body
         </article>
     </main>
-</div>
+    <footer>
+        <NavLink href="" Match="NavLinkMatch.All">
+            <span class="circulo">B</span>
+        </NavLink>
+        <div>
+            <a href="">
+                <p>
+                    Contáctanos: <br>
+                    Twitter <br>
+                    Facebook <br>
+                    WhatsApp
+                </p>
+            </a>
+        </div>
+        <div>
+            <a href=""><p>Copyright 2024</p></a>
+        </div>
+        <div>
+            <a href="">
+                <p>
+                    Términos de servicio <br>
+                    Términos de uso <br>
+                    Leyes de empresas <br>
+                    Regulaciones
+                </p>
+            </a>
+        </div>
+    </footer>
+    </div>
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
