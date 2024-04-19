@@ -16,7 +16,8 @@ namespace APP.Components.Pages.IniciarSesion
 		public Usuario usuario = new Usuario();
 
 		private Modal modal = default!;
-		public string modalMensaje = "";
+		//public string modalTitulo = "";
+		//public string modalMensaje = "";
 
 		public async void InicioSesion()
 		{
@@ -28,18 +29,25 @@ namespace APP.Components.Pages.IniciarSesion
 				if (respuesta.Data.Ok)
 				{
 					Navigation.NavigateTo("/", forceLoad: true);
+					//nice
 				}
 				else
 				{
-					modalMensaje = respuesta.Data.Mensaje;
-					await modal.ShowAsync();
+					//modalTitulo = "Error";
+					//modalMensaje = respuesta.Data.Mensaje;
+					//await modal.ShowAsync();
+
+					await modal.ShowAsync<string>("Error", respuesta.Data.Mensaje);
 				}
 			}
 			else
 			{
-				//modalMensaje = respuesta.Mensaje;
-				modalMensaje = $"statuscode:{respuesta.StatusCode}, ok:{respuesta.Ok}, data:{respuesta.Data}, mensaje:{respuesta.Mensaje}";
-				await modal.ShowAsync();
+				//modalTitulo = "Error";
+				////modalMensaje = respuesta.Mensaje;
+				//modalMensaje = $"statuscode:{respuesta.StatusCode}, ok:{respuesta.Ok}, data:{respuesta.Data}, mensaje:{respuesta.Mensaje}";
+				//await modal.ShowAsync();
+
+				await modal.ShowAsync<string>($"Error: {respuesta.StatusCode}", respuesta.Mensaje);
 			}
 		}
 

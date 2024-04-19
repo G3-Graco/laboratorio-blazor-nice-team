@@ -10,6 +10,9 @@ builder.Services.AddRazorComponents()
 builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddScoped<UsuarioServicio>();
+builder.Services.AddScoped<ClienteServicio>();
+builder.Services.AddScoped<CuentaServicio>();
+builder.Services.AddScoped<PrestamoServicio>();
 
 var app = builder.Build();
 

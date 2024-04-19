@@ -64,9 +64,7 @@ namespace APP.Data
 						else
 						{
 							newUrl += $"?idusuariosesion={idusuario}";
-						}
-
-						
+						}						
 					}
 
 					var request = new HttpRequestMessage(CreateHttpMethod(method), newUrl)
@@ -119,9 +117,6 @@ namespace APP.Data
 								}
 									
 							}
-
-
-
 						}
 					}
 				}
@@ -138,14 +133,24 @@ namespace APP.Data
 					respuesta.Mensaje = $"Error en el servidor.\nStatus code: {respuesta.StatusCode}"; //asd
 				}
 			}
+			catch(HttpRequestException ex)
+			{
+                respuesta.StatusCode = "Error conexión";
+                respuesta.Ok = false;
+                respuesta.Mensaje = ex.Message;
+            }
 			catch (JsonSerializationException) 
 			{
 				//
 			}
 			catch (CryptographicException ex) //Este excepción sucedía cuando alguien cambia manualmente algo en el local storage y la librería no puede descifrar los datos.
-			{
-				await protectedLocalStorage.DeleteAsync("jwt");
-				await protectedLocalStorage.DeleteAsync("idusuariosesion");
+			{ //me di cuenta que cualquier problema al serializar puede suceder, ni modo.
+				if (protectedLocalStorage != null)
+				{
+                    await protectedLocalStorage.DeleteAsync("jwt");
+                    await protectedLocalStorage.DeleteAsync("idusuariosesion");
+                }
+				
 			}
 			catch (Exception ex)
 			{
