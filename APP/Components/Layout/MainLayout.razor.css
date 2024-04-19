@@ -101,3 +101,7 @@ header a:link, header a:visited, header a:hover, header a:active {
 .ocultar {
     display: none;
 }
+
+.prueba {
+    display: flex;
+}
