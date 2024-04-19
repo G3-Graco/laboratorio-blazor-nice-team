@@ -11,7 +11,7 @@ namespace APP.Components.Pages.Transferencia
 		public NavigationManager Navigation { get; set; }
 
 		[Inject]
-		public MovimientoServicio UsuarioServicio { get; set; }
+		public MovimientoServicio movimientoServicio { get; set; }
 
         public Movimiento transferencia = new Movimiento();
 
@@ -23,7 +23,7 @@ namespace APP.Components.Pages.Transferencia
         }
 
         public async void Transferir() {
-            
+
         }
 
         public async Task CerrarModal()

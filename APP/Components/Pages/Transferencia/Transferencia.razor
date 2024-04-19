@@ -13,5 +13,19 @@
 
 <EditForm Model="@transferencia" OnValidSubmit="@Transferir">
     <DataAnnotationsValidator/>
-    
+    <div>
+        <label for="CuentaRecipiente">Cuenta recipiente: </label>
+        <InputText id="CuentaRecipiente" @bind-Value="transferencia.CuentaRecipiente"/>
+    </div>
+    <div>
+        <label for="Monto">Monto a transferir: </label>
+        <InputNumber id="Monto" @bind-Value="transferencia.Monto"/>
+    </div>
+    <div>
+        <label for="Descripcion">Descripción: </label>
+        <InputText id="Descripcion" @bind-Value="transferencia.Descripcion"/>
+    </div>
+    <div>
+        <button type="submit"></button>
+    </div>
 </EditForm>

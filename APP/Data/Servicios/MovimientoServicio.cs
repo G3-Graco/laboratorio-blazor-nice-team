@@ -9,5 +9,9 @@ namespace APP.Data.Servicios
         {
             _protectedLocalStorage = protectedLocalStorage;
         }
+
+        public void Transferir() {
+            
+        }
     }
 }
