@@ -17,26 +17,45 @@ namespace APP.Components.Pages.Transferencia
 		[Inject]
 		public MovimientoServicio movimientoServicio { get; set; }
 
-        private int Saldo { get; set; }
+        [Inject]
+        public CuentaServicio cuentaServicio { get; set; }
+
+        private double Saldo { get; set; }
+        
+        private long CuentaNumero {get; set;}
 
 		public Movimiento movimiento = new Movimiento();
 
 		private Modal modal = default!;
 
+        private string Cambio {get; set;}
+
 		protected override async Task OnInitializedAsync()
         {
+            var cuenta = await cuentaServicio.ConsultarCuenta();
+            var saldo = cuenta.Data.Datos.Saldo; 
+            Saldo = saldo;
+            CuentaNumero = cuenta.Data.Datos.Identificador;
             movimiento.Fecha = DateTime.Now;
         }
         public async void Transferir()
         {
-			
+			movimiento.CuentaOrigenIdentificador = CuentaNumero;
+            var respuesta = await movimientoServicio.RealizarMovimiento(movimiento);
+            if (respuesta.Ok)
+            {
+                Cambio  = "¡Felicidades! se hizo una transferencia exitosa";
+                var cuenta = await cuentaServicio.ConsultarCuenta();
+                CuentaNumero = cuenta.Data.Datos.Identificador;
+            } else {
+                Cambio  = "¡Oh no! La transferencia no pudo ser realizada";
+            }
 		}
 
         public void Borrar() {
             movimiento.Monto = 0;
             movimiento.CuentaReceptoraIdentificador = 0;
             movimiento.Descripcion = "";
-            Saldo = 0;
         }
 
 		public async Task CerrarModal()

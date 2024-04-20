@@ -17,11 +17,11 @@
 <section>
     <div>
         <label for="Cuenta">Cuenta: </label>
-        <InputNumber id="Cuenta" @bind-Value="movimiento.CuentaOrigenIdentificador" readonly />
+        <InputNumber id="Cuenta" @bind-Value="@CuentaNumero" />
     </div>
     <div>
         <label for="Saldo">Saldo disponible: </label>
-        <input type="number" name="Saldo" id="Saldo" @bind-value="@Saldo">
+        <input type="number" name="Saldo" id="Saldo" @bind-value="@Saldo" readonly>
     </div>
 </section>
 
@@ -47,3 +47,5 @@
     </div>
 	<ValidationSummary />
 </EditForm>
+
+<p>@Cambio</p>
