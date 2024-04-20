@@ -41,6 +41,12 @@ namespace APP.Components.Pages.Transferencia
         public async void Transferir()
         {
 			movimiento.CuentaOrigenIdentificador = CuentaNumero;
+            var tipos = await movimientoServicio.ObtenerTipos();
+            tipos.Data.Datos.ToList().ForEach(x => {
+                if (x.Nombre == "transferencia") {
+                    movimiento.TipoMovimientoId = x.Id;
+                }
+            });
             var respuesta = await movimientoServicio.RealizarMovimiento(movimiento);
             if (respuesta.Ok)
             {
