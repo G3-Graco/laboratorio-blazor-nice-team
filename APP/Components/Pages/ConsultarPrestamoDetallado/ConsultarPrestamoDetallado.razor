@@ -10,13 +10,25 @@
     </FooterTemplate>
 </Modal>
 
+<hr>
 @if (NombreCliente == "")
 {
+
     <p><em>Cargando datos...</em></p>
+    <hr>
 }
 
+<div class="bienvenido">
 <h4>Bienvenido @NombreCliente</h4>
+</div>
 
+<div class="titulo">
+    <h2>Información detallada sobre el préstamo
+    </h2>
+</div>
+
+
+<article>
 <h3>Prestamo a detalle</h3>
 
 <Grid TItem="Prestamo" class="table table-hover table-bordered table-striped" DataProvider="PrestamoDataProvider" EmptyText="No hay ninguna cuenta para mostrar">
@@ -43,9 +55,10 @@
     </GridColumn>
 </Grid>
 
-<h4>Monto pendiente total: @MontoPendiente</h4>
+<h5>Monto pendiente total: @MontoPendiente</h5>
+</article>
 
-
+<article>
 <h3>Cuotas del préstamo</h3>
 
 <Grid TItem="Cuota" class="table table-hover table-bordered table-striped" DataProvider="CuotasDataProvider" EmptyText="No hay ninguna cuota para mostrar">
@@ -63,11 +76,11 @@
         @context.Pago
     </GridColumn>
 </Grid>
+</article>
 
 
 
-
-
+<article>
 <h3>Historial de pago</h3>
 
 <Grid TItem="Pago" class="table table-hover table-bordered table-striped" DataProvider="PagosDataProvider" EmptyText="No hay ningún pago para mostrar">
@@ -87,7 +100,7 @@
     </GridColumn>
 
 </Grid>
-
+</article>
 
 
  

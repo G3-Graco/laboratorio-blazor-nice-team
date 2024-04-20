@@ -10,28 +10,37 @@
     </FooterTemplate>
 </Modal>
 
+<hr>
 @if (NombreCliente == "")
 {
+
     <p><em>Cargando datos...</em></p>
+    <hr>
 }
 
-<h4>Bienvenido @NombreCliente</h4>
+<div class="bienvenido">
+    <h4>Bienvenido @NombreCliente</h4>
+</div>
 
-<h2>Resumen</h2>
+<div class="titulo">
+    <h2>Resumen</h2>
+</div>
 
-<h3>Cuentas</h3>
+<article>
+    <h3>Cuentas</h3>
+    <Grid TItem="Cuenta" class="table table-hover table-bordered table-striped" DataProvider="CuentasDataProvider" EmptyText="No hay ninguna cuenta para mostrar">
 
-<Grid TItem="Cuenta" class="table table-hover table-bordered table-striped" DataProvider="CuentasDataProvider" EmptyText="No hay ninguna cuenta para mostrar">
-    
-    <GridColumn TItem="Cuenta" HeaderText="Identificador" TextNoWrap="true">
-        @context.Identificador
-    </GridColumn>
-    <GridColumn TItem="Cuenta" HeaderText="Saldo">
-        @context.Saldo
-    </GridColumn>
-</Grid>
+        <GridColumn TItem="Cuenta" HeaderText="Identificador" TextNoWrap="true">
+            @context.Identificador
+        </GridColumn>
+        <GridColumn TItem="Cuenta" HeaderText="Saldo">
+            @context.Saldo
+        </GridColumn>
+    </Grid>
+</article>
 
 
+<article>
 <h3>Préstamos activos</h3>
 <Grid TItem="Prestamo" class="table table-hover table-bordered table-striped" DataProvider="PrestamosDataProvider" EmptyText="No hay ningún préstamo activo para mostrar">
 
@@ -53,4 +62,5 @@
         @context.Estado.Nombre
     </GridColumn>
 </Grid>
+</article>
  

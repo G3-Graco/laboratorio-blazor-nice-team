@@ -1,2 +1,6 @@
 ﻿body {
 }
+.bienvenido {
+    display: flex;
+    color: red;
+}
