@@ -42,11 +42,11 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
             {
                 isConnected = true;
 
-				await ObtenerCuentas();
-                await VerificarError();
+				//await ObtenerCuentas();
+    //            await VerificarError();
 
-				await ObtenerPrestamosActivos();
-				await VerificarError();
+				//await ObtenerPrestamosActivos();
+				//await VerificarError();
 
                 await ObtenerNombreCliente();
 				await VerificarError();

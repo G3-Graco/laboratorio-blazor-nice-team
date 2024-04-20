@@ -42,14 +42,14 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
                 isConnected = true;
 
                 await ObntenerMontoPendienteTotal();
-                await ObtenerPrestamo();
-                await VerificarError();
+                //await ObtenerPrestamo();
+                //await VerificarError();
 
-                await ObtenerPagos();
-                await VerificarError();
+                //await ObtenerPagos();
+                //await VerificarError();
 
-                await ObtenerCuotas();
-                await VerificarError();
+                //await ObtenerCuotas();
+                //await VerificarError();
 
                 await ObtenerNombreCliente();
                 await VerificarError();
