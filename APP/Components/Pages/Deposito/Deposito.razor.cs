@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace APP.Components.Pages.Depositos
+namespace APP.Components.Pages.Deposito
 {
-    public partial class Depositos : ComponentBase
+    public partial class Deposito : ComponentBase
     {
         
     }
