@@ -31,10 +31,10 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
 
 
 
-        protected override async Task OnInitializedAsync()
-        {
-            await ObtenerCuentas();
-        }
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    await ObtenerCuentas();
+        //}
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -42,8 +42,8 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
             {
                 isConnected = true;
 
-				//await ObtenerCuentas();
-    //            await VerificarError();
+				await ObtenerCuentas();
+                await VerificarError();
 
 				await ObtenerPrestamosActivos();
 				await VerificarError();
