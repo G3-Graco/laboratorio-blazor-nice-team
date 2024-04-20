@@ -1,0 +1,55 @@
+﻿@page "/prestamo"
+@rendermode InteractiveServer
+
+<Modal @ref="modal" IsVerticallyCentered="true" Title=@ModalTitulo Message=@ModalMensaje>
+    <BodyTemplate>
+
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Primary" @onclick="CerrarModal">Cerrar</Button>
+    </FooterTemplate>
+</Modal>
+
+<hr>
+@if (NombreCliente == "")
+{
+
+    <p><em>Cargando datos...</em></p>
+    <hr>
+}
+
+<div class="bienvenido">
+<h4>Bienvenido @NombreCliente</h4>
+</div>
+
+<div class="titulo">
+    <h2>Tus préstamos 
+    </h2>
+</div>
+
+
+<article>
+<h3>Prestamo a detalle</h3>
+
+<Grid TItem="Prestamo" class="table table-hover table-bordered table-striped" DataProvider="PrestamoDataProvider" AllowSelection="true" EmptyText="No hay algún préstamo para mostrar">
+
+    <GridColumn TItem="Prestamo" HeaderText="Id">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="Prestamo" HeaderText="Fecha de solicitud">
+        @context.Fecha
+    </GridColumn>
+
+    <GridColumn TItem="Prestamo" HeaderText="Monto total">
+        @context.MontoTotal
+    </GridColumn>
+
+    <GridColumn TItem="Prestamo" HeaderText="Estado del préstamo" TextNoWrap="true">
+        @context.Estado.Nombre
+    </GridColumn>
+</Grid>
+
+
+</article>
+
+<input class="btn btn-dark" value="Consultar préstamo seleccionado" onclick="@ConsultarPrestamoSeleccionado" />

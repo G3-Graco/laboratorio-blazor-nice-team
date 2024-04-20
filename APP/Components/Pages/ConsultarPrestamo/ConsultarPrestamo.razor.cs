@@ -3,12 +3,15 @@ using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 
-namespace APP.Components.Pages.ConsultarPrestamoDetallado
+namespace APP.Components.Pages.ConsultarPrestamo
 {
-    public partial class ConsultarPrestamoDetallado : ComponentBase
+    public partial class ConsultarPrestamo : ComponentBase
     {
-        [Parameter]
-		public int idprestamo { get; set; }
+        
+
+        [Inject]
+        public NavigationManager Navigation { get; set; }
+
 
         private bool isConnected;
         private Modal modal = default!;
@@ -20,19 +23,15 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
         public ClienteServicio ClienteServicio { get; set; }
         public string NombreCliente = "";
 
-        [Inject]
-        public PagoServicio PagoServicio { get; set; }
-        public List<Pago>? pagos = new List<Pago>();
-
 
         [Inject]
         public PrestamoServicio PrestamoServicio { get; set; }
-        public double MontoPendiente = 0;
         public List<Prestamo>? prestamos = new List<Prestamo>();
 
-        [Inject]
-        public CuotaServicio CuotaServicio { get; set; }
-        public List<Cuota>? cuotas = new List<Cuota>();
+
+        private HashSet<Prestamo> prestamoSeleccionado = new();
+
+
 
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -41,14 +40,7 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
             {
                 isConnected = true;
 
-                await ObntenerMontoPendienteTotal();
-                await ObtenerPrestamo();
-                await VerificarError();
-
-                await ObtenerPagos();
-                await VerificarError();
-
-                await ObtenerCuotas();
+                await ObtenerPrestamos();
                 await VerificarError();
 
                 await ObtenerNombreCliente();
@@ -98,7 +90,7 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
             return OcurrioError;
         }
 
-        private async Task ObtenerPrestamo()
+        private async Task ObtenerPrestamos()
         {
             prestamos = new List<Prestamo>();
 
@@ -108,8 +100,7 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
 
             if (!OcurrioError)
             {
-                Prestamo prestamoconsultado = respuesta.Data.Datos.FirstOrDefault(p => p.Id == idprestamo);
-                prestamos.Add(prestamoconsultado);
+                prestamos = respuesta.Data.Datos.ToList();
             }
         }
 
@@ -117,7 +108,7 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
         {
             if (prestamos is null)
             {
-                ObtenerPrestamo();
+                ObtenerPrestamos();
                 VerificarError();
             }
 
@@ -135,67 +126,26 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
             }
         }
 
-        private async Task ObntenerMontoPendienteTotal()
+        private async Task ConsultarPrestamoSeleccionado()
         {
-            RespuestaConsumidor<RespuestaAPI<double>> respuesta = await PrestamoServicio.ConsultarMontoPendiente(idprestamo);
+            IEnumerable<Prestamo> prestamoSeleccionado = prestamos is not null && prestamos.Any() ? prestamos : new();
 
-            GestionarRespuesta<double>(respuesta);
+            List<Prestamo> prestamosListaSeleccionada = prestamoSeleccionado.ToList();
 
-            if (!OcurrioError)
+            if (prestamosListaSeleccionada.Count == 0)
             {
-                MontoPendiente = respuesta.Data.Datos;
+                ModalTitulo = "Error";
+                ModalMensaje = "Primero debe consultar un préstamo";
+                await modal.ShowAsync();
             }
+            else
+            {
+                Navigation.NavigateTo($"/prestamo/{prestamosListaSeleccionada[0].Id}", forceLoad: true);
+            }
+            
         }
 
-        private async Task ObtenerPagos()
-        {
-            pagos = new List<Pago>();
 
-            RespuestaConsumidor<RespuestaAPI<IEnumerable<Pago>>> respuesta = await PagoServicio.ConsultarPagosDePrestamo(idprestamo);
-
-            GestionarRespuesta<IEnumerable<Pago>>(respuesta);
-
-            if (!OcurrioError)
-            {
-                pagos = respuesta.Data.Datos.ToList();
-            }
-        }
-
-        private async Task<GridDataProviderResult<Pago>> PagosDataProvider(GridDataProviderRequest<Pago> request)
-        {
-            if (pagos is null)
-            {
-                ObtenerPagos();
-                VerificarError();
-            }
-
-            return await Task.FromResult(request.ApplyTo(pagos));
-        }
-
-        private async Task ObtenerCuotas()
-        {
-            cuotas = new List<Cuota>();
-
-            RespuestaConsumidor<RespuestaAPI<IEnumerable<Cuota>>> respuesta = await CuotaServicio.ConsultarCuotas(idprestamo);
-
-            GestionarRespuesta<IEnumerable<Cuota>>(respuesta);
-
-            if (!OcurrioError)
-            {
-                cuotas = respuesta.Data.Datos.ToList();
-            }
-        }
-
-        private async Task<GridDataProviderResult<Cuota>> CuotasDataProvider(GridDataProviderRequest<Cuota> request)
-        {
-            if (cuotas is null)
-            {
-                ObtenerCuotas();
-                VerificarError();
-            }
-
-            return await Task.FromResult(request.ApplyTo(cuotas));
-        }
 
     }
 }
