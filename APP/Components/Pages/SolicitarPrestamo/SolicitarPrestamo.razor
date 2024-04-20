@@ -1,0 +1,49 @@
+@page "/solicitarprestamo"
+@rendermode InteractiveServer
+
+<h3>Solicitud de préstamo</h3>
+
+<hr>
+
+<Modal @ref="modal" IsVerticallyCentered="true">
+	<BodyTemplate>
+		@* @modalMensaje *@
+	</BodyTemplate>
+	<FooterTemplate>
+		<Button Color="ButtonColor.Primary" @onclick="CerrarModal" >Cerrar</Button>
+	</FooterTemplate>
+</Modal>
+
+<EditForm  Model="@prestamo" OnValidSubmit="Solicitar">
+	<DataAnnotationsValidator />
+    <div>
+        <label for="Sueldo">Sueldo básico: </label>
+        <input type="number" name="Sueldo" id="Sueldo">
+    </div>
+    <div>
+        <label for="Monto">Monto a prestar: </label>
+        <InputNumber id="Monto" @bind-Value="prestamo.MontoTotal" />
+        <span class="rojo">No puede puede ser mayor al triple de su sueldo básico</span>
+    </div>
+    <div>
+        <label for="Plazos">Cantidad de plazos: </label>
+        <InputNumber id="Plazos" @bind-Value="prestamo.NumeroCuotas" />
+        <span class="rojo">Afectará el interés: 1-12 (20%) y 13-24 (30%)</span>
+    </div>
+    <div>
+        <label for="Empleo">Tiempo de empleo (meses): </label>
+        <input type="number" name="Empleo" id="Empleo">
+    </div>
+    <div>
+        <label for="Identidad">Documento de identidad: </label>
+        <input type="file" name="Identidad" id="Identidad">
+    </div>
+    <div>
+        <label for="Trabajo">Recibo de sueldo de trabajo: </label>
+        <input type="file" name="Trabajo" id="Trabajo">
+    </div>
+    <div>
+        <button type="submit">Hacer solicitud</button>
+    </div>
+	<ValidationSummary />
+</EditForm>

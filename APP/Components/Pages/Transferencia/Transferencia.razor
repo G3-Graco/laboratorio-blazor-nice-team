@@ -1,2 +1,48 @@
 @page "/transferencia"
 @rendermode InteractiveServer
+
+<p>Bienvenido usuario</p>
+
+<h3>Trasferencias</h3>
+
+<Modal @ref="modal" IsVerticallyCentered="true">
+	<BodyTemplate>
+		@* @modalMensaje *@
+	</BodyTemplate>
+	<FooterTemplate>
+		<Button Color="ButtonColor.Primary" @onclick="CerrarModal" >Cerrar</Button>
+	</FooterTemplate>
+</Modal>
+
+<EditForm  Model="@movimiento" OnValidSubmit="Transferir">
+	<DataAnnotationsValidator />
+    <section>
+        <div>
+            <label for="Cuenta">Cuenta: </label>
+            <InputNumber id="Cuenta" @bind-Value="movimiento.CuentaOrigenIdentificador" readonly />
+        </div>
+        <div>
+            <label for="Saldo">Saldo disponible: </label>
+            <input type="number" name="Saldo" id="Saldo" readonly>
+        </div>
+    </section>
+    <section>
+        <div>
+            <label for="Recipiente">Cuenta a transferir: </label>
+            <InputNumber id="Recipiente" @bind-Value="movimiento.CuentaReceptoraIdentificador" />
+        </div>
+        <div>
+            <label for="Monto">Monto a transferir: </label>
+            <InputNumber id="Monto" @bind-Value="movimiento.Monto" />
+        </div>
+        <div>
+            <label for="Descripcion">Descripción: </label>
+            <InputText id="Descripcion" @bind-Value="movimiento.Descripcion" />
+        </div>
+    </section>
+    <div>
+        <button type="button" @onclick="Borrar" >Borrar</button>
+        <button type="submit">Hacer solicitud</button>
+    </div>
+	<ValidationSummary />
+</EditForm>
