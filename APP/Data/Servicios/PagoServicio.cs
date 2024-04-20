@@ -26,5 +26,20 @@ namespace APP.Data.Servicios
             }
             return respuesta;
         }
+
+        public async Task<RespuestaConsumidor<RespuestaAPI<IEnumerable<Pago>>>> ConsultarPagosDePrestamo(int idprestamo)
+        {
+            RespuestaConsumidor<RespuestaAPI<IEnumerable<Pago>>> respuesta = new();
+
+            try
+            {
+                respuesta = await Consumidor.Execute<Pago, RespuestaAPI<IEnumerable<Pago>>>($"https://localhost:7181/api/Cuenta/pagosprestamo?idPrestamo{idprestamo}", MethodHttp.GET, null, _protectedLocalStorage, true);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return respuesta;
+        }
     }
 }

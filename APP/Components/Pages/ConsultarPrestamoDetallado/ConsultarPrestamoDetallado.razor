@@ -1,4 +1,93 @@
 ﻿@page "/prestamo/{idprestamo:int}"
 @rendermode InteractiveServer
 
-<h3>ConsultarPrestamoDetallado</h3>
+<Modal @ref="modal" IsVerticallyCentered="true" Title=@ModalTitulo Message=@ModalMensaje>
+    <BodyTemplate>
+
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Primary" @onclick="CerrarModal">Cerrar</Button>
+    </FooterTemplate>
+</Modal>
+
+@if (NombreCliente == "")
+{
+    <p><em>Cargando datos...</em></p>
+}
+
+<h4>Bienvenido @NombreCliente</h4>
+
+<h3>Prestamo a detalle</h3>
+
+<Grid TItem="Prestamo" class="table table-hover table-bordered table-striped" DataProvider="PrestamoDataProvider" EmptyText="No hay ninguna cuenta para mostrar">
+
+    <GridColumn TItem="Prestamo" HeaderText="Id">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="Prestamo" HeaderText="Fecha de solicitud">
+        @context.Fecha
+    </GridColumn>
+    <GridColumn TItem="Prestamo" HeaderText="Número de cuotas">
+        @context.NumeroCuotas
+    </GridColumn>
+    <GridColumn TItem="Prestamo" HeaderText="Monto cuota">
+        @context.CuotaMensual
+    </GridColumn>
+
+    <GridColumn TItem="Prestamo" HeaderText="Monto total">
+        @context.MontoTotal
+    </GridColumn>
+
+    <GridColumn TItem="Prestamo" HeaderText="Estado del préstamo" TextNoWrap="true">
+        @context.Estado.Nombre
+    </GridColumn>
+</Grid>
+
+<h4>Monto pendiente total: @MontoPendiente</h4>
+
+
+<h3>Cuotas del préstamo</h3>
+
+<Grid TItem="Cuota" class="table table-hover table-bordered table-striped" DataProvider="CuotasDataProvider" EmptyText="No hay ninguna cuota para mostrar">
+
+    <GridColumn TItem="Cuota" HeaderText="Id">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="Cuota" HeaderText="Fecha tope para pagar">
+        @context.Fecha
+    </GridColumn>
+    <GridColumn TItem="Cuota" HeaderText="Fecha pago realizado" TextNoWrap="true">
+        @context.FechaPago
+    </GridColumn>
+    <GridColumn TItem="Cuota" HeaderText="Monto del pago" TextNoWrap="true">
+        @context.Pago
+    </GridColumn>
+</Grid>
+
+
+
+
+
+<h3>Historial de pago</h3>
+
+<Grid TItem="Pago" class="table table-hover table-bordered table-striped" DataProvider="PagosDataProvider" EmptyText="No hay ningún pago para mostrar">
+
+    <GridColumn TItem="Pago" HeaderText="Id del pago">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="Pago" HeaderText="Id de la cuota pagada">
+        @context.CuotaPagada.Id
+    </GridColumn>
+    <GridColumn TItem="Pago" HeaderText="Monto" TextNoWrap="true">
+        @context.CuotaPagada.prestamo.CuotaMensual
+    </GridColumn>
+
+    <GridColumn TItem="Pago" HeaderText="Fecha pago realizado" TextNoWrap="true">
+        @context.CuotaPagada.FechaPago
+    </GridColumn>
+
+</Grid>
+
+
+
+ 

@@ -25,24 +25,24 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
 
         public string NombreCliente = "";//bienvenido async
 
-        public List<Cuenta>? cuentas;
+        public List<Cuenta>? cuentas = new List<Cuenta>();
 
-		public List<Prestamo>? prestamos;
+        public List<Prestamo>? prestamos = new List<Prestamo>();
 
 
-		protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
                 isConnected = true;
 
-                await ObtenerNombreCliente();
-				await VerificarError();
-
 				await ObtenerCuentas();
                 await VerificarError();
 
 				await ObtenerPrestamosActivos();
+				await VerificarError();
+
+                await ObtenerNombreCliente();
 				await VerificarError();
 
                 StateHasChanged();

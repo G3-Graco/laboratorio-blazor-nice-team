@@ -10,7 +10,75 @@
     </FooterTemplate>
 </Modal>
 
+@if (NombreCliente == "")
+{
+    <p><em>Cargando datos...</em></p>
+}
 
-<h3>ConsultarCuenta</h3>
+<h4>Bienvenido @NombreCliente</h4>
+
+<h3>Cuentas</h3>
+
+<Grid TItem="Cuenta" class="table table-hover table-bordered table-striped" DataProvider="CuentasDataProvider" EmptyText="No hay ninguna cuenta para mostrar">
+
+    <GridColumn TItem="Cuenta" HeaderText="Identificador" TextNoWrap="true">
+        @context.Identificador
+    </GridColumn>
+    <GridColumn TItem="Cuenta" HeaderText="Saldo">
+        @context.Saldo
+    </GridColumn>
+</Grid>
+
+<h3>Movimientos realizados</h3>
+<Grid TItem="Movimiento" class="table table-hover table-bordered table-striped" DataProvider="MovimientosDataProvider" EmptyText="No hay ningún movimiento para mostrar">
+
+    <GridColumn TItem="Movimiento" HeaderText="Id del movimiento">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="Movimiento" HeaderText="Tipo de movimiento">
+        @context.TipoMovimiento.Nombre
+    </GridColumn>
+    <GridColumn TItem="Movimiento" HeaderText="Fecha">
+        @context.Fecha
+    </GridColumn>
+
+    <GridColumn TItem="Movimiento" HeaderText="Monto">
+        @context.Monto
+    </GridColumn>
+
+    <GridColumn TItem="Movimiento" HeaderText="Cuenta receptora" TextNoWrap="true">
+        @context.CuentaReceptoraIdentificador
+    </GridColumn>
+
+    <GridColumn TItem="Movimiento" HeaderText="Descripcion" TextNoWrap="true">
+        @context.Descripcion
+    </GridColumn>
+</Grid>
+
+
+
+<h3>Pagos de préstamos</h3>
+<Grid TItem="Pago" class="table table-hover table-bordered table-striped" DataProvider="PagosDataProvider" EmptyText="No hay ningún pago para mostrar">
+
+    <GridColumn TItem="Pago" HeaderText="Id del pago">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="Pago" HeaderText="Id de la cuota pagada">
+        @context.CuotaPagada.Id
+    </GridColumn>
+    <GridColumn TItem="Pago" HeaderText="Id del prestamo correspondiente">
+        @context.CuotaPagada.prestamo.Id
+    </GridColumn>
+    <GridColumn TItem="Pago" HeaderText="Monto" TextNoWrap="true">
+        @context.CuotaPagada.prestamo.CuotaMensual
+    </GridColumn>
+
+    <GridColumn TItem="Pago" HeaderText="Fecha pago" TextNoWrap="true">
+        @context.CuotaPagada.FechaPago
+    </GridColumn>
+
+</Grid>
+
+
 
 
