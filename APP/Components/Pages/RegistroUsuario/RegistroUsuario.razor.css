@@ -14,3 +14,28 @@
 .formregistrar > div{
     width: 35vw;
 }
+
+input{
+    margin: 20px;
+    width: 20vw;
+}
+
+.titulo {
+    display: flex;
+    justify-content: center;
+    background-color: #008f8c;
+    color: white;
+    margin: 10px 0px 30px 0px;
+    padding: 10px;
+}
+
+    .titulo h2 {
+        margin: 0px;
+    }
+
+
+p {
+    display: flex;
+    justify-content: flex-end;
+    margin: 30px 0px;
+}

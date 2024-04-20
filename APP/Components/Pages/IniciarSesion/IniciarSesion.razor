@@ -1,7 +1,7 @@
 ﻿@page "/iniciarsesion"
 @rendermode InteractiveServer
 
-<Modal @ref="modal" IsVerticallyCentered="true" @* Title=@modalTitulo Message="@modalMensaje" *@>
+<Modal @ref="modal" IsVerticallyCentered="true">
 	<BodyTemplate>
 		
 	</BodyTemplate>
@@ -11,7 +11,9 @@
 </Modal>
 
 
-<h3>Iniciar sesión</h3>
+<div class="titulo">
+	<h2>Iniciar sesión</h2>
+</div>
 
 <EditForm Model="@usuario" OnValidSubmit="InicioSesion">
 	<DataAnnotationsValidator />
@@ -29,7 +31,7 @@
 	</div>
 
 	<div>
-		<input type="submit" class="btn btn-success" value="Iniciar sesion" />
+			<input type="submit" class="btn btn-dark" value="Iniciar sesion" />
 	</div>
 
 	</article>
@@ -37,5 +39,5 @@
 	<ValidationSummary />
 </EditForm>
 
-<p>¿No tienes cuenta? <a href="">¡Regístrate!</a></p>
+<p>¿No tienes cuenta? <a href="registrarusuario">¡Regístrate!</a></p>
 

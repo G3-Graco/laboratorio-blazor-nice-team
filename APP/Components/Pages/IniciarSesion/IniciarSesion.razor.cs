@@ -28,7 +28,8 @@ namespace APP.Components.Pages.IniciarSesion
 			{
 				if (respuesta.Data.Ok)
 				{
-					Navigation.NavigateTo("/", forceLoad: true);
+                    await modal.ShowAsync<string>("Inicio sesión", "Iniciaste sesión exitosamente");
+                    Navigation.NavigateTo("/", forceLoad: true);
 					//nice
 				}
 				else

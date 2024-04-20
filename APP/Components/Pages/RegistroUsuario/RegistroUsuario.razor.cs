@@ -32,7 +32,8 @@ namespace APP.Components.Pages.RegistroUsuario
 			{
 				if (respuesta.Data.Ok)
 				{
-					Navigation.NavigateTo("/iniciarsesion", forceLoad: true);
+                    await modal.ShowAsync<string>("Registrado", "Usuario registrado exitosamente");
+                    Navigation.NavigateTo("/iniciarsesion", forceLoad: true);
 					//nice
 				}
 				else
