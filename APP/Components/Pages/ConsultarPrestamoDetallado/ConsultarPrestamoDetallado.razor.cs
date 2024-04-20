@@ -115,7 +115,7 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
 
         private async Task<GridDataProviderResult<Prestamo>> PrestamoDataProvider(GridDataProviderRequest<Prestamo> request)
         {
-            if (prestamos is null)
+            if (prestamos.Count == 0)
             {
                 ObtenerPrestamo();
                 VerificarError();
@@ -163,7 +163,7 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
 
         private async Task<GridDataProviderResult<Pago>> PagosDataProvider(GridDataProviderRequest<Pago> request)
         {
-            if (pagos is null)
+            if (pagos.Count == 0)
             {
                 ObtenerPagos();
                 VerificarError();
@@ -188,7 +188,7 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
 
         private async Task<GridDataProviderResult<Cuota>> CuotasDataProvider(GridDataProviderRequest<Cuota> request)
         {
-            if (cuotas is null)
+            if (cuotas.Count == 0)
             {
                 ObtenerCuotas();
                 VerificarError();

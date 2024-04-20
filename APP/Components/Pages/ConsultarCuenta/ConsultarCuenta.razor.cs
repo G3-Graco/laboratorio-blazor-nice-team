@@ -121,7 +121,7 @@ namespace APP.Components.Pages.ConsultarCuenta
 
         private async Task<GridDataProviderResult<Cuenta>> CuentasDataProvider(GridDataProviderRequest<Cuenta> request)
         {
-            if (cuentas is null)
+            if (cuentas.Count == 0)
             {
                 ObtenerCuentas();
                 VerificarError();
@@ -147,7 +147,7 @@ namespace APP.Components.Pages.ConsultarCuenta
 
         private async Task<GridDataProviderResult<Movimiento>> MovimientosDataProvider(GridDataProviderRequest<Movimiento> request)
         {
-            if (cuentas is null)
+            if (cuentas.Count == 0)
             {
                 ObtenerMovimientos();
                 VerificarError();
@@ -172,7 +172,7 @@ namespace APP.Components.Pages.ConsultarCuenta
 
         private async Task<GridDataProviderResult<Pago>> PagosDataProvider(GridDataProviderRequest<Pago> request)
         {
-            if (pagos is null)
+            if (pagos.Count == 0)
             {
                 ObtenerPagos();
                 VerificarError();

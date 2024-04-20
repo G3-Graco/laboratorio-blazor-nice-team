@@ -106,7 +106,7 @@ namespace APP.Components.Pages.ConsultarPrestamo
 
         private async Task<GridDataProviderResult<Prestamo>> PrestamoDataProvider(GridDataProviderRequest<Prestamo> request)
         {
-            if (prestamos is null)
+            if (prestamos.Count == 0)
             {
                 ObtenerPrestamos();
                 VerificarError();

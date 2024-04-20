@@ -14,7 +14,7 @@
 	</FooterTemplate>
 </Modal>
 
-<EditForm  Model="@modeloRegistrarUsuario" OnValidSubmit="Registrar">
+<EditForm Model="@modeloRegistrarUsuario" OnValidSubmit="Registrar" Title=@modalTitulo Message=@modalMensaje>
 	<DataAnnotationsValidator />
 	<article class="formregistrar">
 		<div>
