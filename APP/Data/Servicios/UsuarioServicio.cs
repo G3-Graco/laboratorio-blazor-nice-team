@@ -1,4 +1,5 @@
 ﻿using APP.Data.Modelos;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace APP.Data.Servicios
@@ -6,16 +7,21 @@ namespace APP.Data.Servicios
 	public class UsuarioServicio
 	{
 		public readonly ProtectedLocalStorage _protectedLocalStorage;
-		public UsuarioServicio(ProtectedLocalStorage protectedLocalStorage)
+        public readonly AuthenticationStateProvider _authStateProvider;
+     
+        public UsuarioServicio(ProtectedLocalStorage protectedLocalStorage, AuthenticationStateProvider authStateProvider)
 		{
 			_protectedLocalStorage = protectedLocalStorage;
-		}
+            _authStateProvider = authStateProvider;
+        }
+
 
 		public async Task<RespuestaConsumidor<RespuestaAPI<ModeloRegistrarUsuario>>> RegistrarUsuario(ModeloRegistrarUsuario modeloRegistrarUsuario)
 		{
 			RespuestaConsumidor< RespuestaAPI<ModeloRegistrarUsuario>> respuesta = new();
+            
 
-			try
+            try
 			{
 				respuesta = await Consumidor.Execute<ModeloRegistrarUsuario, RespuestaAPI<ModeloRegistrarUsuario>>($"https://localhost:7181/api/Usuario/registrarse", MethodHttp.POST, modeloRegistrarUsuario);
 			}
@@ -38,7 +44,8 @@ namespace APP.Data.Servicios
 				{
 					await _protectedLocalStorage.SetAsync("jwt", respuesta.Data.Datos.jwt);
 					await _protectedLocalStorage.SetAsync("idusuariosesion", respuesta.Data.Datos.idusuariosesion);
-				}
+                    await _authStateProvider.GetAuthenticationStateAsync();
+                }
 
 			}
 			catch (Exception ex)
@@ -52,6 +59,7 @@ namespace APP.Data.Servicios
 		{
 			await _protectedLocalStorage.DeleteAsync("jwt");
 			await _protectedLocalStorage.DeleteAsync("idusuariosesion");
-		}
+            await _authStateProvider.GetAuthenticationStateAsync();
+        }
 	}
 }
