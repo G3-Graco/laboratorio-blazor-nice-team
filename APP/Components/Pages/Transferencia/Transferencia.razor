@@ -14,18 +14,19 @@
 	</FooterTemplate>
 </Modal>
 
+<section>
+    <div>
+        <label for="Cuenta">Cuenta: </label>
+        <InputNumber id="Cuenta" @bind-Value="movimiento.CuentaOrigenIdentificador" readonly />
+    </div>
+    <div>
+        <label for="Saldo">Saldo disponible: </label>
+        <input type="number" name="Saldo" id="Saldo" @bind-value="@Saldo">
+    </div>
+</section>
+
 <EditForm  Model="@movimiento" OnValidSubmit="Transferir">
 	<DataAnnotationsValidator />
-    <section>
-        <div>
-            <label for="Cuenta">Cuenta: </label>
-            <InputNumber id="Cuenta" @bind-Value="movimiento.CuentaOrigenIdentificador" readonly />
-        </div>
-        <div>
-            <label for="Saldo">Saldo disponible: </label>
-            <input type="number" name="Saldo" id="Saldo" readonly>
-        </div>
-    </section>
     <section>
         <div>
             <label for="Recipiente">Cuenta a transferir: </label>

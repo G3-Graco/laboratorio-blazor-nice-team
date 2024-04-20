@@ -17,6 +17,8 @@ namespace APP.Components.Pages.Transferencia
 		[Inject]
 		public MovimientoServicio movimientoServicio { get; set; }
 
+        private int Saldo { get; set; }
+
 		public Movimiento movimiento = new Movimiento();
 
 		private Modal modal = default!;
@@ -31,7 +33,10 @@ namespace APP.Components.Pages.Transferencia
 		}
 
         public void Borrar() {
-            
+            movimiento.Monto = 0;
+            movimiento.CuentaReceptoraIdentificador = 0;
+            movimiento.Descripcion = "";
+            Saldo = 0;
         }
 
 		public async Task CerrarModal()

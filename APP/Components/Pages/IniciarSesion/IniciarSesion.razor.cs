@@ -33,20 +33,12 @@ namespace APP.Components.Pages.IniciarSesion
 				}
 				else
 				{
-					//modalTitulo = "Error";
-					//modalMensaje = respuesta.Data.Mensaje;
-					//await modal.ShowAsync();
 
 					await modal.ShowAsync<string>("Error", respuesta.Data.Mensaje);
 				}
 			}
 			else
 			{
-				//modalTitulo = "Error";
-				////modalMensaje = respuesta.Mensaje;
-				//modalMensaje = $"statuscode:{respuesta.StatusCode}, ok:{respuesta.Ok}, data:{respuesta.Data}, mensaje:{respuesta.Mensaje}";
-				//await modal.ShowAsync();
-
 				await modal.ShowAsync<string>($"Error: {respuesta.StatusCode}", respuesta.Mensaje);
 			}
 		}
