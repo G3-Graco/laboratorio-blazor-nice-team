@@ -43,7 +43,7 @@ namespace APP.Components.Pages.Transferencia
 			movimiento.CuentaOrigenIdentificador = CuentaNumero;
             var tipos = await movimientoServicio.ObtenerTipos();
             tipos.Data.Datos.ToList().ForEach(x => {
-                if (x.Nombre == "transferencia") {
+                if (x.Nombre == "Transferencia") {
                     movimiento.TipoMovimientoId = x.Id;
                 }
             });
