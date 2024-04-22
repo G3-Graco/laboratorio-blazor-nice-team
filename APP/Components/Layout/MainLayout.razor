@@ -7,22 +7,31 @@
             <span class="circulo">B</span>
         </NavLink>
         <div class="opciones">
-            <div>
-                <a href="iniciarsesion">
-                    <p>Inicia Sesión</p>
-                </a>
-            </div>
-            <div>
-                <a href="registrarusuario">
-                    <p>Regístrate</p>
-                </a>
-            </div>
-            <div>
+            <AuthorizeView>
+                <NotAuthorized>
+                    <div>
+                        <a href="iniciarsesion">
+                            <p>Inicia Sesión</p>
+                        </a>
+                    </div>
 
-                <a href="" @onclick="CerrarSesion">
-                    <p>Cerrar sesion</p>
-                </a>
-            </div>
+                    <div>
+                        <a href="registrarusuario">
+                            <p>Regístrate</p>
+                        </a>
+                    </div>
+
+                </NotAuthorized>
+                <Authorized>
+                    <div>
+
+                        <a href="" @onclick="CerrarSesion">
+                            <p>Cerrar sesion</p>
+                        </a>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+                
             <div class="ocultar">
                 <a href="http://">
                     <span class="boton">Cerrar Sesión</span>

@@ -8,42 +8,55 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="columna">
-        <div>
-            <a href="inicio">
-                <p>Inicio</p>
-            </a>
-        </div>
-        <hr>
-        <div>
-            <a href="cuenta">
-                <p>Cuenta</p>
-            </a>
-        </div>
-        <hr>
-        <div>
-            <a href="prestamo">
-                <p>Préstamos</p>
-            </a>
-        </div>
-        <hr>
-        <div>
-            <a href="deposito">
-                <p>Depósito</p>
-            </a>
-        </div>
-        <hr>
-        <div>
-            <a href="retiro">
-                <p>Retiro</p>
-            </a>
-        </div>
-        <hr>
-        <div>
-            <a href="transferencia">
-                <p>Transferencia</p>
-            </a>
-        </div>
-        <hr>
+        <AuthorizeView>
+            <NotAuthorized>
+                <div>
+                    <a href="">
+                        <p>Inicio</p>
+                    </a>
+                </div>
+                <hr>
+            </NotAuthorized>
+            <Authorized>
+                <div>
+                    <a href="inicio">
+                        <p>Inicio</p>
+                    </a>
+                </div>
+                <hr>
+                <div>
+                    <a href="cuenta">
+                        <p>Cuenta</p>
+                    </a>
+                </div>
+                <hr>
+                <div>
+                    <a href="prestamo">
+                        <p>Préstamos</p>
+                    </a>
+                </div>
+                <hr>
+                <div>
+                    <a href="deposito">
+                        <p>Depósito</p>
+                    </a>
+                </div>
+                <hr>
+                <div>
+                    <a href="retiro">
+                        <p>Retiro</p>
+                    </a>
+                </div>
+                <hr>
+                <div>
+                    <a href="transferencia">
+                        <p>Transferencia</p>
+                    </a>
+                </div>
+                <hr>
+            </Authorized>
+        </AuthorizeView>
+        
     </nav>
 </div>
 

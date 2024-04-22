@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace APP.Components.Pages.IniciarSesion
 {
@@ -55,6 +56,15 @@ namespace APP.Components.Pages.IniciarSesion
             return OcurrioError;
         }
 
+        public byte[] ParseBase64WithoutPadding(string base64)
+        {
+            switch (base64.Length % 4)
+            {
+                case 2: base64 += "=="; break;
+                case 3: base64 += "="; break;
+            }
+            return Convert.FromBase64String(base64);
+        }
 
         public async Task Autenticar()
 		{
@@ -69,11 +79,16 @@ namespace APP.Components.Pages.IniciarSesion
                 return;
             }
 
+            //
+            var payload = token.Split('.')[1];
+            var jsonBytes = ParseBase64WithoutPadding(payload);
+            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, ""),
-                new Claim("id", ""),
-                new Claim(ClaimTypes.Role, "")
+                new Claim(ClaimTypes.Name, keyValuePairs["unique_name"].ToString()),
+                new Claim("id", keyValuePairs["id"].ToString()),
+                new Claim(ClaimTypes.Role, "user") //bueno
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -96,7 +111,7 @@ namespace APP.Components.Pages.IniciarSesion
 
                 await Autenticar();
                 
-                Navigation.NavigateTo("/", forceLoad: true);
+                Navigation.NavigateTo("/inicio", forceLoad: true);
             }
             else
             {
