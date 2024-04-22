@@ -19,7 +19,10 @@ h3 {
 }
 
 .botones {
-
+    text-align: center;
+    display: flex;
+    align-content: space-between;
+    width: 100%;
 }
 
 .botones button {

@@ -16,20 +16,22 @@
 
 <EditForm  Model="@prestamo" OnValidSubmit="Solicitar">
 	<DataAnnotationsValidator />
-    <div>
-        <label for="Sueldo">Sueldo básico: </label>
-        <input type="number" name="Sueldo" id="Sueldo">
-    </div>
-    <div>
-        <label for="Monto">Monto a prestar: </label>
-        <InputNumber id="Monto" @bind-Value="prestamo.MontoTotal" />
-        <span class="rojo">No puede puede ser mayor al triple de su sueldo básico</span>
-    </div>
-    <div>
-        <label for="Plazos">Cantidad de plazos: </label>
-        <InputNumber id="Plazos" @bind-Value="prestamo.NumeroCuotas" />
-        <span class="rojo">Afectará el interés: 1-12 (20%) y 13-24 (30%)</span>
-    </div>
+    <article>
+        <div>
+            <label for="Sueldo">Sueldo básico: </label>
+            <input type="number" name="Sueldo" id="Sueldo">
+        </div>
+        <div>
+            <label for="Monto">Monto a prestar: </label>
+            <InputNumber id="Monto" @bind-Value="prestamo.MontoTotal" />
+            <span class="rojo">No puede puede ser mayor al triple de su sueldo básico</span>
+        </div>
+        <div>
+            <label for="Plazos">Cantidad de plazos: </label>
+            <InputNumber id="Plazos" @bind-Value="prestamo.NumeroCuotas" />
+            <span class="rojo">Afectará el interés: 1-12 (20%) y 13-24 (30%)</span>
+        </div>
+    </article>
     <div>
         <label for="Empleo">Tiempo de empleo (meses): </label>
         <input type="number" name="Empleo" id="Empleo">
