@@ -36,8 +36,16 @@ namespace APP.Data.Servicios
 
 				if (respuesta.Ok)
 				{
+					if (respuesta.Data.Ok)
+					{
 					await _protectedLocalStorage.SetAsync("jwt", respuesta.Data.Datos.jwt);
 					await _protectedLocalStorage.SetAsync("idusuariosesion", respuesta.Data.Datos.idusuariosesion);
+					}
+					else
+					{
+						respuesta.Ok = false;
+						respuesta.Mensaje = respuesta.Data.Mensaje;
+					}
 				}
 
 			}

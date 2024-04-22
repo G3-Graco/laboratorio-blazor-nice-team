@@ -1,6 +1,7 @@
 ﻿using APP.Data.Modelos;
 using APP.Data.Servicios;
 using BlazorBootstrap;
+using BlazorServerAuthenticationAndAuthorization.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
@@ -15,8 +16,9 @@ namespace APP.Components.Pages.IniciarSesion
 	public partial class IniciarSesion : ComponentBase
 	{
 		[Inject]
-		public HttpClient? HttpClient { get; set; }
-        [Inject]
+		public AuthenticationStateProvider authStateProvider { get; set; }
+
+		[Inject]
         public ProtectedLocalStorage? protectedLocalStorage { get; set; }
 
         [Inject]
@@ -58,52 +60,6 @@ namespace APP.Components.Pages.IniciarSesion
             return OcurrioError;
         }
 
-        public byte[] ParseBase64WithoutPadding(string base64)
-        {
-            switch (base64.Length % 4)
-            {
-                case 2: base64 += "=="; break;
-                case 3: base64 += "="; break;
-            }
-            return Convert.FromBase64String(base64);
-        }
-
-        public override async Task<AuthenticationState> Autenticar()
-		{
-            var jwt = await protectedLocalStorage.GetAsync<string>("jwt");
-            string token = jwt.Success ? jwt.Value : "";
-
-            if(token == "")
-            {
-                ModalTitulo = "Error";
-                ModalMensaje = "Grave error al iniciar sesión";
-                await modal.ShowAsync();
-                return;
-            }
-
-            //
-            var payload = token.Split('.')[1];
-            var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, keyValuePairs["unique_name"].ToString()),
-                new Claim("id", keyValuePairs["id"].ToString()),
-                new Claim(ClaimTypes.Role, "user") //bueno
-            };
-
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-
-			var state = new AuthenticationState(principal);
-			NotifyAuthenticationStateChanged(Task.FromResult(state));
-
-
-			ModalTitulo = "Inicio sesión";
-            ModalMensaje = "Iniciaste sesión exitosamente";
-            await modal.ShowAsync();
-        }
 		public async void InicioSesion()
 		{
 
@@ -113,9 +69,11 @@ namespace APP.Components.Pages.IniciarSesion
             if (!OcurrioError)
             {
 
-                await Autenticar();
-                
-                Navigation.NavigateTo("/inicio", forceLoad: true);
+				var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+                await customAuthStateProvider.UpdateAuthenticationState(respuesta.Data.Datos.jwt);
+				
+
+				Navigation.NavigateTo("/inicio", forceLoad: true);
             }
             else
             {

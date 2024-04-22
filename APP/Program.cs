@@ -1,6 +1,8 @@
 using APP.Components;
 using APP.Data.Servicios;
+using BlazorServerAuthenticationAndAuthorization.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,9 +30,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 builder.Services.AddAuthorization();
+
 builder.Services.AddCascadingAuthenticationState();
 
-builder.Services.AddHttpClient();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
+builder.Services.AddScoped<CustomAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(provider =>
+provider.GetRequiredService<CustomAuthenticationStateProvider>());
 
 var app = builder.Build();
 
