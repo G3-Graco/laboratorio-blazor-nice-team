@@ -1,5 +1,6 @@
 using APP.Components;
 using APP.Data.Servicios;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,18 @@ builder.Services.AddScoped<MovimientoServicio>();
 builder.Services.AddScoped<PagoServicio>();
 builder.Services.AddScoped<CuotaServicio>();
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "auth_blazor";
+        options.LoginPath = "/iniciarsesion";
+        options.Cookie.MaxAge = TimeSpan.FromMinutes(7);
+        options.AccessDeniedPath = "/no-autorizado";
+    });
+
+builder.Services.AddAuthorization();
+builder.Services.AddCascadingAuthenticationState();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,6 +44,9 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
