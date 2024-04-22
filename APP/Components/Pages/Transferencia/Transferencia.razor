@@ -1,7 +1,7 @@
 @page "/transferencia"
 @rendermode InteractiveServer
 
-<p>Bienvenido usuario</p>
+<p class="derecha">Bienvenido usuario</p>
 
 <h3>Trasferencias</h3>
 
@@ -27,7 +27,7 @@
 
 <EditForm  Model="@movimiento" OnValidSubmit="Transferir">
 	<DataAnnotationsValidator />
-    <section>
+    <section class="central">
         <div>
             <label for="Recipiente">Cuenta a transferir: </label>
             <InputNumber id="Recipiente" @bind-Value="movimiento.CuentaReceptoraIdentificador" />
@@ -41,9 +41,9 @@
             <InputText id="Descripcion" @bind-Value="movimiento.Descripcion" />
         </div>
     </section>
-    <div>
+    <div class="botones">
         <button type="button" @onclick="Borrar" >Borrar</button>
-        <button type="submit">Hacer solicitud</button>
+        <button type="submit">Transferir</button>
     </div>
 	<ValidationSummary />
 </EditForm>

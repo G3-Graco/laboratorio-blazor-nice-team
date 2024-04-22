@@ -32,10 +32,12 @@ namespace APP.Components.Pages.Transferencia
 
 		protected override async Task OnInitializedAsync()
         {
-            var cuenta = await cuentaServicio.ConsultarCuenta();
-            var saldo = cuenta.Data.Datos.Saldo; 
-            Saldo = saldo;
-            CuentaNumero = cuenta.Data.Datos.Identificador;
+            // var cuenta = await cuentaServicio.ConsultarCuenta();
+            // var saldo = cuenta.Data.Datos.Saldo; 
+            // Saldo = saldo;
+            // CuentaNumero = cuenta.Data.Datos.Identificador;
+            Saldo = 30;
+            CuentaNumero = 12132131;
             movimiento.Fecha = DateTime.Now;
         }
         public async void Transferir()
