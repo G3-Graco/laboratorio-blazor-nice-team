@@ -15,7 +15,14 @@
 	<h2>Iniciar sesión</h2>
 </div>
 
-<EditForm Model="@usuario" OnValidSubmit="InicioSesion">
+<AuthorizeView>
+	<NotAuthorized>
+
+	</NotAuthorized>
+	<Authorized></Authorized>
+</AuthorizeView>
+
+<EditForm Model="@usuario" OnValidSubmit="InicioSesion" FormName="InicioSesion">
 	<DataAnnotationsValidator />
 
 	<article class="forminiciarsesion">
@@ -29,7 +36,10 @@
 		<label>Contraseña: </label>
 		<InputText type="password" class="form-control" @bind-Value="usuario.Contrasena" />
 	</div>
-
+	<div>
+			<span class="text-danger">@ModalTitulo</span>
+		<span class="text-danger">@ModalMensaje</span>
+	</div>
 	<div>
 			<input type="submit" class="btn btn-dark" value="Iniciar sesion" />
 	</div>

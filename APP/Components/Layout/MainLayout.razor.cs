@@ -7,19 +7,19 @@ namespace APP.Components.Layout
 {
     public partial class MainLayout
     {
-        [Inject]
-        public NavigationManager Navigation { get; set; }
+        //[Inject]
+        //public NavigationManager Navigation { get; set; }
 
-        [Inject]
-        public UsuarioServicio UsuarioServicio { get; set; }
-        public async void CerrarSesion()
-        {
+        //[Inject]
+        //public UsuarioServicio UsuarioServicio { get; set; }
+        //public async void CerrarSesion()
+        //{
 
-            UsuarioServicio.CerrarSesion();
+        //    UsuarioServicio.CerrarSesion();
 
-            Navigation.NavigateTo("/inicio", forceLoad: true);
+        //    Navigation.NavigateTo("/inicio", forceLoad: true);
              
-        }
+        //}
 
 
     }

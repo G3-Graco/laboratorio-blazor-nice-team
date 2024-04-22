@@ -4,16 +4,18 @@ using BlazorBootstrap;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Security.Claims;
+
 using System.Text.Json;
 
 namespace APP.Components.Pages.IniciarSesion
 {
 	public partial class IniciarSesion : ComponentBase
 	{
-		[CascadingParameter]
-		public HttpContext? HttpContext { get; set; }
+		[Inject]
+		public HttpClient? HttpClient { get; set; }
         [Inject]
         public ProtectedLocalStorage? protectedLocalStorage { get; set; }
 
@@ -66,7 +68,7 @@ namespace APP.Components.Pages.IniciarSesion
             return Convert.FromBase64String(base64);
         }
 
-        public async Task Autenticar()
+        public override async Task<AuthenticationState> Autenticar()
 		{
             var jwt = await protectedLocalStorage.GetAsync<string>("jwt");
             string token = jwt.Success ? jwt.Value : "";
@@ -93,10 +95,12 @@ namespace APP.Components.Pages.IniciarSesion
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync(principal);
+
+			var state = new AuthenticationState(principal);
+			NotifyAuthenticationStateChanged(Task.FromResult(state));
 
 
-            ModalTitulo = "Inicio sesión";
+			ModalTitulo = "Inicio sesión";
             ModalMensaje = "Iniciaste sesión exitosamente";
             await modal.ShowAsync();
         }

@@ -1,5 +1,6 @@
 ﻿@page "/cuenta"
 @rendermode InteractiveServer
+@attribute [Authorize]
 
 <Modal @ref="modal" IsVerticallyCentered="true" Title=@ModalTitulo Message=@ModalMensaje>
     <BodyTemplate>

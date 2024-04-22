@@ -48,7 +48,7 @@ namespace APP.Data.Servicios
 			return respuesta;
 		}
 
-		public async void CerrarSesion()
+		public async Task CerrarSesion()
 		{
 			await _protectedLocalStorage.DeleteAsync("jwt");
 			await _protectedLocalStorage.DeleteAsync("idusuariosesion");
