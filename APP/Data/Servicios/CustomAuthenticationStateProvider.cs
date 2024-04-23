@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 // Contains the identity and role information about the user
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text.Json;
 
 namespace BlazorServerAuthenticationAndAuthorization.Authentication
@@ -22,34 +23,62 @@ namespace BlazorServerAuthenticationAndAuthorization.Authentication
         }
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            try
+			ClaimsIdentity identity;
+			try
             {
                 //await Task.Delay(5000);
 				var jwt = await _localStorage.GetAsync<string>("jwt");
 				string token = jwt.Success ? jwt.Value : "";
 
 				if (token == "")
-                    return await Task.FromResult(new AuthenticationState(_anonymous));
-
+				{
+					//return await Task.FromResult(new AuthenticationState(_anonymous));
+					identity = new ClaimsIdentity();
+					return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
+				}
+					
+			
 				var payload = token.Split('.')[1];
 				var jsonBytes = ParseBase64WithoutPadding(payload);
 				var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
 
 				var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                {
+							{
 					new Claim(ClaimTypes.Name, keyValuePairs["unique_name"].ToString()),
-				    new Claim("id", keyValuePairs["id"].ToString()),
-				    new Claim(ClaimTypes.Role, "user") //bueno
-                }, "CustomAuth"));
-                return await Task.FromResult(new AuthenticationState(claimsPrincipal));
-            }
+					new Claim("id", keyValuePairs["id"].ToString()),
+					new Claim(ClaimTypes.Role, "user") //bueno
+				            }, "CustomAuth"));
+
+
+
+				//var claims = new[]
+				//{
+				//new Claim(ClaimTypes.Name, keyValuePairs["unique_name"].ToString()),
+				//new Claim("id", keyValuePairs["id"].ToString()),
+				//new Claim(ClaimTypes.Role, "user"), 
+				//};
+
+				//identity = new ClaimsIdentity(claims);
+
+
+				return await Task.FromResult(new AuthenticationState(claimsPrincipal));
+
+				//return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
+			}
             catch
             {
-                return await Task.FromResult(new AuthenticationState(_anonymous));
+				identity = new ClaimsIdentity();
+				return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
+				//return await Task.FromResult(new AuthenticationState(_anonymous));
             }
         }
 
-        public async Task UpdateAuthenticationState(string token)
+		public void NotifyAuthenticationStateChanged()
+		{
+			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+		}
+
+		public async Task UpdateAuthenticationState(string token)
         {
             ClaimsPrincipal claimsPrincipal;
 

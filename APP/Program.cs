@@ -33,7 +33,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddCascadingAuthenticationState();
 
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+//builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider =>
@@ -49,13 +49,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
+
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.UseAuthentication();
-app.UseAuthorization();
+
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

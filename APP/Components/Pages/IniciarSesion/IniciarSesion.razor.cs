@@ -16,7 +16,7 @@ namespace APP.Components.Pages.IniciarSesion
 	public partial class IniciarSesion : ComponentBase
 	{
 		[Inject]
-		public AuthenticationStateProvider authStateProvider { get; set; }
+		public CustomAuthenticationStateProvider authStateProvider { get; set; }
 
 		[Inject]
         public ProtectedLocalStorage? protectedLocalStorage { get; set; }
@@ -26,6 +26,9 @@ namespace APP.Components.Pages.IniciarSesion
 
 		[Inject]
 		public UsuarioServicio UsuarioServicio { get; set; }
+		[CascadingParameter]
+		private Task<AuthenticationState> authenticationState { get; set; }
+        string autstate = "";
 
 		public Usuario usuario = new Usuario();
 
@@ -34,7 +37,9 @@ namespace APP.Components.Pages.IniciarSesion
         public string ModalMensaje = "";
         public bool OcurrioError = false;
 
-        public bool GestionarRespuesta<Entidad>(RespuestaConsumidor<RespuestaAPI<Entidad>> respuesta)
+			
+
+		public bool GestionarRespuesta<Entidad>(RespuestaConsumidor<RespuestaAPI<Entidad>> respuesta)
         {
             if (respuesta.Ok)
             {
@@ -69,11 +74,14 @@ namespace APP.Components.Pages.IniciarSesion
             if (!OcurrioError)
             {
 
-				var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
-                await customAuthStateProvider.UpdateAuthenticationState(respuesta.Data.Datos.jwt);
-				
+				//CustomAuthenticationStateProvider customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+                /*await */
+                authStateProvider.NotifyAuthenticationStateChanged();
 
-				Navigation.NavigateTo("/inicio", forceLoad: true);
+				var authState = await authenticationState;
+				var autstate = $"Hello {authState.User.Identity.Name}";
+
+				//Navigation.NavigateTo("/inicio", forceLoad: true);
             }
             else
             {
