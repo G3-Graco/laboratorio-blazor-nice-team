@@ -25,5 +25,35 @@ namespace APP.Data.Servicios
             }
             return respuesta;
         }
-    }
+
+        public async Task<RespuestaConsumidor<RespuestaAPI<IEnumerable<Cuota>>>> ConsultarCuotasPagables()
+        {
+            RespuestaConsumidor<RespuestaAPI<IEnumerable<Cuota>>> respuesta = new();
+
+            try
+            {
+                respuesta = await Consumidor.Execute<Cuota, RespuestaAPI<IEnumerable<Cuota>>>($"https://localhost:7181/api/Cuota/cuotaspagables", MethodHttp.GET, null, _protectedLocalStorage);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return respuesta;
+        }
+
+		public async Task<RespuestaConsumidor<RespuestaAPI<Cuota>>> ConsultarCuota(int idcuota)
+		{
+			RespuestaConsumidor<RespuestaAPI<Cuota>> respuesta = new();
+
+			try
+			{
+				respuesta = await Consumidor.Execute<Cuota, RespuestaAPI<Cuota>>($"https://localhost:7181/api/Cuota/{idcuota}", MethodHttp.GET, null);
+			}
+			catch (Exception ex)
+			{
+
+			}
+			return respuesta;
+		}
+	}
 }

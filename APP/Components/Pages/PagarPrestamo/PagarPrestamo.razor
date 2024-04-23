@@ -1,0 +1,66 @@
+﻿@page "/pagos/{idcuota:int}"
+@rendermode InteractiveServer
+
+<Modal @ref="modal" IsVerticallyCentered="true" Title=@ModalTitulo Message=@ModalMensaje>
+    <BodyTemplate>
+
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Primary" @onclick="CerrarModal">Cerrar</Button>
+    </FooterTemplate>
+</Modal>
+
+<hr>
+@if (NombreCliente == "")
+{
+
+    <p><em>Cargando datos...</em></p>
+    <hr>
+}
+
+<div class="bienvenido">
+<h4>Bienvenido @NombreCliente</h4>
+</div>
+
+<div class="titulo">
+    <h2>Información detallada sobre el préstamo
+    </h2>
+</div>
+
+
+<EditForm Model="@ModeloPagarCuota" OnValidSubmit="Pagar">
+	<DataAnnotationsValidator />
+
+	<article class="formpagar">
+
+		<div class="form-group">
+			<label>Cuenta identificador: </label>
+			<InputText class="form-control" @bind-Value="ModeloPagarCuota.CuentaIdentificador" disabled />
+		</div>
+
+		<div class="form-group">
+			<label>Id de la cuota a pagar: </label>
+			<InputText class="form-control" @bind-Value="ModeloPagarCuota.CuotaId" disabled />
+		</div>
+
+		<div class="form-group">
+			<label>Monto total del pago: </label>
+			<InputText class="form-control" @bind-Value="ModeloPagarCuota.MontoTotal" disabled />
+			
+		</div>
+		<div class="form-group">
+			<label>Id del préstamo correspondiente: </label>
+			<InputText class="form-control" @bind-Value="ModeloPagarCuota.PrestamoId" disabled />
+		</div>
+
+		<div>
+			<input type="submit" class="btn btn-dark" value="Pagar" />
+		</div>
+
+	</article>
+
+	<ValidationSummary />
+</EditForm>
+
+
+ 
