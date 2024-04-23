@@ -1,5 +1,5 @@
 .rojo {
-    color: red;
+    color: blue;
 }
 
 h3 {
@@ -9,4 +9,8 @@ h3 {
 
 hr {
     color: black;
+}
+
+button {
+    background-color: red;
 }
