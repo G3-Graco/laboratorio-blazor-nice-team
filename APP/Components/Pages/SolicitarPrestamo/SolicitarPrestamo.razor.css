@@ -1,16 +1,37 @@
 .rojo {
-    color: blue;
+    color: red;
 }
 
 h3 {
     text-align: center;
-    color: lavenderblush;
+    color: salmon;
+    padding-top: 10px;
+}
+
+div {
+    padding: 5px;
 }
 
 hr {
     color: black;
 }
 
-button {
-    background-color: red;
+.boton {
+    text-align: right;
+}
+
+.separacion {
+    padding-top: 20px;
+}
+
+.separacion div {
+    padding: 5px;
+}
+
+.boton button {
+    background-color: darkslategray;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    
 }
