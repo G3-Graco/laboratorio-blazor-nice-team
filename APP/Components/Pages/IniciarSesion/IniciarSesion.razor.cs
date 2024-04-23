@@ -78,10 +78,10 @@ namespace APP.Components.Pages.IniciarSesion
                 /*await */
                 authStateProvider.NotifyAuthenticationStateChanged();
 
-				var authState = await authenticationState;
-				var autstate = $"Hello {authState.User.Identity.Name}";
+				//var authState = await authenticationState;
+				//var autstate = $"Hello {authState.User.Identity.Name}";
 
-				//Navigation.NavigateTo("/inicio", forceLoad: true);
+				Navigation.NavigateTo("/inicio", forceLoad: true);
             }
             else
             {

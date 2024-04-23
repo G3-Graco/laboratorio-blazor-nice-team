@@ -29,6 +29,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/no-autorizado";
     });
 
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddCascadingAuthenticationState();
