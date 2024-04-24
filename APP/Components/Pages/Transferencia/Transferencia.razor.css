@@ -1,0 +1,31 @@
+.derecha {
+    text-align: right;
+}
+
+p {
+    text-align: center;
+    color: red;
+}
+
+h3 {
+    color: aliceblue;
+    background-color: aquamarine;
+    text-align: center;
+    width: 100%;
+}
+
+.central {
+    text-align: center;
+}
+
+.botones {
+    text-align: center;
+    display: flex;
+    align-content: space-between;
+    width: 100%;
+}
+
+.botones button {
+    border-radius: 30%;
+    padding: 5px 10px;
+}

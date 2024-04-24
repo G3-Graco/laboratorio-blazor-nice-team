@@ -1,0 +1,45 @@
+@page "/deposito"
+@rendermode InteractiveServer
+
+<p>Bienvenido usuario</p>
+
+<h3>Depósito</h3>
+
+<Modal @ref="modal" IsVerticallyCentered="true">
+	<BodyTemplate>
+		@* @modalMensaje *@
+	</BodyTemplate>
+	<FooterTemplate>
+		<Button Color="ButtonColor.Primary" @onclick="CerrarModal" >Cerrar</Button>
+	</FooterTemplate>
+</Modal>
+
+<section>
+    <div>
+        <label for="Saldo">Saldo actual: </label>
+        <input type="number" name="Saldo" id="Saldo" @bind-value="@Saldo">
+    </div>
+</section>
+
+<EditForm  Model="@movimiento" OnValidSubmit="Depositar">
+	<DataAnnotationsValidator />
+    <section>
+        <div>
+            <label for="Cuenta">Cuenta a depositar: </label>
+            <InputNumber id="Cuenta" @bind-Value="movimiento.CuentaReceptoraIdentificador" readonly/>
+        </div>
+        <div>
+            <label for="Monto">Monto a depositor: </label>
+            <InputNumber id="Monto" @bind-Value="movimiento.Monto" />
+        </div>
+        <div>
+            <label for="Descripcion">Descripción: </label>
+            <InputText id="Descripcion" @bind-Value="movimiento.Descripcion" />
+        </div>
+    </section>
+    <div>
+        <button type="button" @onclick="Borrar" >Borrar</button>
+        <button type="submit">Hacer solicitud</button>
+    </div>
+	<ValidationSummary />
+</EditForm>

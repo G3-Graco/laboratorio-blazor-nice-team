@@ -37,8 +37,35 @@ namespace APP.Data.Servicios
             catch (Exception ex)
             {
 
-            }
-            return respuesta;
-        }
-    }
+			}
+			return respuesta;
+		}
+
+		public async Task<RespuestaConsumidor<RespuestaAPI<IEnumerable<Plazo>>>> ConsultarPlazos()
+		{
+			RespuestaConsumidor<RespuestaAPI<IEnumerable<Plazo>>> respuesta = new();
+            try
+            {
+				respuesta = await Consumidor.Execute<Plazo, RespuestaAPI<IEnumerable<Plazo>>>($"https://localhost:7181/api/Plazo", MethodHttp.GET, null, _protectedLocalStorage);
+			}
+			catch (Exception ex)
+			{
+
+			}
+			return respuesta;
+		}
+
+		public async Task<RespuestaConsumidor<RespuestaAPI<Prestamo>>> CrearPrestamo(Prestamo prestamo) {
+			RespuestaConsumidor<RespuestaAPI<Prestamo>> respuesta = new();
+            try
+            {
+				respuesta = await Consumidor.Execute<Prestamo, RespuestaAPI<Prestamo>>($"https://localhost:7181/api/Prestamo", MethodHttp.POST, prestamo, _protectedLocalStorage);
+			}
+			catch (Exception ex)
+			{
+
+			}
+			return respuesta;
+		}
+	}
 }

@@ -26,5 +26,40 @@ namespace APP.Data.Servicios
             return respuesta;
         }
 
+		public async Task<RespuestaConsumidor<RespuestaAPI<Movimiento>>> RealizarMovimiento(Movimiento movimiento) {
+            RespuestaConsumidor<RespuestaAPI<Movimiento>> respuesta = new();
+            try
+            {
+                respuesta = await Consumidor.Execute<Movimiento, RespuestaAPI<Movimiento>>(
+                    $"https://localhost:7181/api/Movimiento", 
+                    MethodHttp.POST, 
+                    movimiento, 
+                    _protectedLocalStorage
+                );
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return respuesta;
+        }
+
+        public async Task<RespuestaConsumidor<RespuestaAPI<IEnumerable<TipoMovimiento>>>> ObtenerTipos() {
+            RespuestaConsumidor<RespuestaAPI<IEnumerable<TipoMovimiento>>> respuesta = new();
+            try
+            {
+                respuesta = await Consumidor.Execute<TipoMovimiento, RespuestaAPI<IEnumerable<TipoMovimiento>>>(
+                    $"https://localhost:7181/api/TipoMovimiento", 
+                    MethodHttp.GET, 
+                    null, 
+                    _protectedLocalStorage
+                );
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return respuesta;
+        }
     }
 }
