@@ -109,13 +109,22 @@ namespace APP.Data
 							else
 							{
                                 respuesta.Ok = false;
-                                if (res.StatusCode == HttpStatusCode.BadRequest)
+                                if (res.StatusCode == HttpStatusCode.BadRequest || res.StatusCode == HttpStatusCode.Unauthorized)
 								{
                                     
                                     if (data != null)
                                     {
-                                        var mensajeerror = JsonConvert.DeserializeObject<MensajeErrorAPI>(data);
-                                        respuesta.Mensaje = mensajeerror.message;
+										try
+										{
+                                            var mensajeerror = JsonConvert.DeserializeObject<MensajeErrorAPI>(data);
+                                            respuesta.Mensaje = mensajeerror.message;
+                                        }
+										catch
+										{
+                                            respuesta.Mensaje = $"Ocurrió un error no controlado en la API (perdon)\n{data}";
+                                        }
+                                        
+                                        
                                     }
                                 }
 								else //este sería un error no controlado de la API

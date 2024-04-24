@@ -26,3 +26,9 @@ article {
     article h3 {
         align-self: center;
     }
+
+
+input {
+    margin: 20px 0 40px 0;
+    width: 20vw;
+}

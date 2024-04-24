@@ -1,0 +1,53 @@
+﻿@page "/pagos"
+@rendermode InteractiveServer
+
+<Modal @ref="modal" IsVerticallyCentered="true" Title=@ModalTitulo Message=@ModalMensaje>
+    <BodyTemplate>
+
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Primary" @onclick="CerrarModal">Cerrar</Button>
+    </FooterTemplate>
+</Modal>
+
+<hr>
+@if (NombreCliente == "")
+{
+
+    <p><em>Cargando datos...</em></p>
+    <hr>
+}
+
+<div class="bienvenido">
+<h4>Bienvenido @NombreCliente</h4>
+</div>
+
+<div class="titulo">
+    <h2>Paga tus préstamos
+    </h2>
+</div>
+
+
+<article>
+<h3>Cuotas disponibles para pagar</h3>
+
+    <Grid TItem="Cuota" class="table table-hover table-bordered table-striped" DataProvider="CuotasDataProvider" AllowSelection="true" EmptyText="No hay alguna cuota para mostrar">
+
+    <GridColumn TItem="Cuota" HeaderText="Id">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="Cuota" HeaderText="Fecha tope de pago">
+        @context.Fecha
+    </GridColumn>
+    <GridColumn TItem="Cuota" HeaderText="Monto del pago" TextNoWrap="true">
+        @context.Pago
+    </GridColumn>
+    <GridColumn TItem="Cuota" HeaderText="Id del préstamo al que corresponde" TextNoWrap="true">
+        @context.prestamo.Id
+    </GridColumn>
+</Grid>
+
+
+</article>
+
+<input class="btn btn-dark" value="PagarCuotaSeleccionada" @onclick="PagarCuotaSeleccionada" />

@@ -25,24 +25,30 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
 
         public string NombreCliente = "";//bienvenido async
 
-        public List<Cuenta>? cuentas;
+        public List<Cuenta>? cuentas = new List<Cuenta>();
 
-		public List<Prestamo>? prestamos;
+        public List<Prestamo>? prestamos = new List<Prestamo>();
 
 
-		protected override async Task OnAfterRenderAsync(bool firstRender)
+
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    await ObtenerCuentas();
+        //}
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
                 isConnected = true;
 
+				//await ObtenerCuentas();
+    //            await VerificarError();
+
+				//await ObtenerPrestamosActivos();
+				//await VerificarError();
+
                 await ObtenerNombreCliente();
-				await VerificarError();
-
-				await ObtenerCuentas();
-                await VerificarError();
-
-				await ObtenerPrestamosActivos();
 				await VerificarError();
 
                 StateHasChanged();
@@ -116,10 +122,11 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
 
 		private async Task<GridDataProviderResult<Cuenta>> CuentasDataProvider(GridDataProviderRequest<Cuenta> request)
         {
-            if (cuentas is null)
+            if (cuentas.Count == 0)
             {
-				ObtenerCuentas();
-				VerificarError();
+				await ObtenerCuentas();
+				await VerificarError();
+
 			}
                
 			return await Task.FromResult(request.ApplyTo(cuentas));
@@ -142,7 +149,7 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
 
 		private async Task<GridDataProviderResult<Prestamo>> PrestamosDataProvider(GridDataProviderRequest<Prestamo> request)
 		{
-			if (cuentas is null)
+			if (cuentas.Count == 0)
 			{
 				ObtenerPrestamosActivos();
 				VerificarError();

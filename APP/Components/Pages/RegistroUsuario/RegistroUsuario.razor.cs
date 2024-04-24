@@ -16,8 +16,8 @@ namespace APP.Components.Pages.RegistroUsuario
 		public ModeloRegistrarUsuario modeloRegistrarUsuario = new ModeloRegistrarUsuario();
 
 		private Modal modal = default!;
-		//public string modalTitulo = "";
-		//public string modalMensaje = "";
+		public string modalTitulo = "";
+		public string modalMensaje = "";
 
 		protected override async Task OnInitializedAsync()
         {
@@ -32,25 +32,26 @@ namespace APP.Components.Pages.RegistroUsuario
 			{
 				if (respuesta.Data.Ok)
 				{
-					Navigation.NavigateTo("/iniciarsesion", forceLoad: true);
+                    await modal.ShowAsync<string>("Registrado", "Usuario registrado exitosamente");
+                    Navigation.NavigateTo("/iniciarsesion", forceLoad: true);
 					//nice
 				}
 				else
 				{
-					//modalTitulo = "Error";
-					//modalMensaje = respuesta.Data.Mensaje;
-					//await modal.ShowAsync();
-					await modal.ShowAsync<string>("Error", respuesta.Data.Mensaje);
+					modalTitulo = "Error";
+					modalMensaje = respuesta.Data.Mensaje;
+					await modal.ShowAsync();
+					// modal.ShowAsync<string>("Error", respuesta.Data.Mensaje);
 				}
 				
 			}
 			else
 			{
-				////modalMensaje = respuesta.Mensaje;
-				//modalTitulo = "Error";
+				modalMensaje = respuesta.Mensaje;
+				modalTitulo = "Error";
 				//modalMensaje = $"statuscode:{respuesta.StatusCode}, ok:{respuesta.Ok}, data:{respuesta.Data}, mensaje:{respuesta.Mensaje}";
-				//await modal.ShowAsync();
-				await modal.ShowAsync<string>($"Error: {respuesta.StatusCode}", respuesta.Mensaje);
+				await modal.ShowAsync();
+				//await modal.ShowAsync<string>($"Error: {respuesta.StatusCode}", respuesta.Mensaje);
 			}
 		}
 

@@ -17,7 +17,7 @@ namespace APP.Data.Servicios
 
             try
             {
-                respuesta = await Consumidor.Execute<Movimiento, RespuestaAPI<IEnumerable<Movimiento>>>($"https://localhost:7181/api/Cuenta/movimientoscuenta", MethodHttp.GET, null, _protectedLocalStorage);
+                respuesta = await Consumidor.Execute<Movimiento, RespuestaAPI<IEnumerable<Movimiento>>>($"https://localhost:7181/api/Movimiento/movimientoscuenta", MethodHttp.GET, null, _protectedLocalStorage);
             }
             catch (Exception ex)
             {

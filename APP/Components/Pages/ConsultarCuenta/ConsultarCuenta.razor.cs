@@ -20,7 +20,17 @@ namespace APP.Components.Pages.ConsultarCuenta
         [Inject]
         public CuentaServicio CuentaServicio { get; set; }
 
-        public List<Cuenta>? cuentas;
+        public List<Cuenta>? cuentas = new List<Cuenta>();
+
+        [Inject]
+        public MovimientoServicio MovimientoServicio { get; set; }
+
+        public List<Movimiento>? movimientos = new List<Movimiento>();
+
+        [Inject]
+        public PagoServicio PagoServicio { get; set; }
+
+        public List<Pago>? pagos = new List<Pago>();
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -28,10 +38,16 @@ namespace APP.Components.Pages.ConsultarCuenta
             {
                 isConnected = true;
 
-                await ObtenerNombreCliente();
-                await VerificarError();
+                //await ObtenerCuentas();
+                //await VerificarError();
 
-                // await ObtenerCuentas();
+                //await ObtenerMovimientos();
+                //await VerificarError();
+
+                //await ObtenerPagos();
+                //await VerificarError();
+
+                await ObtenerNombreCliente();
                 await VerificarError();
 
                 StateHasChanged();
@@ -89,7 +105,81 @@ namespace APP.Components.Pages.ConsultarCuenta
             }
         }
 
+        private async Task ObtenerCuentas()
+        {
+            cuentas = new List<Cuenta>();
 
+            RespuestaConsumidor<RespuestaAPI<Cuenta>> respuesta = await CuentaServicio.ConsultarCuenta();
+
+            GestionarRespuesta<Cuenta>(respuesta);
+
+            if (!OcurrioError)
+            {
+                cuentas.Add(respuesta.Data.Datos);
+            }
+        }
+
+        private async Task<GridDataProviderResult<Cuenta>> CuentasDataProvider(GridDataProviderRequest<Cuenta> request)
+        {
+            if (cuentas.Count == 0)
+            {
+                ObtenerCuentas();
+                VerificarError();
+            }
+
+            return await Task.FromResult(request.ApplyTo(cuentas));
+        }
+
+
+        private async Task ObtenerMovimientos()
+        {
+            movimientos = new List<Movimiento>();
+
+            RespuestaConsumidor<RespuestaAPI<IEnumerable<Movimiento>>> respuesta = await MovimientoServicio.ConsultarMovimientos();
+
+            GestionarRespuesta<IEnumerable<Movimiento>>(respuesta);
+
+            if (!OcurrioError)
+            {
+                movimientos = respuesta.Data.Datos.ToList();
+            }
+        }
+
+        private async Task<GridDataProviderResult<Movimiento>> MovimientosDataProvider(GridDataProviderRequest<Movimiento> request)
+        {
+            if (cuentas.Count == 0)
+            {
+                ObtenerMovimientos();
+                VerificarError();
+            }
+
+            return await Task.FromResult(request.ApplyTo(movimientos));
+        }
+
+        private async Task ObtenerPagos()
+        {
+            pagos = new List<Pago>();
+
+            RespuestaConsumidor<RespuestaAPI<IEnumerable<Pago>>> respuesta = await PagoServicio.ConsultarPagos();
+
+            GestionarRespuesta<IEnumerable<Pago>>(respuesta);
+
+            if (!OcurrioError)
+            {
+                pagos = respuesta.Data.Datos.ToList();
+            }
+        }
+
+        private async Task<GridDataProviderResult<Pago>> PagosDataProvider(GridDataProviderRequest<Pago> request)
+        {
+            if (pagos.Count == 0)
+            {
+                ObtenerPagos();
+                VerificarError();
+            }
+
+            return await Task.FromResult(request.ApplyTo(pagos));
+        }
 
     }
 }

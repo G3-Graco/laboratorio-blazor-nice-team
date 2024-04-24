@@ -1,18 +1,20 @@
 ﻿@page "/registrarusuario"
 @rendermode InteractiveServer
 
-<h3>Regístrate</h3>
+<div class="titulo">
+	<h2>Regístrate</h2>
+</div>
 
-<Modal @ref="modal" IsVerticallyCentered="true" @* Title = @modalTitulo *@>
+<Modal @ref="modal" IsVerticallyCentered="true">
 	<BodyTemplate>
-		@* @modalMensaje *@
+		
 	</BodyTemplate>
 	<FooterTemplate>
 		<Button Color="ButtonColor.Primary" @onclick="CerrarModal" >Cerrar</Button>
 	</FooterTemplate>
 </Modal>
 
-<EditForm  Model="@modeloRegistrarUsuario" OnValidSubmit="Registrar">
+<EditForm Model="@modeloRegistrarUsuario" OnValidSubmit="Registrar" Title=@modalTitulo Message=@modalMensaje>
 	<DataAnnotationsValidator />
 	<article class="formregistrar">
 		<div>
@@ -31,22 +33,24 @@
 				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Apellido" />
 			</div>
 
-			<div class="form-group">
+			@* <div class="form-group">
 				<label>Cedula: </label>
 				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Cedula" />
-			</div>
+			</div> *@
 
 			<div class="form-group">
 				<label>Correo: </label>
 				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Correo" />
 			</div>
-		</div>
 
-		<div>
 			<div class="form-group">
 				<label>Fecha nacimiento: </label>
 				<DateInput class="form-control" @bind-Value="@modeloRegistrarUsuario.FechaNacimiento" />
 			</div>
+		</div>
+
+		<div>
+			
 
 			<div class="form-group">
 				<label>Telefono: </label>
@@ -54,7 +58,7 @@
 			</div>
 
 			<div class="form-group">
-				<label>Telefono: </label>
+				<label>Direccion: </label>
 				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Direccion" />
 			</div>
 
@@ -69,7 +73,7 @@
 			</div>
 
 			<div>
-				<input type="submit" class="btn btn-success" value="Registrar" />
+				<input type="submit" class="btn btn-dark" value="Registrar" />
 			</div>
 		</div>
 	</article>
