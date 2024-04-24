@@ -1,12 +1,8 @@
-.derecha {
-    text-align: right;
+.bienvenido {
+    display: flex;
+    justify-content: flex-end;
 }
-
-p {
-    text-align: center;
-    color: red;
-}
-
+/**/
 h3 {
     color: aliceblue;
     background-color: aquamarine;
@@ -14,18 +10,43 @@ h3 {
     width: 100%;
 }
 
-.central {
-    text-align: center;
-}
-
-.botones {
-    text-align: center;
+.formtransferencia {
+    margin: 10px 0 20px 0;
     display: flex;
-    align-content: space-between;
-    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    justify-content: center;
 }
 
-.botones button {
-    border-radius: 30%;
-    padding: 5px 10px;
+.formdatoscuenta {
+    margin: 5px 0 1px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+    justify-content: center;
 }
+
+.formdatoscuenta .form-group {
+    width: 20vw;
+
+}
+
+.formtransferencia .form-group {
+    width: 25vw;
+}
+
+
+.titulo {
+    display: flex;
+    justify-content: center;
+    background-color: #008f8c;
+    color: white;
+    margin: 10px 0px 30px 0px;
+    padding: 10px;
+}
+
+    .titulo h2 {
+        margin: 0px;
+    }

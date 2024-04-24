@@ -49,7 +49,7 @@ namespace APP.Data.Servicios
             try
             {
                 respuesta = await Consumidor.Execute<TipoMovimiento, RespuestaAPI<IEnumerable<TipoMovimiento>>>(
-                    $"https://localhost:7181/api/TipoMovimiento", 
+                   $"https://localhost:7181/api/TipoMovimiento", 
                     MethodHttp.GET, 
                     null, 
                     _protectedLocalStorage

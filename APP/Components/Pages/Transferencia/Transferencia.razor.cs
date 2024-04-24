@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using APP.Components.Pages.Movimientos;
 using APP.Data.Modelos;
 using APP.Data.Servicios;
 using BlazorBootstrap;
@@ -9,66 +11,164 @@ using Microsoft.AspNetCore.Components;
 
 namespace APP.Components.Pages.Transferencia
 {
-    public partial class Transferencia : ComponentBase
-    {
-        [Inject]
+	public partial class Transferencia : ComponentBase
+	{
+		private bool isConnected;
+
+		[Inject]
+		public ClienteServicio ClienteServicio { get; set; }
+		public string NombreCliente = "";
+
+		[Inject]
 		public NavigationManager Navigation { get; set; }
 
 		[Inject]
 		public MovimientoServicio movimientoServicio { get; set; }
 
-        [Inject]
-        public CuentaServicio cuentaServicio { get; set; }
+		[Inject]
+		public CuentaServicio CuentaServicio { get; set; }
 
-        private double Saldo { get; set; }
-        
-        private long CuentaNumero {get; set;}
+		public ModeloMovimientos modeloMovimientos = new ModeloMovimientos();
 
-		public Movimiento movimiento = new Movimiento();
+		public ModeloCuenta modeloCuenta = new ModeloCuenta();
 
 		private Modal modal = default!;
+		public string ModalTitulo = "";
+		public string ModalMensaje = "";
+		public bool OcurrioError = false;
 
-        private string Cambio {get; set;}
+		private string Cambio { get; set; }
 
-		protected override async Task OnInitializedAsync()
-        {
-            // var cuenta = await cuentaServicio.ConsultarCuenta();
-            // var saldo = cuenta.Data.Datos.Saldo; 
-            // Saldo = saldo;
-            // CuentaNumero = cuenta.Data.Datos.Identificador;
-            Saldo = 30;
-            CuentaNumero = 12132131;
-            movimiento.Fecha = DateTime.Now;
-        }
-        public async void Transferir()
-        {
-			movimiento.CuentaOrigenIdentificador = CuentaNumero;
-            var tipos = await movimientoServicio.ObtenerTipos();
-            tipos.Data.Datos.ToList().ForEach(x => {
-                if (x.Nombre == "Transferencia") {
-                    movimiento.TipoMovimientoId = x.Id;
-                }
-            });
-            var respuesta = await movimientoServicio.RealizarMovimiento(movimiento);
-            if (respuesta.Ok)
-            {
-                Cambio  = "¡Felicidades! se hizo una transferencia exitosa";
-                var cuenta = await cuentaServicio.ConsultarCuenta();
-                CuentaNumero = cuenta.Data.Datos.Identificador;
-            } else {
-                Cambio  = "¡Oh no! La transferencia no pudo ser realizada";
-            }
+		protected override async Task OnAfterRenderAsync(bool firstRender)
+		{
+			if (firstRender)
+			{
+				isConnected = true;
+
+				await ObtenerCuentaDatos();
+				await ObtenerNombreCliente();
+				await VerificarError();
+
+				StateHasChanged();
+			}
 		}
 
-        public void Borrar() {
-            movimiento.Monto = 0;
-            movimiento.CuentaReceptoraIdentificador = 0;
-            movimiento.Descripcion = "";
-        }
+		public async Task VerificarError()
+		{
+			if (OcurrioError)
+			{
+				await modal.ShowAsync();
+			}
+		}
 
 		public async Task CerrarModal()
 		{
 			await modal.HideAsync();
 		}
-    }
+
+		public bool GestionarRespuesta<Entidad>(RespuestaConsumidor<RespuestaAPI<Entidad>> respuesta)
+		{
+			if (respuesta.Ok)
+			{
+				if (respuesta.Data.Ok)
+				{
+					OcurrioError = false;
+				}
+				else
+				{
+					ModalTitulo = "Error";
+					ModalMensaje = respuesta.Data.Mensaje;
+					OcurrioError = true;
+				}
+			}
+			else
+			{
+				ModalTitulo = $"Error: \"{respuesta.StatusCode}\"";
+				ModalMensaje = respuesta.Mensaje;
+				OcurrioError = true;
+
+			}
+
+			return OcurrioError;
+		}
+		private async Task ObtenerNombreCliente()
+		{
+			RespuestaConsumidor<RespuestaAPI<Cliente>> respuesta = await ClienteServicio.ConsultarCliente();
+
+			GestionarRespuesta<Cliente>(respuesta);
+
+			if (!OcurrioError)
+			{
+				NombreCliente = $"{respuesta.Data.Datos.Nombre} {respuesta.Data.Datos.Apellido}";
+			}
+		}
+
+		private async Task ObtenerCuentaDatos()
+		{
+			RespuestaConsumidor<RespuestaAPI<Cuenta>> respuesta = await CuentaServicio.ConsultarCuenta();
+			GestionarRespuesta<Cuenta>(respuesta);
+
+
+			if (!OcurrioError)
+			{
+				modeloCuenta.CuentaIdentificador = respuesta.Data.Datos.Identificador.ToString();
+				modeloCuenta.Saldo = respuesta.Data.Datos.Saldo.ToString();
+			}
+		}
+
+		public async void Transferir()
+		{
+			Movimiento transferencia = new Movimiento
+			{
+				Id = 0,
+				CuentaOrigenIdentificador = Int64.Parse(modeloCuenta.CuentaIdentificador),
+				CuentaReceptoraIdentificador = Int64.Parse(modeloMovimientos.CuentaReceptoraIdentificador),
+				TipoMovimientoId = 1,
+				Fecha = DateTime.UtcNow,
+				Descripcion = modeloMovimientos.Descripcion,
+				Monto = double.Parse(modeloMovimientos.Monto),
+
+			};
+
+			RespuestaConsumidor<RespuestaAPI<IEnumerable<TipoMovimiento>>> tipos = await movimientoServicio.ObtenerTipos();
+			GestionarRespuesta<IEnumerable<TipoMovimiento>>(tipos);
+
+			if (!OcurrioError)
+			{
+				tipos.Data.Datos.ToList().ForEach(x =>
+				{
+					if (x.Nombre == "Transferencia")
+					{
+						transferencia.TipoMovimientoId = x.Id;
+					}
+				});
+			}
+
+			RespuestaConsumidor<RespuestaAPI<Movimiento>> respuesta = await movimientoServicio.RealizarMovimiento(transferencia);
+			GestionarRespuesta<Movimiento>(respuesta);
+
+
+			if (!OcurrioError)
+			{
+				ModalTitulo = "Éxito";
+	            ModalMensaje = "Se hizo la transferencia exitosamente";
+
+				await modal.ShowAsync();
+
+				Navigation.NavigateTo("/", forceLoad: true);
+			}
+			else
+			{
+				VerificarError();
+			}
+		}
+
+		public void Borrar()
+		{
+			modeloMovimientos.Monto = "";
+			modeloMovimientos.CuentaReceptoraIdentificador = "";
+			modeloMovimientos.Descripcion = "";
+		}
+
+	}
 }

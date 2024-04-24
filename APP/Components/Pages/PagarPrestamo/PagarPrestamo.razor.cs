@@ -19,8 +19,11 @@ namespace APP.Components.Pages.PagarPrestamo
         [Inject]
         public ClienteServicio ClienteServicio { get; set; }
         public string NombreCliente = "";
+		[Inject]
+		public NavigationManager Navigation { get; set; }
 
-        [Inject]
+
+		[Inject]
         public PagoServicio PagoServicio { get; set; }
 		public ModeloPagarCuota ModeloPagarCuota = new ModeloPagarCuota();
 
@@ -133,6 +136,8 @@ namespace APP.Components.Pages.PagarPrestamo
 				ModalMensaje = "Pago realizado exitosamente";
 
 				await modal.ShowAsync();
+
+				Navigation.NavigateTo("/", forceLoad: true);
 			}
 		}
 

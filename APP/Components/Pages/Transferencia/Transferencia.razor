@@ -1,50 +1,74 @@
 @page "/transferencia"
 @rendermode InteractiveServer
 
-<p class="derecha">Bienvenido usuario</p>
-
-<h3>Trasferencias</h3>
-
-<Modal @ref="modal" IsVerticallyCentered="true">
+<Modal @ref="modal" IsVerticallyCentered="true" Title=@ModalTitulo Message=@ModalMensaje>
 	<BodyTemplate>
-		@* @modalMensaje *@
+
 	</BodyTemplate>
 	<FooterTemplate>
-		<Button Color="ButtonColor.Primary" @onclick="CerrarModal" >Cerrar</Button>
+		<Button Color="ButtonColor.Primary" @onclick="CerrarModal">Cerrar</Button>
 	</FooterTemplate>
 </Modal>
 
-<section>
-    <div>
-        <label for="Cuenta">Cuenta: </label>
-        <InputNumber id="Cuenta" @bind-Value="@CuentaNumero" />
-    </div>
-    <div>
-        <label for="Saldo">Saldo disponible: </label>
-        <input type="number" name="Saldo" id="Saldo" @bind-value="@Saldo" readonly>
-    </div>
-</section>
+<hr>
+@if (NombreCliente == "")
+{
+	<p><em>Cargando datos...</em></p>
 
-<EditForm  Model="@movimiento" OnValidSubmit="Transferir">
+	<hr>
+}
+
+<div class="bienvenido">
+	<h4>Bienvenido @NombreCliente</h4>
+</div>
+
+
+<div class="titulo">
+	<h2>Transferir</h2>
+</div>
+
+
+<EditForm Model="@modeloCuenta">
 	<DataAnnotationsValidator />
-    <section class="central">
-        <div>
-            <label for="Recipiente">Cuenta a transferir: </label>
-            <InputNumber id="Recipiente" @bind-Value="movimiento.CuentaReceptoraIdentificador" />
-        </div>
-        <div>
-            <label for="Monto">Monto a transferir: </label>
-            <InputNumber id="Monto" @bind-Value="movimiento.Monto" />
-        </div>
-        <div>
-            <label for="Descripcion">Descripción: </label>
-            <InputText id="Descripcion" @bind-Value="movimiento.Descripcion" />
-        </div>
-    </section>
-    <div class="botones">
-        <button type="button" @onclick="Borrar" >Borrar</button>
-        <button type="submit">Transferir</button>
-    </div>
+	<article class="formdatoscuenta">
+		<div class="form-group">
+			<label for="Cuenta">Tu cuenta: </label>
+			<InputText class="form-control" id="Cuenta" @bind-Value="@modeloCuenta.CuentaIdentificador" readonly />
+		</div>
+
+		<div class="form-group">
+			<label for="Saldo">Saldo disponible: </label>
+			<InputText class="form-control" id="Saldo" @bind-Value="@modeloCuenta.Saldo" readonly />
+		</div>
+	</article>
+	<ValidationSummary />
+</EditForm>
+
+
+
+<EditForm Model="@modeloMovimientos" OnValidSubmit="Transferir">
+	<DataAnnotationsValidator />
+	<article class="formtransferencia">
+
+		<div class="form-group">
+			<label for="Recipiente">Cuenta a transferir: </label>
+			<InputText class="form-control" id="Recipiente" @bind-Value="modeloMovimientos.CuentaReceptoraIdentificador" />
+		</div>
+		<div class="form-group">
+			<label for="Monto">Monto a transferir: </label>
+			<InputText class="form-control" id="Monto" @bind-Value="modeloMovimientos.Monto" />
+		</div>
+		<div class="form-group">
+			<label for="Descripcion">Descripción: </label>
+			<InputText class="form-control" id="Descripcion" @bind-Value="modeloMovimientos.Descripcion" />
+		</div>
+
+		<div class="botones">
+			<button type="button" class="btn btn-light" @onclick="Borrar">Borrar</button>
+			<button type="submit" class="btn btn-dark">Transferir</button>
+		</div>
+
+	</article>
 	<ValidationSummary />
 </EditForm>
 
