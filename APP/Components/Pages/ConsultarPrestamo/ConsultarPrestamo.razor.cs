@@ -108,8 +108,8 @@ namespace APP.Components.Pages.ConsultarPrestamo
         {
             if (prestamos.Count == 0)
             {
-                ObtenerPrestamos();
-                VerificarError();
+                await ObtenerPrestamos();
+                await VerificarError();
             }
 
             return await Task.FromResult(request.ApplyTo(prestamos));

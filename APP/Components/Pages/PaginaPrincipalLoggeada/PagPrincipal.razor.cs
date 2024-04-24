@@ -151,8 +151,8 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
 		{
 			if (cuentas.Count == 0)
 			{
-				ObtenerPrestamosActivos();
-				VerificarError();
+				await ObtenerPrestamosActivos();
+				await VerificarError();
 			}
 
 			return await Task.FromResult(request.ApplyTo(prestamos));

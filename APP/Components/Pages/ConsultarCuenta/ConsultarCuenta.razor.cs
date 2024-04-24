@@ -123,8 +123,8 @@ namespace APP.Components.Pages.ConsultarCuenta
         {
             if (cuentas.Count == 0)
             {
-                ObtenerCuentas();
-                VerificarError();
+				await ObtenerCuentas();
+				await VerificarError();
             }
 
             return await Task.FromResult(request.ApplyTo(cuentas));
@@ -149,8 +149,8 @@ namespace APP.Components.Pages.ConsultarCuenta
         {
             if (cuentas.Count == 0)
             {
-                ObtenerMovimientos();
-                VerificarError();
+				await ObtenerMovimientos();
+				await VerificarError();
             }
 
             return await Task.FromResult(request.ApplyTo(movimientos));
@@ -174,8 +174,8 @@ namespace APP.Components.Pages.ConsultarCuenta
         {
             if (pagos.Count == 0)
             {
-                ObtenerPagos();
-                VerificarError();
+				await ObtenerPagos();
+				await VerificarError();
             }
 
             return await Task.FromResult(request.ApplyTo(pagos));

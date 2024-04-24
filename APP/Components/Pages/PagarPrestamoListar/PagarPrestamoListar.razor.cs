@@ -108,8 +108,8 @@ namespace APP.Components.Pages.PagarPrestamoListar
         {
             if (cuotas.Count == 0)
             {
-                ObtenerCuotas();
-                VerificarError();
+				await ObtenerCuotas();
+				await VerificarError();
             }
 
             return await Task.FromResult(request.ApplyTo(cuotas));
