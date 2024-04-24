@@ -1,3 +1,69 @@
 @page "/retiro"
 @rendermode InteractiveServer
 
+<Modal @ref="modal" IsVerticallyCentered="true" Title=@ModalTitulo Message=@ModalMensaje>
+	<BodyTemplate>
+
+	</BodyTemplate>
+	<FooterTemplate>
+		<Button Color="ButtonColor.Primary" @onclick="CerrarModal">Cerrar</Button>
+	</FooterTemplate>
+</Modal>
+
+<hr>
+@if (NombreCliente == "")
+{
+	<p><em>Cargando datos...</em></p>
+
+	<hr>
+}
+
+<div class="bienvenido">
+	<h4>Bienvenido @NombreCliente</h4>
+</div>
+
+
+<div class="titulo">
+	<h2>Retirar</h2>
+</div>
+
+
+<EditForm Model="@modeloCuenta">
+	<DataAnnotationsValidator />
+	<article class="formdatoscuenta">
+		<div class="form-group">
+			<label for="Cuenta">Tu cuenta: </label>
+			<InputText class="form-control" id="Cuenta" @bind-Value="@modeloCuenta.CuentaIdentificador" readonly />
+		</div>
+
+		<div class="form-group">
+			<label for="Saldo">Saldo disponible: </label>
+			<InputText class="form-control" id="Saldo" @bind-Value="@modeloCuenta.Saldo" readonly />
+		</div>
+	</article>
+	<ValidationSummary />
+</EditForm>
+
+
+
+<EditForm Model="@modeloMovimientos" OnValidSubmit="Retirar">
+	<DataAnnotationsValidator />
+	<article class="formtransferencia">
+		<div class="form-group">
+			<label for="Monto">Monto a retirar: </label>
+			<InputText class="form-control" id="Monto" @bind-Value="modeloMovimientos.Monto" />
+		</div>
+		<div class="form-group">
+			<label for="Descripcion">Descripción: </label>
+			<InputText class="form-control" id="Descripcion" @bind-Value="modeloMovimientos.Descripcion" />
+		</div>
+
+		<div class="botones">
+			<button type="button" class="btn btn-light" @onclick="Borrar">Borrar</button>
+			<button type="submit" class="btn btn-dark">Retirar</button>
+		</div>
+
+	</article>
+	<ValidationSummary />
+</EditForm>
+
