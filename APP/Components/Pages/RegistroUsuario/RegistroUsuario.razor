@@ -20,17 +20,17 @@
 		<div>
 			<div class="form-group">
 				<label>Cedula: </label>
-				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Cedula" />
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Cedula" required />
 			</div>
 
 			<div class="form-group">
 				<label>Nombre: </label>
-				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Nombre" />
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Nombre" required />
 			</div>
 
 			<div class="form-group">
 				<label>Apellido: </label>
-				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Apellido" />
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Apellido" required />
 			</div>
 
 			@* <div class="form-group">
@@ -40,12 +40,12 @@
 
 			<div class="form-group">
 				<label>Correo: </label>
-				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Correo" />
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Correo" required />
 			</div>
 
 			<div class="form-group">
 				<label>Fecha nacimiento: </label>
-				<DateInput class="form-control" @bind-Value="@modeloRegistrarUsuario.FechaNacimiento" />
+				<DateInput class="form-control" @bind-Value="@modeloRegistrarUsuario.FechaNacimiento" required />
 			</div>
 		</div>
 
@@ -54,22 +54,22 @@
 
 			<div class="form-group">
 				<label>Telefono: </label>
-				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Telefono" />
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Telefono" required />
 			</div>
 
 			<div class="form-group">
 				<label>Direccion: </label>
-				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Direccion" />
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Direccion" required />
 			</div>
 
 			<div class="form-group">
 				<label>Nombre usuario: </label>
-				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.NombreUsuario" />
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.NombreUsuario" required />
 			</div>
 
 			<div class="form-group">
 				<label>Contraseña: </label>
-				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Contrasena" />
+				<InputText class="form-control" @bind-Value="modeloRegistrarUsuario.Contrasena" required />
 			</div>
 
 			<div>
