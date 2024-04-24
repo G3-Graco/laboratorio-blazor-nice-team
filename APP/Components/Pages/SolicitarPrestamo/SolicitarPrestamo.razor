@@ -14,34 +14,34 @@
 	</FooterTemplate>
 </Modal>
 
-<EditForm  Model="@prestamo" OnValidSubmit="Solicitar">
+<EditForm Model="@prestamo" OnValidSubmit="Solicitar">
 	<DataAnnotationsValidator />
     <div>
         <label for="Sueldo">Sueldo básico: </label>
-        <InputNumber name="Sueldo" id="Sueldo" @bind-Value="Sueldo" required />
+        <InputNumber name="Sueldo" id="Sueldo" @bind-Value="Sueldo" min="0" placeholder="100" required />
     </div>
     <div>
         <label for="Monto">Monto a prestar: </label>
-        <InputNumber id="Monto" @bind-Value="prestamo.MontoTotal" required />
+        <InputNumber id="Monto" @bind-Value="prestamo.MontoTotal" min="0" placeholder="40" required />
         <span class="rojo">No puede puede ser mayor al triple de su sueldo básico</span>
     </div>
     <div>
         <label for="Plazos">Cantidad de plazos: </label>
-        <InputNumber id="Plazos" @bind-Value="prestamo.NumeroCuotas" required/>
+        <InputNumber id="Plazos" @bind-Value="prestamo.NumeroCuotas" min="0" placeholder="13" required/>
         <span class="rojo">Afectará el interés: 1-12 (20%) y 13-24 (30%)</span>
     </div>
     <article class="separacion">
         <div>
             <label for="Empleo">Tiempo de empleo (meses): </label>
-            <InputNumber name="Empleo" id="Empleo" @bind-Value="Empleo" required />
+            <InputNumber name="Empleo" id="Empleo" @bind-Value="Empleo" min="0" placeholder="13" required />
         </div>
         <div>
             <label for="Identidad">Documento de identidad: </label>
-            <input type="file" name="Identidad" id="Identidad" OnChange="CargarIdentidad" required />
+            <InputFile name="Identidad" id="Identidad" OnChange="@CargarIdentidad" required />
         </div>
         <div>
             <label for="Trabajo">Recibo de sueldo de trabajo: </label>
-            <input type="file" name="Trabajo" id="Trabajo" OnChange="CargarTrabajo" required />
+            <InputFile name="Trabajo" id="Trabajo" OnChange="@CargarTrabajo" required />
         </div>
     </article>
     <div class="boton">
@@ -49,3 +49,5 @@
     </div>
 	<ValidationSummary />
 </EditForm>
+
+<p>@problema</p>

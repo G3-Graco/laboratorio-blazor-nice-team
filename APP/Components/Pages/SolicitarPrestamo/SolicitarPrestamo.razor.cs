@@ -18,9 +18,17 @@ namespace APP.Components.Pages.SolicitarPrestamo
 		[Inject]
 		public PrestamoServicio prestamoServicio { get; set; }
 
+		[Inject]
+		public CuentaServicio cuentaServicio { get; set; }
+
+		[Inject]
+		public ClienteServicio clienteServicio { get; set; }
+
 		private double Sueldo { get; set; }
 		
 		private int Empleo { get; set; }
+
+		public string problema { get; set; }
 
 		private IBrowserFile Identidad { get; set; }
 
@@ -36,62 +44,84 @@ namespace APP.Components.Pages.SolicitarPrestamo
         {
             prestamo.Fecha = DateTime.Now;
 			Sueldo = 0;
+			Empleo = 0;
         }
         public async void Solicitar()
         {
-			
+			var cliente = await clienteServicio.ConsultarCliente();
+			var plazos = await prestamoServicio.ConsultarPlazos();
+			long.TryParse(cliente.Data.Datos.FechaNacimiento, out long numero);
+			var edad = new DateTime(numero);
+			if (Empleo < 3)
+			{
+				problema = "Se requiere tener un trabajo en el que se haya trabajado al menos 3 meses";
+				return;
+			}
+			if (prestamo.MontoTotal < (Sueldo * 3)) {
+				problema = "El monto no puede ser menor al triple del sueldo";
+				return;
+			}
+			if ((DateTime.Now.Year - edad.Year) < 18)
+			{
+				problema = "No puede hacer préstamos si es menor de eddad";
+				return;
+			}
+			plazos.Data.Datos.ToList().ForEach(x => {
+				if (prestamo.NumeroCuotas <= x.MaximaCuotas && 
+					prestamo.NumeroCuotas >= x.MinimoCuotas)
+				{
+					prestamo.IdPlazo = x.Id;
+				}
+			});
+			var respuesta = await prestamoServicio.CrearPrestamo(prestamo);
+			if (respuesta.Ok)
+			{
+				problema = respuesta.Mensaje;
+			}
 		}
 
 		public async Task CargarIdentidad(InputFileChangeEventArgs e) {
-			var archivo = e.File;
-			var nombre = Path.GetRandomFileName();
-			var camino = Path.Combine(
-				Environment.ContentRootPath, 
-				Environment.EnvironmentName, 
-				"Carga_insegura", 
-				nombre
-			);
-			await using FileStream fs = new(camino, FileMode.Create);
-			await archivo.OpenReadStream().CopyToAsync(fs);
-			Identidad = archivo;
-			// foreach (var file in e.GetMultipleFiles(1))
-			// {
-			// 	try
-			// 	{
-			// 		var trustedFileName = Path.GetRandomFileName();
-			// 		var path = Path.Combine(Environment.ContentRootPath,
-			// 			Environment.EnvironmentName, "unsafe_uploads",
-			// 			trustedFileName);
-
-			// 		await using FileStream fs = new(path, FileMode.Create);
-			// 		await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
-
-			// 		loadedFiles.Add(file);
-
-			// 		Logger.LogInformation(
-			// 			"Unsafe Filename: {UnsafeFilename} File saved: {Filename}",
-			// 			file.Name, trustedFileName);
-			// 	}
-			// 	catch (Exception ex)
-			// 	{
-			// 		Logger.LogError("File: {Filename} Error: {Error}", 
-			// 			file.Name, ex.Message);
-			// 	}
-			// }
+			try
+			{
+				var archivo = e.File;
+				var nombre = Path.GetRandomFileName();
+				var camino = Path.Combine(
+					Environment.ContentRootPath, 
+					Environment.EnvironmentName, 
+					"Carga_insegura", 
+					nombre
+				);
+				await using FileStream fs = new(camino, FileMode.Create);
+				await archivo.OpenReadStream().CopyToAsync(fs);
+				Identidad = archivo;
+			}
+			catch (Exception ex)
+			{
+				problema = ex.Message;
+			}
+			
 		}
 
 		public async Task CargarTrabajo(InputFileChangeEventArgs e) {
-			var archivo = e.File;
-			var nombre = Path.GetRandomFileName();
-			var camino = Path.Combine(
-				Environment.ContentRootPath, 
-				Environment.EnvironmentName, 
-				"Carga_insegura", 
-				nombre
-			);
-			await using FileStream fs = new(camino, FileMode.Create);
-			await archivo.OpenReadStream().CopyToAsync(fs);
-			Trabajo = archivo;
+			try
+			{
+				var archivo = e.File;
+				var nombre = Path.GetRandomFileName();
+				var camino = Path.Combine(
+					Environment.ContentRootPath, 
+					Environment.EnvironmentName, 
+					"Carga_insegura", 
+					nombre
+				);
+				await using FileStream fs = new(camino, FileMode.Create);
+				await archivo.OpenReadStream().CopyToAsync(fs);
+				Trabajo = archivo;
+			}
+			catch (Exception ex)
+			{
+				problema = ex.Message;
+			}
+			
         }
 
 		public async Task CerrarModal()
