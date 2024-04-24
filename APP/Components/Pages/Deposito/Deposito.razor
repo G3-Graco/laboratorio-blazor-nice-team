@@ -34,15 +34,15 @@
 
 		<div class="form-group">
 			<label for="Recipiente">Cuenta a depositar: </label>
-			<InputText class="form-control" id="Recipiente" @bind-Value="modeloMovimientos.CuentaReceptoraIdentificador" />
+			<InputText class="form-control" id="Recipiente" @bind-Value="modeloMovimientos.CuentaReceptoraIdentificador" required />
 		</div>
 		<div class="form-group">
 			<label for="Monto">Monto a depositar: </label>
-			<InputText class="form-control" id="Monto" @bind-Value="modeloMovimientos.Monto" />
+			<InputText class="form-control" id="Monto" @bind-Value="modeloMovimientos.Monto" required />
 		</div>
 		<div class="form-group">
 			<label for="Descripcion">Descripción: </label>
-			<InputText class="form-control" id="Descripcion" @bind-Value="modeloMovimientos.Descripcion" />
+			<InputText class="form-control" id="Descripcion" @bind-Value="modeloMovimientos.Descripcion" required />
 		</div>
 
 		<div class="botones">
