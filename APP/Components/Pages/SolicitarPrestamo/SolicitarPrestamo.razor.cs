@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO.Pipelines;
 using System.Linq;
 using System.Threading.Tasks;
 using APP.Data.Modelos;
@@ -30,9 +31,9 @@ namespace APP.Components.Pages.SolicitarPrestamo
 
 		public string problema { get; set; }
 
-		private IBrowserFile Identidad { get; set; }
+		private byte[] Identidad { get; set; }
 
-		private IBrowserFile Trabajo { get; set; }
+		private byte[] Trabajo { get; set; }
 
 		private IWebHostEnvironment Environment;
 
@@ -83,6 +84,10 @@ namespace APP.Components.Pages.SolicitarPrestamo
 		public async Task CargarIdentidad(InputFileChangeEventArgs e) {
 			try
 			{
+				MemoryStream memoria = new MemoryStream();
+				await e.File.OpenReadStream().CopyToAsync(memoria);
+				Identidad = memoria.ToArray();
+				/*
 				var archivo = e.File;
 				var nombre = Path.GetRandomFileName();
 				var camino = Path.Combine(
@@ -94,6 +99,7 @@ namespace APP.Components.Pages.SolicitarPrestamo
 				await using FileStream fs = new(camino, FileMode.Create);
 				await archivo.OpenReadStream().CopyToAsync(fs);
 				Identidad = archivo;
+				*/
 			}
 			catch (Exception ex)
 			{
@@ -105,6 +111,10 @@ namespace APP.Components.Pages.SolicitarPrestamo
 		public async Task CargarTrabajo(InputFileChangeEventArgs e) {
 			try
 			{
+				MemoryStream memoria = new MemoryStream();
+				await e.File.OpenReadStream().CopyToAsync(memoria); 
+				Trabajo = memoria.ToArray();
+				/*
 				var archivo = e.File;
 				var nombre = Path.GetRandomFileName();
 				var camino = Path.Combine(
@@ -116,6 +126,7 @@ namespace APP.Components.Pages.SolicitarPrestamo
 				await using FileStream fs = new(camino, FileMode.Create);
 				await archivo.OpenReadStream().CopyToAsync(fs);
 				Trabajo = archivo;
+				*/
 			}
 			catch (Exception ex)
 			{
