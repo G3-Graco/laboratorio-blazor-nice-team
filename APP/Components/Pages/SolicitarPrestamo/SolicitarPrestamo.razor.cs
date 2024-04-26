@@ -25,15 +25,18 @@ namespace APP.Components.Pages.SolicitarPrestamo
 		[Inject]
 		public ClienteServicio clienteServicio { get; set; }
 
+		[Inject]
+		public DocumentoServicio documentoServicio { get; set; }
+
 		private double Sueldo { get; set; }
 		
 		private int Empleo { get; set; }
 
 		public string problema { get; set; }
 
-		private byte[] Identidad { get; set; }
+		private FormFile Identidad { get; set; }
 
-		private byte[] Trabajo { get; set; }
+		private FormFile Trabajo { get; set; }
 
 		private IWebHostEnvironment Environment;
 
@@ -74,20 +77,32 @@ namespace APP.Components.Pages.SolicitarPrestamo
 					prestamo.IdPlazo = x.Id;
 				}
 			});
+			var respuestaIdentidad = await documentoServicio.SubirArchivo(Identidad);
+			var respuestaTrabajo = await documentoServicio.SubirArchivo(Trabajo);
+			if (respuestaIdentidad.Data.Datos.Ubicacion == "" || 
+				respuestaTrabajo.Data.Datos.Ubicacion == "")
+			{
+				problema = "No se pudo guardar todos los documentos";
+				return;
+			}
 			var respuesta = await prestamoServicio.CrearPrestamo(prestamo);
 			if (respuesta.Ok)
 			{
 				problema = respuesta.Mensaje;
 			}
+
 		}
 
 		public async Task CargarIdentidad(InputFileChangeEventArgs e) {
 			try
 			{
-				MemoryStream memoria = new MemoryStream();
-				await e.File.OpenReadStream().CopyToAsync(memoria);
-				Identidad = memoria.ToArray();
-				/*
+				// var archivo = e.File;
+				// var informacion = new FormFile(Empleo, )
+				// var archivo = await documentoServicio.AgregarArchivo(e);
+				// MemoryStream memoria = new MemoryStream();
+				// await e.File.OpenReadStream().CopyToAsync(memoria);
+				// Identidad = memoria.ToArray();
+				
 				var archivo = e.File;
 				var nombre = Path.GetRandomFileName();
 				var camino = Path.Combine(
@@ -96,6 +111,10 @@ namespace APP.Components.Pages.SolicitarPrestamo
 					"Carga_insegura", 
 					nombre
 				);
+				MemoryStream memoria = new MemoryStream();
+				await archivo.OpenReadStream().CopyToAsync(memoria); 
+				Identidad = new FormFile(memoria, 0, archivo.Size, "Identidad", archivo.Name);
+				/*
 				await using FileStream fs = new(camino, FileMode.Create);
 				await archivo.OpenReadStream().CopyToAsync(fs);
 				Identidad = archivo;
@@ -111,9 +130,22 @@ namespace APP.Components.Pages.SolicitarPrestamo
 		public async Task CargarTrabajo(InputFileChangeEventArgs e) {
 			try
 			{
+				var archivo = e.File;
+				var nombre = Path.GetRandomFileName();
+				var camino = Path.Combine(
+					Environment.ContentRootPath, 
+					Environment.EnvironmentName, 
+					"Carga_insegura", 
+					nombre
+				);
 				MemoryStream memoria = new MemoryStream();
-				await e.File.OpenReadStream().CopyToAsync(memoria); 
-				Trabajo = memoria.ToArray();
+				await archivo.OpenReadStream().CopyToAsync(memoria); 
+				Trabajo = new FormFile(memoria, 0, archivo.Size, "Trabajo", $"{archivo.Name}.{archivo.ContentType}");
+				// MemoryStream memoria = new MemoryStream();
+				// await e.File.OpenReadStream().CopyToAsync(memoria); 
+				// Trabajo = memoria.ToArray();
+				// Stream todo = new MemoryStream(Trabajo);
+				// IFormFile informacion = new FormFile(todo, 0, Trabajo.Length, e.File.Name, e.File.Name);
 				/*
 				var archivo = e.File;
 				var nombre = Path.GetRandomFileName();

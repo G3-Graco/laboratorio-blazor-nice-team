@@ -28,5 +28,21 @@ namespace APP.Data.Servicios
             }
             return respuesta;
         }
+
+        public async Task<RespuestaConsumidor<RespuestaAPI<Documento>>> AgregarArchivo(Documento documento) {
+            RespuestaConsumidor<RespuestaAPI<Documento>> respuesta = new();
+            try
+            {
+                respuesta = await Consumidor.Execute<Documento, RespuestaAPI<Documento>>(
+                    "https://localhost:7181/api/Documento", 
+                    MethodHttp.POST, 
+                    documento
+                );
+            }
+            catch (Exception e)
+            {
+            }
+            return respuesta;
+        }
     }
 }
