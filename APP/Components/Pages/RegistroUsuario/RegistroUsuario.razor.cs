@@ -19,7 +19,26 @@ namespace APP.Components.Pages.RegistroUsuario
 		public string modalTitulo = "";
 		public string modalMensaje = "";
 
-		protected override async Task OnInitializedAsync()
+		public string Contrasena = "password";
+		public IconName Icono = IconName.EyeSlash;
+
+		public void VerContrasena()
+        {
+            if (this.Contrasena == "password")
+            {
+                this.Contrasena = "text";
+				this.Icono = IconName.Eye;
+
+			}
+            else
+            {
+                this.Contrasena = "password";
+				this.Icono = IconName.EyeSlash;
+
+			}
+        }
+
+        protected override async Task OnInitializedAsync()
         {
             modeloRegistrarUsuario.FechaNacimiento = DateOnly.FromDateTime(DateTime.Now);
         }

@@ -34,12 +34,23 @@ namespace APP.Data.Servicios
 			{
 				respuesta = await Consumidor.Execute<Usuario, RespuestaAPI<RespuestaIniciarSesion>>($"https://localhost:7181/api/Usuario/iniciosesion", MethodHttp.POST, usuario);
 
-				if (respuesta.Ok)
-				{
-					await _protectedLocalStorage.SetAsync("jwt", respuesta.Data.Datos.jwt);
-					await _protectedLocalStorage.SetAsync("idusuariosesion", respuesta.Data.Datos.idusuariosesion);
-				}
+                if (respuesta.Ok)
+                {
+                    if (respuesta.Data.Ok)
+                    {
+                        await _protectedLocalStorage.SetAsync("jwt", respuesta.Data.Datos.jwt);
+                        await _protectedLocalStorage.SetAsync("idusuariosesion", respuesta.Data.Datos.idusuariosesion);
+                    }
+                    else
+                    {
+                        return respuesta;
+                    }
+                }
+                else
+                {
+                    return respuesta;
 
+                }
 			}
 			catch (Exception ex)
 			{

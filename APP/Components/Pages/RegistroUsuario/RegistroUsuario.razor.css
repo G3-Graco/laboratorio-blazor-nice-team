@@ -39,3 +39,9 @@ p {
     justify-content: flex-end;
     margin: 30px 0px;
 }
+
+Button {
+    align-self: flex-end;
+    margin: 10px 0;
+    width: 112px;
+}

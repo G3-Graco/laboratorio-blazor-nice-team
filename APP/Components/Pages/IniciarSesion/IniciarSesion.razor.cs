@@ -2,6 +2,7 @@
 using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace APP.Components.Pages.IniciarSesion
 {
@@ -30,8 +31,13 @@ namespace APP.Components.Pages.IniciarSesion
 				{
                     ModalTitulo = "Inicio sesión";
                     ModalMensaje = "Iniciaste sesión exitosamente";
+
+                    //var parametros = new Dictionary<string, object>();
+                    //parametros.Add("Mensaje", ModalMensaje);
+                    //parametros.Add("OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, funcion));
+                    //await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters : parametros);
+
                     await modal.ShowAsync();
-      
                     Navigation.NavigateTo("/", forceLoad: true);
 					//nice
 				}
@@ -39,7 +45,12 @@ namespace APP.Components.Pages.IniciarSesion
 				{
                     ModalTitulo = "Error";
                     ModalMensaje = respuesta.Data.Mensaje;
-					await modal.ShowAsync();
+
+                    //var parametros = new Dictionary<string, object>();
+                    //parametros.Add("Mensaje", ModalMensaje);
+                    //await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+
+                    await modal.ShowAsync();
 
 				}
 			}
@@ -47,7 +58,12 @@ namespace APP.Components.Pages.IniciarSesion
 			{
                 ModalTitulo = "Error";
                 ModalMensaje = respuesta.Mensaje;
-				await modal.ShowAsync();
+
+                //var parametros = new Dictionary<string, object>();
+                //parametros.Add("Mensaje", ModalMensaje);
+                //await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+
+                await modal.ShowAsync();
 
 			}
 		}
