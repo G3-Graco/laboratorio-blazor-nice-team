@@ -17,7 +17,11 @@ namespace APP.Data.Servicios
 
 			try
 			{
-				respuesta = await Consumidor.Execute<ModeloRegistrarUsuario, RespuestaAPI<ModeloRegistrarUsuario>>($"https://localhost:7181/api/Usuario/registrarse", MethodHttp.POST, modeloRegistrarUsuario);
+				respuesta = await Consumidor.Execute<ModeloRegistrarUsuario, RespuestaAPI<ModeloRegistrarUsuario>>(
+					"https://localhost:7181/api/Usuario/registrarse", 
+					MethodHttp.POST, 
+					modeloRegistrarUsuario
+				);
 			}
 			catch (Exception ex)
 			{
@@ -32,7 +36,11 @@ namespace APP.Data.Servicios
 
 			try
 			{
-				respuesta = await Consumidor.Execute<Usuario, RespuestaAPI<RespuestaIniciarSesion>>($"https://localhost:7181/api/Usuario/iniciosesion", MethodHttp.POST, usuario);
+				respuesta = await Consumidor.Execute<Usuario, RespuestaAPI<RespuestaIniciarSesion>>(
+					"https://localhost:7181/api/Usuario/iniciosesion", 
+					MethodHttp.POST, 
+					usuario
+				);
 
 				if (respuesta.Ok)
 				{
