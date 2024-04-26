@@ -2,6 +2,7 @@
 using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System.Reflection;
 
 namespace APP.Components.Pages.PaginaPrincipalLoggeada
@@ -55,11 +56,22 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
             }
         }
 
+        public async Task MostrarModalError()
+        {
+            var parametros = new Dictionary<string, object>
+            {
+                { "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, CerrarModal) },
+                { "Mensaje", ModalMensaje }
+            };
+
+            await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+        }
+
         public async Task VerificarError()
         {
             if (OcurrioError)
             {
-                await modal.ShowAsync();
+                await MostrarModalError();
             }
             
         }
@@ -103,8 +115,12 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
             if (!OcurrioError)
             {
 				NombreCliente = $"{respuesta.Data.Datos.Nombre} {respuesta.Data.Datos.Apellido}";
-			}		
-		}
+			}
+            else
+            {
+                await MostrarModalError();
+            }
+        }
 
         private async Task ObtenerCuentas()
         {
@@ -118,6 +134,10 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
 			{
 				cuentas.Add(respuesta.Data.Datos);
 			}
+            else
+            {
+                await MostrarModalError();
+            }
         }
 
 		private async Task<GridDataProviderResult<Cuenta>> CuentasDataProvider(GridDataProviderRequest<Cuenta> request)
@@ -145,7 +165,11 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
 				prestamos = respuesta.Data.Datos.ToList();
                 prestamos = prestamos.Where(p => p.IdEstado != 3).ToList();
 			}
-		}
+            else
+            {
+                await MostrarModalError();
+            }
+        }
 
 		private async Task<GridDataProviderResult<Prestamo>> PrestamosDataProvider(GridDataProviderRequest<Prestamo> request)
 		{

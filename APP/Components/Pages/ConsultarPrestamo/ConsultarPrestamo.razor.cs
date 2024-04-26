@@ -2,6 +2,7 @@
 using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace APP.Components.Pages.ConsultarPrestamo
 {
@@ -54,7 +55,7 @@ namespace APP.Components.Pages.ConsultarPrestamo
         {
             if (OcurrioError)
             {
-                await modal.ShowAsync();
+                await MostrarModalError();
             }
 
         }
@@ -102,6 +103,10 @@ namespace APP.Components.Pages.ConsultarPrestamo
             {
                 prestamos = respuesta.Data.Datos.ToList();
             }
+            else
+            {
+                await MostrarModalError();
+            }
         }
 
         private async Task<GridDataProviderResult<Prestamo>> PrestamoDataProvider(GridDataProviderRequest<Prestamo> request)
@@ -124,6 +129,10 @@ namespace APP.Components.Pages.ConsultarPrestamo
             {
                 NombreCliente = $"{respuesta.Data.Datos.Nombre} {respuesta.Data.Datos.Apellido}";
             }
+            else
+            {
+                await MostrarModalError();
+            }
         }
 
         private async Task ConsultarPrestamoSeleccionado()
@@ -136,7 +145,7 @@ namespace APP.Components.Pages.ConsultarPrestamo
             {
                 ModalTitulo = "Error";
                 ModalMensaje = "Primero debe consultar un préstamo";
-                await modal.ShowAsync();
+                await MostrarModalError();
             }
             else
             {
@@ -145,7 +154,15 @@ namespace APP.Components.Pages.ConsultarPrestamo
             
         }
 
+        public async Task MostrarModalError()
+        {
+            var parametros = new Dictionary<string, object>
+                    {
+                        { "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, CerrarModal) },
+                        { "Mensaje", ModalMensaje }
+                    };
 
-
+            await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace APP.Components.Pages.PagarPrestamo
 {
@@ -50,11 +51,22 @@ namespace APP.Components.Pages.PagarPrestamo
             }
         }
 
-        public async Task VerificarError()
+		public async Task MostrarModalError()
+		{
+			var parametros = new Dictionary<string, object>
+			{
+				{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, CerrarModal) },
+				{ "Mensaje", ModalMensaje }
+			};
+
+			await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+		}
+
+		public async Task VerificarError()
         {
             if (OcurrioError)
             {
-                await modal.ShowAsync();
+                await MostrarModalError();
             }
 
         }
@@ -99,11 +111,20 @@ namespace APP.Components.Pages.PagarPrestamo
             {
                 NombreCliente = $"{respuesta.Data.Datos.Nombre} {respuesta.Data.Datos.Apellido}";
             }
-        }
+			else
+			{
+				await MostrarModalError();
+			}
+		}
 		private async Task ObtenerPagoDatos()
 		{
 			RespuestaConsumidor<RespuestaAPI<Cuota>> respuestaCuota = await CuotaServicio.ConsultarCuota(idcuota);
 			GestionarRespuesta<Cuota>(respuestaCuota);
+
+			if (OcurrioError)
+			{
+				await MostrarModalError();
+			}
 
 			RespuestaConsumidor<RespuestaAPI<Cuenta>> respuestaCuenta = await CuentaServicio.ConsultarCuenta();
 			GestionarRespuesta<Cuenta>(respuestaCuenta);
@@ -116,6 +137,11 @@ namespace APP.Components.Pages.PagarPrestamo
                 ModeloPagarCuota.MontoTotal = respuestaCuota.Data.Datos.Pago.ToString();
                 ModeloPagarCuota.PrestamoId = respuestaCuota.Data.Datos.IdPrestamo.ToString();
 			}
+			else
+			{
+				await MostrarModalError();
+			}
+
 		}
 		private async Task Pagar()
 		{
@@ -135,9 +161,21 @@ namespace APP.Components.Pages.PagarPrestamo
 				ModalTitulo = "Éxito";
 				ModalMensaje = "Pago realizado exitosamente";
 
-				await modal.ShowAsync();
+				var parametros = new Dictionary<string, object>
+				{
+					{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, async () => {
+					await modal.HideAsync();
+					Navigation.NavigateTo("/", forceLoad: true);
+					})
+					},
+					{ "Mensaje", ModalMensaje }
+				};
 
-				Navigation.NavigateTo("/", forceLoad: true);
+				await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+			}
+			else
+			{
+				await MostrarModalError();
 			}
 		}
 

@@ -3,6 +3,7 @@ using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace APP.Components.Pages.IniciarSesion
 {
@@ -20,6 +21,17 @@ namespace APP.Components.Pages.IniciarSesion
 		public string ModalTitulo = "";
 		public string ModalMensaje = "";
 
+		public async Task MostrarModalError()
+		{
+			var parametros = new Dictionary<string, object>
+			{
+				{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, CerrarModal) },
+				{ "Mensaje", ModalMensaje }
+			};
+
+			await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+		}
+
 		public async void InicioSesion()
 		{
 
@@ -32,26 +44,24 @@ namespace APP.Components.Pages.IniciarSesion
                     ModalTitulo = "Inicio sesión";
                     ModalMensaje = "Iniciaste sesión exitosamente";
 
-                    //var parametros = new Dictionary<string, object>();
-                    //parametros.Add("Mensaje", ModalMensaje);
-                    //parametros.Add("OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, funcion));
-                    //await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters : parametros);
+					var parametros = new Dictionary<string, object>
+					{
+						{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, async () => {
+						await modal.HideAsync();
+						Navigation.NavigateTo("/", forceLoad: true); 
+						})
+						},
+						{ "Mensaje", ModalMensaje }
+					};
 
-                    await modal.ShowAsync();
-                    Navigation.NavigateTo("/", forceLoad: true);
-					//nice
+					await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+	
 				}
 				else
 				{
                     ModalTitulo = "Error";
                     ModalMensaje = respuesta.Data.Mensaje;
-
-                    //var parametros = new Dictionary<string, object>();
-                    //parametros.Add("Mensaje", ModalMensaje);
-                    //await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
-
-                    await modal.ShowAsync();
-
+					await MostrarModalError();
 				}
 			}
 			else
@@ -59,11 +69,7 @@ namespace APP.Components.Pages.IniciarSesion
                 ModalTitulo = "Error";
                 ModalMensaje = respuesta.Mensaje;
 
-                //var parametros = new Dictionary<string, object>();
-                //parametros.Add("Mensaje", ModalMensaje);
-                //await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
-
-                await modal.ShowAsync();
+				await MostrarModalError();
 
 			}
 		}
