@@ -17,7 +17,13 @@ namespace APP.Data.Servicios
 
             try
             {
-                respuesta = await Consumidor.Execute<Cuota, RespuestaAPI<IEnumerable<Cuota>>>($"https://localhost:7181/api/Cuota/cuotasprestamo?idPrestamo={idprestamo}", MethodHttp.GET, null, _protectedLocalStorage, true);
+                respuesta = await Consumidor.Execute<Cuota, RespuestaAPI<IEnumerable<Cuota>>>(
+                    $"https://localhost:7181/api/Cuota/cuotasprestamo?idPrestamo={idprestamo}", 
+                    MethodHttp.GET, 
+                    null, 
+                    _protectedLocalStorage, 
+                    true
+                );
             }
             catch (Exception ex)
             {
@@ -32,7 +38,12 @@ namespace APP.Data.Servicios
 
             try
             {
-                respuesta = await Consumidor.Execute<Cuota, RespuestaAPI<IEnumerable<Cuota>>>($"https://localhost:7181/api/Cuota/cuotaspagables", MethodHttp.GET, null, _protectedLocalStorage);
+                respuesta = await Consumidor.Execute<Cuota, RespuestaAPI<IEnumerable<Cuota>>>(
+                    "https://localhost:7181/api/Cuota/cuotaspagables", 
+                    MethodHttp.GET, 
+                    null, 
+                    _protectedLocalStorage
+                );
             }
             catch (Exception ex)
             {
@@ -47,7 +58,11 @@ namespace APP.Data.Servicios
 
 			try
 			{
-				respuesta = await Consumidor.Execute<Cuota, RespuestaAPI<Cuota>>($"https://localhost:7181/api/Cuota/{idcuota}", MethodHttp.GET, null);
+				respuesta = await Consumidor.Execute<Cuota, RespuestaAPI<Cuota>>(
+                    $"https://localhost:7181/api/Cuota/{idcuota}", 
+                    MethodHttp.GET, 
+                    null
+                );
 			}
 			catch (Exception ex)
 			{

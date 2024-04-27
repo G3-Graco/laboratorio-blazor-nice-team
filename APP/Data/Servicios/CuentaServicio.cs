@@ -17,7 +17,12 @@ namespace APP.Data.Servicios
 
 			try
 			{
-				respuesta = await Consumidor.Execute<Cuenta, RespuestaAPI<Cuenta>>($"https://localhost:7181/api/Cuenta/cuentacliente", MethodHttp.GET, null, _protectedLocalStorage);
+				respuesta = await Consumidor.Execute<Cuenta, RespuestaAPI<Cuenta>>(
+					"https://localhost:7181/api/Cuenta/cuentacliente", 
+					MethodHttp.GET, 
+					null, 
+					_protectedLocalStorage
+				);
 			}
 			catch (Exception ex)
 			{

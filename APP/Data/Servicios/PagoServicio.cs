@@ -20,7 +20,12 @@ namespace APP.Data.Servicios
 
             try
             {
-                respuesta = await Consumidor.Execute<Pago, RespuestaAPI<IEnumerable<Pago>>>($"https://localhost:7181/api/Pago/pagoscuenta", MethodHttp.GET, null, _protectedLocalStorage);
+                respuesta = await Consumidor.Execute<Pago, RespuestaAPI<IEnumerable<Pago>>>(
+                    "https://localhost:7181/api/Pago/pagoscuenta", 
+                    MethodHttp.GET, 
+                    null, 
+                    _protectedLocalStorage
+                );
             }
             catch (Exception ex)
             {
@@ -35,7 +40,13 @@ namespace APP.Data.Servicios
 
             try
             {
-                respuesta = await Consumidor.Execute<Pago, RespuestaAPI<IEnumerable<Pago>>>($"https://localhost:7181/api/Pago/pagosprestamo?idPrestamo{idprestamo}", MethodHttp.GET, null, _protectedLocalStorage, true);
+                respuesta = await Consumidor.Execute<Pago, RespuestaAPI<IEnumerable<Pago>>>(
+                    $"https://localhost:7181/api/Pago/pagosprestamo?idPrestamo{idprestamo}", 
+                    MethodHttp.GET, 
+                    null, 
+                    _protectedLocalStorage, 
+                    true
+                );
             }
             catch (Exception ex)
             {
@@ -50,7 +61,12 @@ namespace APP.Data.Servicios
 
             try
             {
-                respuesta = await Consumidor.Execute<Pago, RespuestaAPI<Pago>>($"https://localhost:7181/api/Pago/realizarpago", MethodHttp.POST, pago, _protectedLocalStorage);
+                respuesta = await Consumidor.Execute<Pago, RespuestaAPI<Pago>>(
+                    "https://localhost:7181/api/Pago/realizarpago", 
+                    MethodHttp.POST, 
+                    pago, 
+                    _protectedLocalStorage
+                );
             }
             catch (Exception ex)
             {

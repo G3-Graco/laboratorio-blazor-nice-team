@@ -113,7 +113,7 @@ namespace APP.Components.Pages.Deposito
 
 		public async void Depositar()
 		{
-			Movimiento transferencia = new Movimiento
+			Movimiento deposito = new Movimiento
 			{
 				Id = 0,
 				//CuentaOrigenIdentificador = Int64.Parse(modeloCuenta.CuentaIdentificador),
@@ -134,7 +134,7 @@ namespace APP.Components.Pages.Deposito
 				{
 					if (x.Nombre == "Deposito")
 					{
-						transferencia.TipoMovimientoId = x.Id;
+						deposito.TipoMovimientoId = x.Id;
 					}
 				});
 			}
@@ -143,7 +143,7 @@ namespace APP.Components.Pages.Deposito
 				await MostrarModalError();
 			}
 
-			RespuestaConsumidor<RespuestaAPI<Movimiento>> respuesta = await movimientoServicio.RealizarMovimiento(transferencia);
+			RespuestaConsumidor<RespuestaAPI<Movimiento>> respuesta = await movimientoServicio.RealizarMovimiento(deposito);
 			GestionarRespuesta<Movimiento>(respuesta);
 
 

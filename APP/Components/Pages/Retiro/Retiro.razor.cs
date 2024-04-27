@@ -136,7 +136,7 @@ namespace APP.Components.Pages.Retiro
 
 		public async void Retirar()
 		{
-			Movimiento transferencia = new Movimiento
+			Movimiento retiro = new Movimiento
 			{
 				Id = 0,
 				CuentaOrigenIdentificador = Int64.Parse(modeloCuenta.CuentaIdentificador),
@@ -157,7 +157,7 @@ namespace APP.Components.Pages.Retiro
 				{
 					if (x.Nombre == "Retiro")
 					{
-						transferencia.TipoMovimientoId = x.Id;
+						retiro.TipoMovimientoId = x.Id;
 					}
 				});
 			}
@@ -166,7 +166,7 @@ namespace APP.Components.Pages.Retiro
 				await MostrarModalError();
 			}
 
-			RespuestaConsumidor<RespuestaAPI<Movimiento>> respuesta = await movimientoServicio.RealizarMovimiento(transferencia);
+			RespuestaConsumidor<RespuestaAPI<Movimiento>> respuesta = await movimientoServicio.RealizarMovimiento(retiro);
 			GestionarRespuesta<Movimiento>(respuesta);
 
 

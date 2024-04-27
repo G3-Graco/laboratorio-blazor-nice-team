@@ -16,7 +16,12 @@ namespace APP.Data.Servicios
 			RespuestaConsumidor<RespuestaAPI<IEnumerable<Prestamo>>> respuesta = new();
             try
             {
-				respuesta = await Consumidor.Execute<Prestamo, RespuestaAPI<IEnumerable<Prestamo>>>($"https://localhost:7181/api/Prestamo", MethodHttp.GET, null, _protectedLocalStorage);
+				respuesta = await Consumidor.Execute<Prestamo, RespuestaAPI<IEnumerable<Prestamo>>>(
+					"https://localhost:7181/api/Prestamo", 
+					MethodHttp.GET, 
+					null, 
+					_protectedLocalStorage
+				);
 			}
 			catch (Exception ex)
 			{
@@ -32,7 +37,13 @@ namespace APP.Data.Servicios
             RespuestaConsumidor<RespuestaAPI<double>> respuesta = new();
             try
             {
-                respuesta = await Consumidor.Execute<Prestamo, RespuestaAPI<double>>($"https://localhost:7181/api/Prestamo/montopendiente?idprestamo={idPrestamo}", MethodHttp.GET, null, _protectedLocalStorage, true);
+                respuesta = await Consumidor.Execute<Prestamo, RespuestaAPI<double>>(
+					$"https://localhost:7181/api/Prestamo/montopendiente?idprestamo={idPrestamo}", 
+					MethodHttp.GET, 
+					null, 
+					_protectedLocalStorage, 
+					true
+				);
             }
             catch (Exception ex)
             {
@@ -46,7 +57,12 @@ namespace APP.Data.Servicios
 			RespuestaConsumidor<RespuestaAPI<IEnumerable<Plazo>>> respuesta = new();
             try
             {
-				respuesta = await Consumidor.Execute<Plazo, RespuestaAPI<IEnumerable<Plazo>>>($"https://localhost:7181/api/Plazo", MethodHttp.GET, null, _protectedLocalStorage);
+				respuesta = await Consumidor.Execute<Plazo, RespuestaAPI<IEnumerable<Plazo>>>(
+					"https://localhost:7181/api/Plazo", 
+					MethodHttp.GET, 
+					null, 
+					_protectedLocalStorage
+				);
 			}
 			catch (Exception ex)
 			{
@@ -59,7 +75,12 @@ namespace APP.Data.Servicios
 			RespuestaConsumidor<RespuestaAPI<Prestamo>> respuesta = new();
             try
             {
-				respuesta = await Consumidor.Execute<Prestamo, RespuestaAPI<Prestamo>>($"https://localhost:7181/api/Prestamo", MethodHttp.POST, prestamo, _protectedLocalStorage);
+				respuesta = await Consumidor.Execute<Prestamo, RespuestaAPI<Prestamo>>(
+					"https://localhost:7181/api/Prestamo", 
+					MethodHttp.POST, 
+					prestamo, 
+					_protectedLocalStorage
+				);
 			}
 			catch (Exception ex)
 			{

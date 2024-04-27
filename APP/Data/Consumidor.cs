@@ -33,7 +33,10 @@ namespace APP.Data
 			}
 		}
 
-		public static async Task<RespuestaConsumidor<Tout>> Execute<Tin, Tout>(string url, MethodHttp method, Tin objectRequest, ProtectedLocalStorage protectedLocalStorage = null, bool habiaMasDatosEnQuery = false)
+		public static async Task<RespuestaConsumidor<Tout>> Execute<Tin, Tout>(
+				string url, MethodHttp method, Tin 
+				objectRequest, ProtectedLocalStorage protectedLocalStorage = null, 
+				bool habiaMasDatosEnQuery = false)
 		{
 
 			RespuestaConsumidor<Tout> respuesta = new RespuestaConsumidor<Tout>();

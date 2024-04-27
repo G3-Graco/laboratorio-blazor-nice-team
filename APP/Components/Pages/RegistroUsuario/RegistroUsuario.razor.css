@@ -11,11 +11,11 @@
     margin: 15px;
 }
 
-.formregistrar > div{
+.formregistrar > div {
     width: 35vw;
 }
 
-input{
+input {
     margin: 20px;
     width: 20vw;
 }
@@ -35,9 +35,8 @@ input{
 
 
 p {
-    display: flex;
-    justify-content: flex-end;
-    margin: 30px 0px;
+    text-align: center;
+    padding-top: 10px;
 }
 
 Button {
