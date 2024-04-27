@@ -88,5 +88,39 @@ namespace APP.Data.Servicios
 			}
 			return respuesta;
 		}
+
+		public async Task<RespuestaConsumidor<RespuestaAPI<IEnumerable<Plazo>>>> ObtenerPlazos() {
+			RespuestaConsumidor<RespuestaAPI<IEnumerable<Plazo>>> respuesta = new();
+            try
+            {
+				respuesta = await Consumidor.Execute<Plazo, RespuestaAPI<IEnumerable<Plazo>>>(
+					"https://localhost:7181/api/Plazo", 
+					MethodHttp.GET, 
+					null
+				);
+			}
+			catch (Exception ex)
+			{
+
+			}
+			return respuesta;
+		}
+
+		public async Task<RespuestaConsumidor<RespuestaAPI<IEnumerable<EstadoPrestamo>>>> ObtenerEstados() {
+			RespuestaConsumidor<RespuestaAPI<IEnumerable<EstadoPrestamo>>> respuesta = new();
+            try
+            {
+				respuesta = await Consumidor.Execute<EstadoPrestamo, RespuestaAPI<IEnumerable<EstadoPrestamo>>>(
+					"https://localhost:7181/api/EstadoPrestamo", 
+					MethodHttp.GET, 
+					null
+				);
+			}
+			catch (Exception ex)
+			{
+
+			}
+			return respuesta;
+		}
 	}
 }

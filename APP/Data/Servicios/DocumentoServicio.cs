@@ -44,5 +44,21 @@ namespace APP.Data.Servicios
             }
             return respuesta;
         }
+
+        public async Task<RespuestaConsumidor<RespuestaAPI<IEnumerable<TipoDocumento>>>> ObtenerTipos() {
+            RespuestaConsumidor<RespuestaAPI<IEnumerable<TipoDocumento>>> respuesta = new();
+            try
+            {
+                respuesta = await Consumidor.Execute<TipoDocumento, RespuestaAPI<IEnumerable<TipoDocumento>>>(
+                    "https://localhost:7181/api/TipoDocumento", 
+                    MethodHttp.GET, 
+                    null
+                );
+            }
+            catch (Exception e)
+            {
+            }
+            return respuesta;
+        }
     }
 }

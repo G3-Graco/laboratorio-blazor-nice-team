@@ -77,6 +77,10 @@ namespace APP.Components.Pages.SolicitarPrestamo
 					prestamo.IdPlazo = x.Id;
 				}
 			});
+			var estados = await prestamoServicio.ObtenerEstados();
+			estados.Data.Datos.ToList().ForEach(x => {
+				if (x.Nombre == "En proceso") prestamo.IdEstado = x.Id;
+			});
 			var respuestaIdentidad = await documentoServicio.SubirArchivo(Identidad);
 			var respuestaTrabajo = await documentoServicio.SubirArchivo(Trabajo);
 			if (respuestaIdentidad.Data.Datos.Ubicacion == "" || 
@@ -90,7 +94,17 @@ namespace APP.Components.Pages.SolicitarPrestamo
 			{
 				problema = respuesta.Mensaje;
 			}
-
+			var documentoIdentidad = respuestaIdentidad.Data.Datos;
+			var documentoTrabajo = respuestaTrabajo.Data.Datos;
+			var tipos = await documentoServicio.ObtenerTipos();
+			tipos.Data.Datos.ToList().ForEach(x => {
+				if (x.Nombre == "Identificación") documentoIdentidad.IdTipo = x.Id;
+				else if (x.Nombre == "Recibo") documentoTrabajo.IdTipo = x.Id;
+			});
+			documentoIdentidad.IdPrestamo = respuesta.Data.Datos.Id;
+			documentoTrabajo.IdPrestamo = respuesta.Data.Datos.Id;
+			await documentoServicio.AgregarArchivo(documentoIdentidad);
+			await documentoServicio.AgregarArchivo(documentoTrabajo);
 		}
 
 		public async Task CargarIdentidad(InputFileChangeEventArgs e) {
