@@ -7,6 +7,7 @@ using APP.Data.Modelos;
 using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace APP.Components.Pages.Transferencia
 {
@@ -36,8 +37,6 @@ namespace APP.Components.Pages.Transferencia
 		public string ModalMensaje = "";
 		public bool OcurrioError = false;
 
-		private string Cambio { get; set; }
-
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
 			if (firstRender)
@@ -56,7 +55,7 @@ namespace APP.Components.Pages.Transferencia
 		{
 			if (OcurrioError)
 			{
-				await modal.ShowAsync();
+					await MostrarModalError();
 			}
 		}
 
@@ -100,6 +99,10 @@ namespace APP.Components.Pages.Transferencia
 			{
 				NombreCliente = $"{respuesta.Data.Datos.Nombre} {respuesta.Data.Datos.Apellido}";
 			}
+			else
+			{
+				await MostrarModalError();
+			}
 		}
 
 		private async Task ObtenerCuentaDatos()
@@ -112,6 +115,10 @@ namespace APP.Components.Pages.Transferencia
 			{
 				modeloCuenta.CuentaIdentificador = respuesta.Data.Datos.Identificador.ToString();
 				modeloCuenta.Saldo = respuesta.Data.Datos.Saldo.ToString();
+			}
+			else
+			{
+				await MostrarModalError();
 			}
 		}
 
@@ -142,6 +149,11 @@ namespace APP.Components.Pages.Transferencia
 					}
 				});
 			}
+			else
+			{
+				await MostrarModalError();
+			}
+
 
 			RespuestaConsumidor<RespuestaAPI<Movimiento>> respuesta = await movimientoServicio.RealizarMovimiento(transferencia);
 			GestionarRespuesta<Movimiento>(respuesta);
@@ -152,13 +164,21 @@ namespace APP.Components.Pages.Transferencia
 				ModalTitulo = "Éxito";
 	            ModalMensaje = "Se hizo la transferencia exitosamente";
 
-				await modal.ShowAsync();
+				var parametros = new Dictionary<string, object>
+					{
+						{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, async () => {
+						await modal.HideAsync();
+						Navigation.NavigateTo("/", forceLoad: true);
+						})
+						},
+						{ "Mensaje", ModalMensaje }
+					};
 
-				Navigation.NavigateTo("/", forceLoad: true);
+				await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
 			}
 			else
 			{
-				VerificarError();
+				await MostrarModalError();
 			}
 		}
 
@@ -169,5 +189,15 @@ namespace APP.Components.Pages.Transferencia
 			modeloMovimientos.Descripcion = "";
 		}
 
+		public async Task MostrarModalError()
+		{
+			var parametros = new Dictionary<string, object>
+					{
+						{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, CerrarModal) },
+						{ "Mensaje", ModalMensaje }
+					};
+
+			await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+		}
 	}
 }

@@ -38,3 +38,9 @@ p {
     text-align: center;
     padding-top: 10px;
 }
+
+Button {
+    align-self: flex-end;
+    margin: 10px 0;
+    width: 112px;
+}

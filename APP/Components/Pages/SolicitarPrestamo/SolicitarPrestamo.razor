@@ -5,14 +5,7 @@
 
 <hr>
 
-<Modal @ref="modal" IsVerticallyCentered="true">
-	<BodyTemplate>
-		@* @modalMensaje *@
-	</BodyTemplate>
-	<FooterTemplate>
-		<Button Color="ButtonColor.Primary" @onclick="CerrarModal" >Cerrar</Button>
-	</FooterTemplate>
-</Modal>
+<Modal @ref="modal" IsVerticallyCentered="true" UseStaticBackdrop="true" CloseOnEscape="false" />
 
 <EditForm Model="@prestamo" OnValidSubmit="Solicitar">
 	<DataAnnotationsValidator />

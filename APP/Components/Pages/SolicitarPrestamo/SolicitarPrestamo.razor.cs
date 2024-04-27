@@ -8,6 +8,7 @@ using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace APP.Components.Pages.SolicitarPrestamo
 {
@@ -42,7 +43,10 @@ namespace APP.Components.Pages.SolicitarPrestamo
 
 		public Prestamo prestamo = new Prestamo();
 
-		private Modal modal = default!;
+        public string ModalTitulo = "";
+        public string ModalMensaje = "";
+        public bool OcurrioError = false;
+        private Modal modal = default!;
 
 		protected override async Task OnInitializedAsync()
         {
@@ -171,5 +175,48 @@ namespace APP.Components.Pages.SolicitarPrestamo
 		{
 			await modal.HideAsync();
 		}
+
+        public async Task MostrarModalError()
+        {
+            var parametros = new Dictionary<string, object>
+            {
+                { "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, CerrarModal) },
+                { "Mensaje", ModalMensaje }
+            };
+
+            await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+        }
+        public async Task VerificarError()
+        {
+            if (OcurrioError)
+            {
+                await MostrarModalError();
+            }
+        }
+        public bool GestionarRespuesta<Entidad>(RespuestaConsumidor<RespuestaAPI<Entidad>> respuesta)
+        {
+            if (respuesta.Ok)
+            {
+                if (respuesta.Data.Ok)
+                {
+                    OcurrioError = false;
+                }
+                else
+                {
+                    ModalTitulo = "Error";
+                    ModalMensaje = respuesta.Data.Mensaje;
+                    OcurrioError = true;
+                }
+            }
+            else
+            {
+                ModalTitulo = $"Error: \"{respuesta.StatusCode}\"";
+                ModalMensaje = respuesta.Mensaje;
+                OcurrioError = true;
+
+            }
+
+            return OcurrioError;
+        }
     }
 }

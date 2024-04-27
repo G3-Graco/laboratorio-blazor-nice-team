@@ -42,12 +42,23 @@ namespace APP.Data.Servicios
 					usuario
 				);
 
-				if (respuesta.Ok)
-				{
-					await _protectedLocalStorage.SetAsync("jwt", respuesta.Data.Datos.jwt);
-					await _protectedLocalStorage.SetAsync("idusuariosesion", respuesta.Data.Datos.idusuariosesion);
-				}
+                if (respuesta.Ok)
+                {
+                    if (respuesta.Data.Ok)
+                    {
+                        await _protectedLocalStorage.SetAsync("jwt", respuesta.Data.Datos.jwt);
+                        await _protectedLocalStorage.SetAsync("idusuariosesion", respuesta.Data.Datos.idusuariosesion);
+                    }
+                    else
+                    {
+                        return respuesta;
+                    }
+                }
+                else
+                {
+                    return respuesta;
 
+                }
 			}
 			catch (Exception ex)
 			{

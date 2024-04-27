@@ -2,6 +2,7 @@
 using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace APP.Components.Pages.PagarPrestamoListar
 {
@@ -50,11 +51,22 @@ namespace APP.Components.Pages.PagarPrestamoListar
             }
         }
 
-        public async Task VerificarError()
+		public async Task MostrarModalError()
+		{
+			var parametros = new Dictionary<string, object>
+			{
+				{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, CerrarModal) },
+				{ "Mensaje", ModalMensaje }
+			};
+
+			await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+		}
+
+		public async Task VerificarError()
         {
             if (OcurrioError)
             {
-                await modal.ShowAsync();
+                await MostrarModalError();
             }
 
         }
@@ -102,7 +114,11 @@ namespace APP.Components.Pages.PagarPrestamoListar
             {
                 cuotas = respuesta.Data.Datos.ToList();
             }
-        }
+			else
+			{
+				await MostrarModalError();
+			}
+		}
 
         private async Task<GridDataProviderResult<Cuota>> CuotasDataProvider(GridDataProviderRequest<Cuota> request)
         {
@@ -124,7 +140,11 @@ namespace APP.Components.Pages.PagarPrestamoListar
             {
                 NombreCliente = $"{respuesta.Data.Datos.Nombre} {respuesta.Data.Datos.Apellido}";
             }
-        }
+			else
+			{
+				await MostrarModalError();
+			}
+		}
 
         private async Task PagarCuotaSeleccionada()
         {
@@ -136,7 +156,8 @@ namespace APP.Components.Pages.PagarPrestamoListar
             {
                 ModalTitulo = "Error";
                 ModalMensaje = "Primero debe consultar un préstamo";
-                await modal.ShowAsync();
+
+                await MostrarModalError();
             }
             else
             {
