@@ -65,7 +65,7 @@ namespace APP.Components.Pages.SolicitarPrestamo
 				problema = "Se requiere tener un trabajo en el que se haya trabajado al menos 3 meses";
 				return;
 			}
-			if (prestamo.MontoTotal < (Sueldo * 3)) {
+			if (prestamo.MontoTotal > (Sueldo * 3)) {
 				problema = "El monto no puede ser menor al triple del sueldo";
 				return;
 			}
