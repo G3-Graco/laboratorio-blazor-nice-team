@@ -56,59 +56,89 @@ namespace APP.Components.Pages.SolicitarPrestamo
         }
         public async void Solicitar()
         {
-			var cliente = await clienteServicio.ConsultarCliente();
-			var plazos = await prestamoServicio.ConsultarPlazos();
-			long.TryParse(cliente.Data.Datos.FechaNacimiento, out long numero);
-			var edad = new DateTime(numero);
-			if (Empleo < 3)
+			try
 			{
-				problema = "Se requiere tener un trabajo en el que se haya trabajado al menos 3 meses";
-				return;
-			}
-			if (prestamo.MontoTotal > (Sueldo * 3)) {
-				problema = "El monto no puede ser menor al triple del sueldo";
-				return;
-			}
-			if ((DateTime.Now.Year - edad.Year) < 18)
-			{
-				problema = "No puede hacer préstamos si es menor de eddad";
-				return;
-			}
-			plazos.Data.Datos.ToList().ForEach(x => {
-				if (prestamo.NumeroCuotas <= x.MaximaCuotas && 
-					prestamo.NumeroCuotas >= x.MinimoCuotas)
+				var cliente = await clienteServicio.ConsultarCliente();
+				var plazos = await prestamoServicio.ConsultarPlazos();
+				long.TryParse(cliente.Data.Datos.FechaNacimiento, out long numero);
+				var edad = new DateTime(numero);
+				if (Empleo < 3)
 				{
-					prestamo.IdPlazo = x.Id;
+					ModalTitulo = "No se pudo solicitar el préstamo";
+					ModalMensaje = "Se requiere tener un trabajo en el que se haya trabajado al menos 3 meses";
+					await MostrarModalError();
+					return;
 				}
-			});
-			var estados = await prestamoServicio.ObtenerEstados();
-			estados.Data.Datos.ToList().ForEach(x => {
-				if (x.Nombre == "En proceso") prestamo.IdEstado = x.Id;
-			});
-			var respuestaIdentidad = await documentoServicio.SubirArchivo(Identidad);
-			var respuestaTrabajo = await documentoServicio.SubirArchivo(Trabajo);
-			if (respuestaIdentidad.Data.Datos.Ubicacion == "" || 
-				respuestaTrabajo.Data.Datos.Ubicacion == "")
-			{
-				problema = "No se pudo guardar todos los documentos";
-				return;
+				if (prestamo.MontoTotal > (Sueldo * 3)) {
+					ModalTitulo = "No se pudo solicitar el préstamo";
+					ModalMensaje = "El monto no puede ser menor al triple del sueldo";
+					await MostrarModalError();
+					return;
+				}
+				if ((DateTime.Now.Year - edad.Year) < 18)
+				{
+					ModalTitulo = "No se pudo solicitar el préstamo";
+					ModalMensaje = "No puede hacer préstamos si es menor de eddad";
+					await MostrarModalError();
+					return;
+				}
+				plazos.Data.Datos.ToList().ForEach(x => {
+					if (prestamo.NumeroCuotas <= x.MaximaCuotas && 
+						prestamo.NumeroCuotas >= x.MinimoCuotas)
+					{
+						prestamo.IdPlazo = x.Id;
+					}
+				});
+				problema = "después de plazos";
+				var estados = await prestamoServicio.ObtenerEstados();
+				estados.Data.Datos.ToList().ForEach(x => {
+					if (x.Nombre == "En proceso") prestamo.IdEstado = x.Id;
+				});
+				var respuestaIdentidad = await documentoServicio.SubirArchivo(Identidad);
+				var respuestaTrabajo = await documentoServicio.SubirArchivo(Trabajo);
+				if (respuestaIdentidad.Data.Datos.Ubicacion == "" || 
+					respuestaTrabajo.Data.Datos.Ubicacion == "")
+				{
+					problema = "No se pudo guardar todos los documentos";
+					return;
+				}
+				problema = $"{prestamo.CuotaMensual}";
+				var respuesta = await prestamoServicio.CrearPrestamo(prestamo);
+				if (respuesta.Ok)
+				{
+					problema = respuesta.Mensaje;
+				}
+				// var documentoIdentidad = respuestaIdentidad.Data.Datos;
+				// var documentoTrabajo = respuestaTrabajo.Data.Datos;
+				// var tipos = await documentoServicio.ObtenerTipos();
+				// tipos.Data.Datos.ToList().ForEach(x => {
+				// 	if (x.Nombre == "Identificación") documentoIdentidad.IdTipo = x.Id;
+				// 	else if (x.Nombre == "Recibo") documentoTrabajo.IdTipo = x.Id;
+				// });
+				// documentoIdentidad.IdPrestamo = respuesta.Data.Datos.Id;
+				// documentoTrabajo.IdPrestamo = respuesta.Data.Datos.Id;
+				// await documentoServicio.AgregarArchivo(documentoIdentidad);
+				// await documentoServicio.AgregarArchivo(documentoTrabajo);
+				ModalTitulo = "Solicitud de préstamo exitósa";
+				ModalMensaje = "Felicidades el préstamo fue solicitado exitósamente";
+				var parametros = new Dictionary<string, object>
+				{
+					{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, async () => {
+						await modal.HideAsync();
+						Navigation.NavigateTo("/", forceLoad: true); 
+					})
+					},
+					{ "Mensaje", ModalMensaje }
+				};
+				await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
 			}
-			var respuesta = await prestamoServicio.CrearPrestamo(prestamo);
-			if (respuesta.Ok)
+			catch (Exception e)
 			{
-				problema = respuesta.Mensaje;
+				ModalTitulo = "No se pudo solicitar el préstamo";
+				ModalMensaje = e.Message;
+				await MostrarModalError();
 			}
-			var documentoIdentidad = respuestaIdentidad.Data.Datos;
-			var documentoTrabajo = respuestaTrabajo.Data.Datos;
-			var tipos = await documentoServicio.ObtenerTipos();
-			tipos.Data.Datos.ToList().ForEach(x => {
-				if (x.Nombre == "Identificación") documentoIdentidad.IdTipo = x.Id;
-				else if (x.Nombre == "Recibo") documentoTrabajo.IdTipo = x.Id;
-			});
-			documentoIdentidad.IdPrestamo = respuesta.Data.Datos.Id;
-			documentoTrabajo.IdPrestamo = respuesta.Data.Datos.Id;
-			await documentoServicio.AgregarArchivo(documentoIdentidad);
-			await documentoServicio.AgregarArchivo(documentoTrabajo);
+			
 		}
 
 		public async Task CargarIdentidad(InputFileChangeEventArgs e) {
@@ -129,9 +159,9 @@ namespace APP.Components.Pages.SolicitarPrestamo
 					"Carga_insegura", 
 					nombre
 				);
-				MemoryStream memoria = new MemoryStream();
-				await archivo.OpenReadStream().CopyToAsync(memoria); 
-				Identidad = new FormFile(memoria, 0, archivo.Size, "Identidad", archivo.Name);
+				// MemoryStream memoria = new MemoryStream();
+				// await archivo.OpenReadStream().CopyToAsync(memoria); 
+				Identidad = new FormFile(archivo.OpenReadStream(), 0, archivo.Size, "Identidad", archivo.Name);
 				/*
 				await using FileStream fs = new(camino, FileMode.Create);
 				await archivo.OpenReadStream().CopyToAsync(fs);
@@ -156,9 +186,9 @@ namespace APP.Components.Pages.SolicitarPrestamo
 					"Carga_insegura", 
 					nombre
 				);
-				MemoryStream memoria = new MemoryStream();
-				await archivo.OpenReadStream().CopyToAsync(memoria); 
-				Trabajo = new FormFile(memoria, 0, archivo.Size, "Trabajo", $"{archivo.Name}.{archivo.ContentType}");
+				// MemoryStream memoria = new MemoryStream();
+				// await archivo.OpenReadStream().CopyToAsync(memoria); 
+				Trabajo = new FormFile(archivo.OpenReadStream(), 0, archivo.Size, "Trabajo", $"{archivo.Name}.{archivo.ContentType}");
 				// MemoryStream memoria = new MemoryStream();
 				// await e.File.OpenReadStream().CopyToAsync(memoria); 
 				// Trabajo = memoria.ToArray();
