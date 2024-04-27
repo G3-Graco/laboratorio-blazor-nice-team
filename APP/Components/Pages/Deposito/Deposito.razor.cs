@@ -7,6 +7,7 @@ using APP.Data.Modelos;
 using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace APP.Components.Pages.Deposito
 {
@@ -46,12 +47,21 @@ namespace APP.Components.Pages.Deposito
 				StateHasChanged();
 			}
 		}
+		public async Task MostrarModalError()
+		{
+			var parametros = new Dictionary<string, object>
+			{
+				{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, CerrarModal) },
+				{ "Mensaje", ModalMensaje }
+			};
 
+			await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+		}
 		public async Task VerificarError()
 		{
 			if (OcurrioError)
 			{
-				await modal.ShowAsync();
+				await MostrarModalError();
 			}
 		}
 
@@ -95,6 +105,10 @@ namespace APP.Components.Pages.Deposito
 			{
 				NombreCliente = $"{respuesta.Data.Datos.Nombre} {respuesta.Data.Datos.Apellido}";
 			}
+			else
+			{
+				await MostrarModalError();
+			}
 		}
 
 		public async void Depositar()
@@ -124,6 +138,10 @@ namespace APP.Components.Pages.Deposito
 					}
 				});
 			}
+			else
+			{
+				await MostrarModalError();
+			}
 
 			RespuestaConsumidor<RespuestaAPI<Movimiento>> respuesta = await movimientoServicio.RealizarMovimiento(deposito);
 			GestionarRespuesta<Movimiento>(respuesta);
@@ -134,13 +152,22 @@ namespace APP.Components.Pages.Deposito
 				ModalTitulo = "Éxito";
 	            ModalMensaje = "Se hizo el depósito exitósamente";
 
-				await modal.ShowAsync();
+				var parametros = new Dictionary<string, object>
+					{
+						{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, async () => {
+						await modal.HideAsync();
+						Navigation.NavigateTo("/", forceLoad: true);
+						})
+						},
+						{ "Mensaje", ModalMensaje }
+					};
 
-				Navigation.NavigateTo("/", forceLoad: true);
+				await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+				
 			}
 			else
 			{
-				VerificarError();
+				await MostrarModalError();
 			}
 		}
 

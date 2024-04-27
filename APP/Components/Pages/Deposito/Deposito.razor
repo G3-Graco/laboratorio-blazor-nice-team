@@ -1,14 +1,7 @@
 @page "/deposito"
 @rendermode InteractiveServer
 
-<Modal @ref="modal" IsVerticallyCentered="true" Title=@ModalTitulo Message=@ModalMensaje>
-	<BodyTemplate>
-
-	</BodyTemplate>
-	<FooterTemplate>
-		<Button Color="ButtonColor.Primary" @onclick="CerrarModal">Cerrar</Button>
-	</FooterTemplate>
-</Modal>
+<Modal @ref="modal" IsVerticallyCentered="true" UseStaticBackdrop="true" CloseOnEscape="false" />
 
 <hr>
 @if (NombreCliente == "")

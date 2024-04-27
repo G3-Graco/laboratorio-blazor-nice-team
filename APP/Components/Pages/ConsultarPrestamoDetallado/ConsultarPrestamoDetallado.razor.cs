@@ -2,6 +2,7 @@
 using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace APP.Components.Pages.ConsultarPrestamoDetallado
 {
@@ -57,12 +58,22 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
                 StateHasChanged();
             }
         }
+        public async Task MostrarModalError()
+        {
+            var parametros = new Dictionary<string, object>
+                    {
+                        { "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, CerrarModal) },
+                        { "Mensaje", ModalMensaje }
+                    };
+
+            await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+        }
 
         public async Task VerificarError()
         {
             if (OcurrioError)
             {
-                await modal.ShowAsync();
+                await MostrarModalError();
             }
 
         }
@@ -111,6 +122,10 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
                 Prestamo prestamoconsultado = respuesta.Data.Datos.FirstOrDefault(p => p.Id == idprestamo);
                 prestamos.Add(prestamoconsultado);
             }
+            else
+            {
+                await MostrarModalError();
+            }
         }
 
         private async Task<GridDataProviderResult<Prestamo>> PrestamoDataProvider(GridDataProviderRequest<Prestamo> request)
@@ -133,6 +148,10 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
             {
                 NombreCliente = $"{respuesta.Data.Datos.Nombre} {respuesta.Data.Datos.Apellido}";
             }
+            else
+            {
+                await MostrarModalError();
+            }
         }
 
         private async Task ObntenerMontoPendienteTotal()
@@ -144,6 +163,10 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
             if (!OcurrioError)
             {
                 MontoPendiente = respuesta.Data.Datos;
+            }
+            else
+            {
+                await MostrarModalError();
             }
         }
 
@@ -158,6 +181,10 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
             if (!OcurrioError)
             {
                 pagos = respuesta.Data.Datos.ToList();
+            }
+            else
+            {
+                await MostrarModalError();
             }
         }
 
@@ -183,6 +210,10 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
             if (!OcurrioError)
             {
                 cuotas = respuesta.Data.Datos.ToList();
+            }
+            else
+            {
+                await MostrarModalError();
             }
         }
 

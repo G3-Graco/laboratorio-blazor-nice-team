@@ -1,0 +1,21 @@
+﻿<div class="row">
+    <div class="col-7 col-md-9">@Mensaje</div>
+</div>
+
+<Button class="mt-3" Color="ButtonColor.Success" Type="ButtonType.Button" @onclick="OnClickCallback">
+    Cerrar
+</Button>
+
+
+@code {
+    [Parameter] public EventCallback<MouseEventArgs> OnClickCallback { get; set; }
+
+    [Parameter] public string Mensaje { get; set; }
+
+    protected override void OnInitialized()
+    {
+
+        base.OnInitialized();
+    }
+
+}
