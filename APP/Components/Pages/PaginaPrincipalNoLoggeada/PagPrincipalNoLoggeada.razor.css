@@ -15,8 +15,7 @@ p{
     margin-top: 0;
     margin-left: 0;
     margin-right: 0;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-top: 40px;
     background-color: honeydew;
     border-bottom-left-radius: 100%;
     border-bottom-right-radius: 100%;
@@ -25,21 +24,27 @@ p{
 .imagen {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     /* align-content: space-evenly; */
 }
 
-.imagen img {
-    width: 50%;
+.colorado {
+    color: darkcyan;
+    font-size: xx-large;
+}
+
+.mayor {
+    width: 30%;
+}
+
+.menor {
+    width: 5%;
 }
 
 .flecha {
+    padding-top: 30px;
     text-align: center;
-    padding-bottom: 30px;
-}
-
-.flecha img {
-    width: 40%;
+    padding-bottom: 70px;
 }
 
 /* 
