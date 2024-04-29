@@ -1,5 +1,6 @@
 using APP.Components;
 using APP.Data.Servicios;
+using Tewr.Blazor.FileReader;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddScoped<MovimientoServicio>();
 builder.Services.AddScoped<PagoServicio>();
 builder.Services.AddScoped<CuotaServicio>();
 builder.Services.AddScoped<DocumentoServicio>();
+
+builder.Services.AddFileReaderService();
 
 var app = builder.Build();
 
