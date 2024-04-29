@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Pipelines;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using APP.Data.Modelos;
 using APP.Data.Servicios;
@@ -9,6 +10,8 @@ using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Tewr.Blazor.FileReader; 
 
 namespace APP.Components.Pages.SolicitarPrestamo
 {
@@ -28,8 +31,12 @@ namespace APP.Components.Pages.SolicitarPrestamo
 
 		[Inject]
 		public DocumentoServicio documentoServicio { get; set; }
+        [Inject]
+        public IFileReaderService fileReader { get; set; }
 
-		private double Sueldo { get; set; }
+        
+
+        private double Sueldo { get; set; }
 		
 		private int Empleo { get; set; }
 
@@ -262,5 +269,63 @@ namespace APP.Components.Pages.SolicitarPrestamo
 
             return OcurrioError;
         }
+
+
+
+
+        ElementReference elementReference;
+        string message = string.Empty;
+        string imgPath = null;
+
+        string fileName = string.Empty;
+        string type = string.Empty;
+        string size = string.Empty;
+
+        Stream fileStream = null;
+
+        async Task OpenFileAsync()
+        {
+            var file = (await fileReader.CreateReference(elementReference).EnumerateFilesAsync()).FirstOrDefault();
+
+            if (file == null)
+            {
+                problema = "No tiene un archivo";
+                return;
+            }
+
+            var fileInfo = await file.ReadFileInfoAsync();
+            fileName = fileInfo.Name;
+            size = $"{fileInfo.Size}";
+            type = fileInfo.Type;
+
+            using (var memoryStream = await file.CreateMemoryStreamAsync((int)fileInfo.Size))
+            {
+                fileStream = new MemoryStream(memoryStream.ToArray());
+            }
+        }
+
+        async Task UploadFileAsync()
+        {
+            string url = "https://localhost:7181/api/Documento/CargarArchivo";
+
+            var content = new MultipartFormDataContent();
+            content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
+
+            content.Add(new StreamContent(fileStream, (int)fileStream.Length), "image", fileName);
+            HttpClient httpClient = new HttpClient();
+
+            var response = httpClient.PostAsync(url, content);
+
+            message = "Imagen guardada con éxito";
+
+            problema = "Se agregó el archivo";
+        }
+
+
+
+
+
     }
+
+
 }
