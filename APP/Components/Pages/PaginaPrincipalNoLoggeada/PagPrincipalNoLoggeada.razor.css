@@ -8,8 +8,8 @@
     padding: 10px;
 }
 
-p{
-   font-size: 25px;
+p {
+    font-size: 25px;
 }
 .banner {
     margin-top: 0;
@@ -45,6 +45,83 @@ p{
     padding-top: 30px;
     text-align: center;
     padding-bottom: 70px;
+}
+
+.todo {
+    width: 100%;
+}
+
+.espacio {
+    margin-top: 50px;
+    padding-top: 50px;
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+}
+
+.bancoTitulo h1 {
+    text-align: center;
+    color: darkcyan;
+}
+
+.trio {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.trio > div  {
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr;
+}
+
+.ejemplo {
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.ejemplo img {
+    width: 50%;
+    position: relative;
+}
+
+.suave {
+    background-color: cornsilk;
+}
+
+.neutro {
+    background-color: khaki;
+}
+
+.fuerte {
+    background-color: mintcream;
+}
+
+.interno {
+    width: 20%;
+}
+
+.tabla {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    padding-bottom: 100px;
+}
+
+.tabla > div {
+    display: grid;
+    grid-template-columns: 3fr 5fr;
+}
+
+.tituloTabla {
+    text-align: center;
+    font-weight: bolder;
+    color: #008f8c;
+}
+
+.explicacion {
+    text-align: center;
 }
 
 /* 

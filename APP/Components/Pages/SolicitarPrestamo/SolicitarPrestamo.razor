@@ -31,11 +31,11 @@
         </div>
         <div>
             <label for="Identidad">Documento de identidad: </label>
-            <InputFile name="Identidad" id="Identidad" OnChange="@CargarIdentidad" />
+            <input type="file"  id="Identidad" @ref="IdentidadFile" @onchange="async () => await CargarIdentidad()" />
         </div>
         <div>
             <label for="Trabajo">Recibo de sueldo de trabajo: </label>
-            <InputFile name="Trabajo" id="Trabajo" OnChange="@CargarTrabajo" />
+            <input type="file" id="Trabajo" @ref="TrabajoFile" @onchange="async () => await CargarTrabajo()" />
         </div>
     </article>
     <div class="boton">
@@ -58,3 +58,4 @@
 
 
 
+    using System.Formats.Asn1;

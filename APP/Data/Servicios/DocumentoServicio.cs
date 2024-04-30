@@ -12,16 +12,25 @@ namespace APP.Data.Servicios
             _protectedLocalStorage = protectedLocalStorage;
         }
 
-        public async Task<RespuestaConsumidor<RespuestaAPI<Documento>>> SubirArchivo(FormFile archivo) {
+        public async Task<RespuestaConsumidor<RespuestaAPI<Documento>>> SubirArchivo(Stream archivo, string nombre) {
             RespuestaConsumidor<RespuestaAPI<Documento>> respuesta = new();
             try
             {
-                respuesta = await Consumidor.Execute<FormFile, RespuestaAPI<Documento>>(
-                    "https://localhost:7181/api/Documento/CargarArchivo", 
-                    MethodHttp.POST, 
-                    archivo
-                );
-            }
+                // respuesta = await Consumidor.Execute<FormFile, RespuestaAPI<Documento>>(
+                //     "https://localhost:7181/api/Documento/CargarArchivo", 
+                //     MethodHttp.POST, 
+                //     archivo
+                // );
+                string url = "https://localhost:7181/api/Documento/CargarArchivo";
+
+                var content = new MultipartFormDataContent();
+                content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
+
+                content.Add(new StreamContent(archivo, (int)archivo.Length), "image", nombre);
+                HttpClient httpClient = new HttpClient();
+
+                var response = httpClient.PostAsync(url, content);
+                }
             catch (Exception e)
             {
                 
