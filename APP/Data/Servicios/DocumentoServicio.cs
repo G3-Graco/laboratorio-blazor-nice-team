@@ -16,20 +16,12 @@ namespace APP.Data.Servicios
             RespuestaConsumidor<RespuestaAPI<Documento>> respuesta = new();
             try
             {
-                // respuesta = await Consumidor.Execute<FormFile, RespuestaAPI<Documento>>(
-                //     "https://localhost:7181/api/Documento/CargarArchivo", 
-                //     MethodHttp.POST, 
-                //     archivo
-                // );
-                string url = "https://localhost:7181/api/Documento/CargarArchivo";
-
-                var content = new MultipartFormDataContent();
-                content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
-
-                content.Add(new StreamContent(archivo, (int)archivo.Length), "image", nombre);
-                HttpClient httpClient = new HttpClient();
-
-                var response = httpClient.PostAsync(url, content);
+                respuesta = await Consumidor.Execute<FormFile, RespuestaAPI<Documento>>(
+                    "https://localhost:7181/api/Documento/CargarArchivo", 
+                    MethodHttp.POST, 
+                    null, formaForm: true, 
+                    form: archivo, NombreForm: nombre
+                );
                 }
             catch (Exception e)
             {

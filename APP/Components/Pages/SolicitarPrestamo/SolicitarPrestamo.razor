@@ -47,15 +47,11 @@
 <p>@problema</p>
 
 
-
+@* 
 <input type="file" @ref="elementReference" @onchange="async () => await OpenFileAsync()"/>
 <p>Nombre de archivo: @fileName</p>
 <p>Tamaño: @size</p>
 <p>Tipo: @type</p>
 
 <Button @onclick="async () => await UploadFileAsync()">Subir imagen</Button>
-
-
-
-
-    using System.Formats.Asn1;
+ *@

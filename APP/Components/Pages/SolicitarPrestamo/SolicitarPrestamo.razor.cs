@@ -46,9 +46,11 @@ namespace APP.Components.Pages.SolicitarPrestamo
 
 		private Stream Trabajo { get; set; }
 
-		private ElementReference IdentidadFile;
+		private ElementReference IdentidadFile {get; set;}
+		private string IdentidadFileNombre {get; set;}
 
-		private ElementReference TrabajoFile;
+		private ElementReference TrabajoFile {get; set;}
+		private string TrabajoFileNombre { get; set; }
 
 		private IWebHostEnvironment Environment;
 
@@ -105,8 +107,8 @@ namespace APP.Components.Pages.SolicitarPrestamo
 				estados.Data.Datos.ToList().ForEach(x => {
 					if (x.Nombre == "En proceso") prestamo.IdEstado = x.Id;
 				});
-				var respuestaIdentidad = await documentoServicio.SubirArchivo(Identidad, "nombre");
-				var respuestaTrabajo = await documentoServicio.SubirArchivo(Trabajo, "nombre");
+				var respuestaIdentidad = await documentoServicio.SubirArchivo(Identidad, IdentidadFileNombre);
+				var respuestaTrabajo = await documentoServicio.SubirArchivo(Trabajo, TrabajoFileNombre);
 				if (respuestaIdentidad.Data.Datos.Ubicacion == "" || 
 					respuestaTrabajo.Data.Datos.Ubicacion == "")
 				{
@@ -119,17 +121,17 @@ namespace APP.Components.Pages.SolicitarPrestamo
 				{
 					problema = respuesta.Mensaje;
 				}
-				// var documentoIdentidad = respuestaIdentidad.Data.Datos;
-				// var documentoTrabajo = respuestaTrabajo.Data.Datos;
-				// var tipos = await documentoServicio.ObtenerTipos();
-				// tipos.Data.Datos.ToList().ForEach(x => {
-				// 	if (x.Nombre == "Identificación") documentoIdentidad.IdTipo = x.Id;
-				// 	else if (x.Nombre == "Recibo") documentoTrabajo.IdTipo = x.Id;
-				// });
-				// documentoIdentidad.IdPrestamo = respuesta.Data.Datos.Id;
-				// documentoTrabajo.IdPrestamo = respuesta.Data.Datos.Id;
-				// await documentoServicio.AgregarArchivo(documentoIdentidad);
-				// await documentoServicio.AgregarArchivo(documentoTrabajo);
+				var documentoIdentidad = respuestaIdentidad.Data.Datos;
+				var documentoTrabajo = respuestaTrabajo.Data.Datos;
+				var tipos = await documentoServicio.ObtenerTipos();
+				tipos.Data.Datos.ToList().ForEach(x => {
+					if (x.Nombre == "Identificación") documentoIdentidad.IdTipo = x.Id;
+					else if (x.Nombre == "Recibo") documentoTrabajo.IdTipo = x.Id;
+				});
+				documentoIdentidad.IdPrestamo = respuesta.Data.Datos.Id;
+				documentoTrabajo.IdPrestamo = respuesta.Data.Datos.Id;
+				await documentoServicio.AgregarArchivo(documentoIdentidad);
+				await documentoServicio.AgregarArchivo(documentoTrabajo);
 				ModalTitulo = "Solicitud de préstamo exitósa";
 				ModalMensaje = "Felicidades el préstamo fue solicitado exitósamente";
 				var parametros = new Dictionary<string, object>
@@ -164,9 +166,10 @@ namespace APP.Components.Pages.SolicitarPrestamo
 				}
 
 				var informacion = await archivo.ReadFileInfoAsync();
-				fileName = informacion.Name;
-				size = $"{informacion.Size}";
-				type = informacion.Type;
+				IdentidadFileNombre = informacion.Name;
+				// fileName = informacion.Name;
+				// size = $"{informacion.Size}";
+				// type = informacion.Type;
 
 				using (var memoryStream = await archivo.CreateMemoryStreamAsync((int)informacion.Size))
 				{
@@ -215,9 +218,10 @@ namespace APP.Components.Pages.SolicitarPrestamo
 				}
 
 				var informacion = await archivo.ReadFileInfoAsync();
-				fileName = informacion.Name;
-				size = $"{informacion.Size}";
-				type = informacion.Type;
+				TrabajoFileNombre = informacion.Name;
+				// fileName = informacion.Name;
+				// size = $"{informacion.Size}";
+				// type = informacion.Type;
 
 				using (var memoryStream = await archivo.CreateMemoryStreamAsync((int)informacion.Size))
 				{
@@ -311,53 +315,53 @@ namespace APP.Components.Pages.SolicitarPrestamo
 
 
 
-        ElementReference elementReference;
-        string message = string.Empty;
-        string imgPath = null;
+        // ElementReference elementReference;
+        // string message = string.Empty;
+        // string imgPath = null;
 
-        string fileName = string.Empty;
-        string type = string.Empty;
-        string size = string.Empty;
+        // string fileName = string.Empty;
+        // string type = string.Empty;
+        // string size = string.Empty;
 
-        Stream fileStream = null;
+        // Stream fileStream = null;
 
-        async Task OpenFileAsync()
-        {
-            var file = (await fileReader.CreateReference(elementReference).EnumerateFilesAsync()).FirstOrDefault();
+        // async Task OpenFileAsync()
+        // {
+        //     var file = (await fileReader.CreateReference(elementReference).EnumerateFilesAsync()).FirstOrDefault();
 
-            if (file == null)
-            {
-                problema = "No tiene un archivo";
-                return;
-            }
+        //     if (file == null)
+        //     {
+        //         problema = "No tiene un archivo";
+        //         return;
+        //     }
 
-            var fileInfo = await file.ReadFileInfoAsync();
-            fileName = fileInfo.Name;
-            size = $"{fileInfo.Size}";
-            type = fileInfo.Type;
+        //     var fileInfo = await file.ReadFileInfoAsync();
+        //     fileName = fileInfo.Name;
+        //     size = $"{fileInfo.Size}";
+        //     type = fileInfo.Type;
 
-            using (var memoryStream = await file.CreateMemoryStreamAsync((int)fileInfo.Size))
-            {
-                fileStream = new MemoryStream(memoryStream.ToArray());
-            }
-        }
+        //     using (var memoryStream = await file.CreateMemoryStreamAsync((int)fileInfo.Size))
+        //     {
+        //         fileStream = new MemoryStream(memoryStream.ToArray());
+        //     }
+        // }
 
-        async Task UploadFileAsync()
-        {
-            string url = "https://localhost:7181/api/Documento/CargarArchivo";
+        // async Task UploadFileAsync()
+        // {
+        //     string url = "https://localhost:7181/api/Documento/CargarArchivo";
 
-            var content = new MultipartFormDataContent();
-            content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
+        //     var content = new MultipartFormDataContent();
+        //     content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
 
-            content.Add(new StreamContent(fileStream, (int)fileStream.Length), "image", fileName);
-            HttpClient httpClient = new HttpClient();
+        //     content.Add(new StreamContent(fileStream, (int)fileStream.Length), "image", fileName);
+        //     HttpClient httpClient = new HttpClient();
 
-            var response = httpClient.PostAsync(url, content);
+        //     var response = httpClient.PostAsync(url, content);
 
-            message = "Imagen guardada con éxito";
+        //     message = "Imagen guardada con éxito";
 
-            problema = "Se agregó el archivo";
-        }
+        //     problema = "Se agregó el archivo";
+        // }
 
 
 
