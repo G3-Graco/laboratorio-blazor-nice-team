@@ -58,6 +58,10 @@ p {
     padding-bottom: 50px;
 }
 
+.bancoTitulo {
+    padding-bottom: 40px;
+}
+
 .bancoTitulo h1 {
     text-align: center;
     color: darkcyan;
@@ -92,7 +96,7 @@ p {
 }
 
 .neutro {
-    background-color: khaki;
+    background-color: beige;
 }
 
 .fuerte {
@@ -117,69 +121,53 @@ p {
 .tituloTabla {
     text-align: center;
     font-weight: bolder;
+    font-size: xx-large;
     color: #008f8c;
 }
 
 .explicacion {
     text-align: center;
+    padding-bottom: 100px;
 }
 
-/* 
-.banner:last-child {
-    width: 100%;
+.explicacion img {
+    width: 10%;
 }
 
-.banner:last-child img {
+.espacioImagen {
+    padding-bottom: 40px;
+}
+
+.descripcion {
+    color: green;
+    font-weight: bolder;
+}
+
+.final {
     text-align: center;
-    width: 50%;
-} */
-
-/* .imagen-seccion {
-    display: block;
-    margin: 30px;
-    max-height: 500px;
-    width : auto;
+    background-color: honeydew;
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+    padding-bottom: 40px;
+    margin-bottom: 0;
 }
 
-h2.hinfo {
-    display: flex;
-    justify-content: center;
-    margin: 50px 0;
-    padding: 20px;
-    color: white;
-    text-align: center;
-    font-weight: bold;
-    
-    background-color: #005d5a;
+.ultimaFrase {
+    padding-top: 100px;
+    padding-bottom: 100px;
 }
 
-p {
-    text-align: justify;
-    margin: 0;
+.ultimaDivision {
+    padding-bottom: 20px;
+    padding-top: 20px;
 }
 
-section.info {
-    display: flex;
-    margin: 30px;
-
-    padding: 20px;
-    border-radius: 10px; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.FasePrimera {
+    color: lightgreen;
+    font-weight: bolder;
 }
 
-section.infoo {
-    display: flex;
-    flex-direction:row-reverse;
-    margin: 30px;
-   
-    padding: 20px;
-    border-radius: 10px; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-} */
-
-
-/*!important
-.contenido[b-bdfkh2wc0p] {
-    background-color: white;
-} no se pudo*/
-
+.FaseSegunda {
+    color: darkcyan;
+    font-weight: bolder;
+}
