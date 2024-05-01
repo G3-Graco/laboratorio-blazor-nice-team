@@ -108,6 +108,7 @@ namespace APP.Components.Pages.SolicitarPrestamo
 					if (x.Nombre == "En proceso") prestamo.IdEstado = x.Id;
 				});
 				var respuestaIdentidad = await documentoServicio.SubirArchivo(Identidad, IdentidadFileNombre);
+				Console.WriteLine("Perfecto");
 				var respuestaTrabajo = await documentoServicio.SubirArchivo(Trabajo, TrabajoFileNombre);
 				if (respuestaIdentidad.Data.Datos.Ubicacion == "" || 
 					respuestaTrabajo.Data.Datos.Ubicacion == "")
