@@ -71,12 +71,14 @@ namespace APP.Data.Servicios
 			return respuesta;
 		}
 
-		public async Task<RespuestaConsumidor<RespuestaAPI<Prestamo>>> CrearPrestamo(Prestamo prestamo) {
+		public async Task<RespuestaConsumidor<RespuestaAPI<Prestamo>>> CrearPrestamo(ModeloPrestamo prestamo) {
 			RespuestaConsumidor<RespuestaAPI<Prestamo>> respuesta = new();
             try
             {
-				respuesta = await Consumidor.Execute<Prestamo, RespuestaAPI<Prestamo>>(
-					"https://localhost:7181/api/Prestamo", 
+				var id = await _protectedLocalStorage.GetAsync<int>("idusuariosesion");
+                prestamo.IdClienteSolicitante = id.Success ? id.Value : 0;
+                respuesta = await Consumidor.Execute<ModeloPrestamo, RespuestaAPI<Prestamo>>(
+					"https://localhost:7181/api/Prestamo/solicitudprestamo", 
 					MethodHttp.POST, 
 					prestamo, 
 					_protectedLocalStorage

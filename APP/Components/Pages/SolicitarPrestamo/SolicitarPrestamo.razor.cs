@@ -107,7 +107,13 @@ namespace APP.Components.Pages.SolicitarPrestamo
 				estados.Data.Datos.ToList().ForEach(x => {
 					if (x.Nombre == "En proceso") prestamo.IdEstado = x.Id;
 				});
-				var respuesta = await prestamoServicio.CrearPrestamo(prestamo);
+				var modeloPresta = new ModeloPrestamo() {
+					SueldoBasicoDelSolicitante = Sueldo, 
+					NumeroCuotasDeseadas = prestamo.NumeroCuotas, 
+					MontoTotalDeseado = prestamo.MontoTotal, 
+					IdClienteSolicitante = prestamo.IdCliente
+				};
+				var respuesta = await prestamoServicio.CrearPrestamo(modeloPresta);
 				if (respuesta.Ok)
 				{
 					string[] lista = IdentidadFileNombre.Split('.');
