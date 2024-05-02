@@ -36,8 +36,8 @@ namespace APP.Data
 		public static async Task<RespuestaConsumidor<Tout>> Execute<Tin, Tout>(
 				string url, MethodHttp method, Tin 
 				objectRequest, ProtectedLocalStorage protectedLocalStorage = null, 
-				bool habiaMasDatosEnQuery = false, 
-				bool formaForm = false, Stream form = null, string NombreForm = "")
+				bool habiaMasDatosEnQuery = false)
+				// bool formaForm = false, Stream form = null, string NombreForm = "")
 		{
 
 			RespuestaConsumidor<Tout> respuesta = new RespuestaConsumidor<Tout>();
@@ -47,15 +47,13 @@ namespace APP.Data
 				{
 					var myContent = JsonConvert.SerializeObject((method != MethodHttp.GET) ? method != MethodHttp.DELETE ? objectRequest : "" : "");
 					var bytecontent = new ByteArrayContent(Encoding.UTF8.GetBytes(myContent));
-					var contenidoForm = new MultipartFormDataContent();
-					if (formaForm) {
-						contenidoForm.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
-						contenidoForm.Add(new StreamContent(form, (int)form.Length), "image", NombreForm);
-						// var response = httpClient.PostAsync(url, content);
-					} else {
-						
-						bytecontent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-					}
+					// var contenidoForm = new MultipartFormDataContent();
+					// if (formaForm) {
+					// 	contenidoForm.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
+					// 	contenidoForm.Add(new StreamContent(form, (int)form.Length), "image", NombreForm);
+					// 	// var response = httpClient.PostAsync(url, content);
+					// } else {
+					bytecontent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 					string newUrl = url;
 
 					//esto es para pasar el url con el id del usuario sesion en el path, ya que siempre que hacemos esto es cuando necesitamos el token
@@ -90,7 +88,8 @@ namespace APP.Data
 						request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 					}
 
-					using (HttpResponseMessage res = (formaForm) ? await client.PostAsync(url, contenidoForm) : await client.SendAsync(request))
+					// using (HttpResponseMessage res = (formaForm) ? await client.PostAsync(url, contenidoForm) : await client.SendAsync(request))
+					using (HttpResponseMessage res = await client.SendAsync(request))
 					{
 
 						using (HttpContent content = res.Content)

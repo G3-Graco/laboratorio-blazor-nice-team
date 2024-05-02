@@ -107,44 +107,58 @@ namespace APP.Components.Pages.SolicitarPrestamo
 				estados.Data.Datos.ToList().ForEach(x => {
 					if (x.Nombre == "En proceso") prestamo.IdEstado = x.Id;
 				});
-				var respuestaIdentidad = await documentoServicio.SubirArchivo(Identidad, IdentidadFileNombre);
-				Console.WriteLine("Perfecto");
-				var respuestaTrabajo = await documentoServicio.SubirArchivo(Trabajo, TrabajoFileNombre);
-				if (respuestaIdentidad.Data.Datos.Ubicacion == "" || 
-					respuestaTrabajo.Data.Datos.Ubicacion == "")
-				{
-					problema = "No se pudo guardar todos los documentos";
-					return;
-				}
-				problema = $"{prestamo.CuotaMensual}";
 				var respuesta = await prestamoServicio.CrearPrestamo(prestamo);
 				if (respuesta.Ok)
 				{
-					problema = respuesta.Mensaje;
+					string[] lista = IdentidadFileNombre.Split('.');
+					lista[^2] = lista[^2] + $"-{respuesta.Data.Datos.Id}";
+					IdentidadFileNombre = "";
+					lista.ToList().ForEach(x => IdentidadFileNombre += x);
+					lista = TrabajoFileNombre.Split('.');
+					lista[^2] = lista[^2] + $"-{respuesta.Data.Datos.Id}";
+					TrabajoFileNombre = "";
+					lista.ToList().ForEach(x => TrabajoFileNombre += x);
+					var respuestaIdentidad = await documentoServicio.SubirIdentidad(Identidad, IdentidadFileNombre);
+					var respuestaTrabajo = await documentoServicio.SubirTrabajo(Trabajo, TrabajoFileNombre);
+					ModalTitulo = "Solicitud de préstamo exitósa";
+					ModalMensaje = "Felicidades el préstamo fue solicitado exitósamente";
+					var parametros = new Dictionary<string, object>
+					{
+						{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, async () => {
+							await modal.HideAsync();
+							Navigation.NavigateTo("/", forceLoad: true); 
+						})
+						},
+						{ "Mensaje", ModalMensaje }
+					};
+					await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+					return;
 				}
-				var documentoIdentidad = respuestaIdentidad.Data.Datos;
-				var documentoTrabajo = respuestaTrabajo.Data.Datos;
-				var tipos = await documentoServicio.ObtenerTipos();
-				tipos.Data.Datos.ToList().ForEach(x => {
-					if (x.Nombre == "Identificación") documentoIdentidad.IdTipo = x.Id;
-					else if (x.Nombre == "Recibo") documentoTrabajo.IdTipo = x.Id;
-				});
-				documentoIdentidad.IdPrestamo = respuesta.Data.Datos.Id;
-				documentoTrabajo.IdPrestamo = respuesta.Data.Datos.Id;
-				await documentoServicio.AgregarArchivo(documentoIdentidad);
-				await documentoServicio.AgregarArchivo(documentoTrabajo);
-				ModalTitulo = "Solicitud de préstamo exitósa";
-				ModalMensaje = "Felicidades el préstamo fue solicitado exitósamente";
-				var parametros = new Dictionary<string, object>
-				{
-					{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, async () => {
-						await modal.HideAsync();
-						Navigation.NavigateTo("/", forceLoad: true); 
-					})
-					},
-					{ "Mensaje", ModalMensaje }
-				};
-				await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+				// Console.WriteLine("Por acá");
+				// if (respuestaIdentidad.Content..Datos.Ubicacion == "" || 
+				// 	respuestaTrabajo.Data.Datos.Ubicacion == "")
+				// {
+				// 	problema = "No se pudo guardar todos los documentos";
+				// 	Console.WriteLine(problema);
+				// 	return;
+				// }Console.WriteLine("Después");
+				
+				// var documentoIdentidad = respuestaIdentidad.Data.Datos;
+				// var documentoTrabajo = respuestaTrabajo.Data.Datos;
+				// var tipos = await documentoServicio.ObtenerTipos();
+				// tipos.Data.Datos.ToList().ForEach(x => {
+				// 	if (x.Nombre == "Identificación") documentoIdentidad.IdTipo = x.Id;
+				// 	else if (x.Nombre == "Recibo") documentoTrabajo.IdTipo = x.Id;
+				// });
+				// Console.WriteLine(documentoIdentidad.Ubicacion);
+				// Console.WriteLine(documentoTrabajo.Ubicacion);
+				// documentoIdentidad.IdPrestamo = respuesta.Data.Datos.Id;
+				// documentoTrabajo.IdPrestamo = respuesta.Data.Datos.Id;
+				// await documentoServicio.AgregarArchivo(documentoIdentidad);
+				// await documentoServicio.AgregarArchivo(documentoTrabajo);
+				ModalTitulo = "No se pudo solicitar el préstamo";
+				ModalMensaje = "Hubo un error en al solicitación";
+				await MostrarModalError();
 			}
 			catch (Exception e)
 			{
@@ -226,7 +240,7 @@ namespace APP.Components.Pages.SolicitarPrestamo
 
 				using (var memoryStream = await archivo.CreateMemoryStreamAsync((int)informacion.Size))
 				{
-					Identidad = new MemoryStream(memoryStream.ToArray());
+					Trabajo = new MemoryStream(memoryStream.ToArray());
 				}
 				// var archivo = e.File;
 				// var nombre = Path.GetRandomFileName();
