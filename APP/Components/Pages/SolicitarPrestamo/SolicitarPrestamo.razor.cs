@@ -119,11 +119,17 @@ namespace APP.Components.Pages.SolicitarPrestamo
 					string[] lista = IdentidadFileNombre.Split('.');
 					lista[^2] = lista[^2] + $"-{respuesta.Data.Datos.Id}";
 					IdentidadFileNombre = "";
-					lista.ToList().ForEach(x => IdentidadFileNombre += x);
+					lista.ToList().ForEach(x => {
+						if (lista.ToList().IndexOf(x) != lista.Length - 1) IdentidadFileNombre = IdentidadFileNombre + x + '.';
+						else IdentidadFileNombre += x;
+					});
 					lista = TrabajoFileNombre.Split('.');
 					lista[^2] = lista[^2] + $"-{respuesta.Data.Datos.Id}";
 					TrabajoFileNombre = "";
-					lista.ToList().ForEach(x => TrabajoFileNombre += x);
+					lista.ToList().ForEach(x => {
+						if (lista.ToList().IndexOf(x) != lista.Length - 1) TrabajoFileNombre = TrabajoFileNombre + x + '.';
+						else TrabajoFileNombre += x;
+					});
 					var respuestaIdentidad = await documentoServicio.SubirIdentidad(Identidad, IdentidadFileNombre);
 					var respuestaTrabajo = await documentoServicio.SubirTrabajo(Trabajo, TrabajoFileNombre);
 					ModalTitulo = "Solicitud de préstamo exitósa";

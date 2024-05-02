@@ -52,7 +52,7 @@ namespace APP.Data.Servicios
                 content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
                 content.Add(new StreamContent(archivo, (int)archivo.Length), "image", nombre);
                 HttpClient httpClient = new HttpClient();
-                var response = httpClient.PostAsync(url, content);
+                respuesta = await httpClient.PostAsync(url, content);
             }
             catch (Exception e)
             {
