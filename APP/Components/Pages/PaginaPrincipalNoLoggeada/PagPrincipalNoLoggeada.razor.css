@@ -8,67 +8,166 @@
     padding: 10px;
 }
 
-p{
-   font-size: 25px;
+p {
+    font-size: 25px;
 }
 .banner {
-    margin: 0;
-    display: flex;
-
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 40px;
+    background-color: honeydew;
+    border-bottom-left-radius: 100%;
+    border-bottom-right-radius: 100%;
 }
 
-.banner img {
-    height: auto;
+.imagen {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    /* align-content: space-evenly; */
+}
+
+.colorado {
+    color: darkcyan;
+    font-size: xx-large;
+}
+
+.mayor {
+    width: 30%;
+}
+
+.menor {
+    width: 5%;
+}
+
+.flecha {
+    padding-top: 30px;
+    text-align: center;
+    padding-bottom: 70px;
+}
+
+.todo {
     width: 100%;
 }
 
-
-.imagen-seccion {
-    display: block;
-    margin: 30px;
-    max-height: 500px;
-    width : auto;
+.espacio {
+    margin-top: 50px;
+    padding-top: 50px;
+    margin-bottom: 50px;
+    padding-bottom: 50px;
 }
 
-h2.hinfo {
-    display: flex;
-    justify-content: center;
-    margin: 50px 0;
-    padding: 20px;
-    color: white;
+.bancoTitulo {
+    padding-bottom: 40px;
+}
+
+.bancoTitulo h1 {
     text-align: center;
-    font-weight: bold;
-    
-    background-color: #005d5a;
+    color: darkcyan;
 }
 
-p {
-    text-align: justify;
-    margin: 0;
+.trio {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
-section.info {
-    display: flex;
-    margin: 30px;
-
-    padding: 20px;
-    border-radius: 10px; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.trio > div  {
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr;
 }
 
-section.infoo {
-    display: flex;
-    flex-direction:row-reverse;
-    margin: 30px;
-   
-    padding: 20px;
-    border-radius: 10px; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+.ejemplo {
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
+.ejemplo img {
+    width: 50%;
+    position: relative;
+}
 
-/*!important
-.contenido[b-bdfkh2wc0p] {
-    background-color: white;
-} no se pudo*/
+.suave {
+    background-color: cornsilk;
+}
 
+.neutro {
+    background-color: beige;
+}
+
+.fuerte {
+    background-color: mintcream;
+}
+
+.interno {
+    width: 20%;
+}
+
+.tabla {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    padding-bottom: 100px;
+}
+
+.tabla > div {
+    display: grid;
+    grid-template-columns: 3fr 5fr;
+}
+
+.tituloTabla {
+    text-align: center;
+    font-weight: bolder;
+    font-size: xx-large;
+    color: #008f8c;
+}
+
+.explicacion {
+    text-align: center;
+    padding-bottom: 100px;
+}
+
+.explicacion img {
+    width: 10%;
+}
+
+.espacioImagen {
+    padding-bottom: 40px;
+}
+
+.descripcion {
+    color: green;
+    font-weight: bolder;
+}
+
+.final {
+    text-align: center;
+    background-color: honeydew;
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+    padding-bottom: 40px;
+    margin-bottom: 0;
+}
+
+.ultimaFrase {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.ultimaDivision {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.FasePrimera {
+    color: lightgreen;
+    font-weight: bolder;
+}
+
+.FaseSegunda {
+    color: darkcyan;
+    font-weight: bolder;
+}

@@ -1,6 +1,7 @@
 @page "/solicitarprestamo"
 @rendermode InteractiveServer
 
+
 <h3>Solicitud de préstamo</h3>
 
 <hr>
@@ -30,11 +31,11 @@
         </div>
         <div>
             <label for="Identidad">Documento de identidad: </label>
-            <InputFile name="Identidad" id="Identidad" OnChange="@CargarIdentidad" required />
+            <input type="file"  id="Identidad" @ref="IdentidadFile" @onchange="async () => await CargarIdentidad()" />
         </div>
         <div>
             <label for="Trabajo">Recibo de sueldo de trabajo: </label>
-            <InputFile name="Trabajo" id="Trabajo" OnChange="@CargarTrabajo" required />
+            <input type="file" id="Trabajo" @ref="TrabajoFile" @onchange="async () => await CargarTrabajo()" />
         </div>
     </article>
     <div class="boton">
@@ -44,3 +45,13 @@
 </EditForm>
 
 <p>@problema</p>
+
+
+@* 
+<input type="file" @ref="elementReference" @onchange="async () => await OpenFileAsync()"/>
+<p>Nombre de archivo: @fileName</p>
+<p>Tamaño: @size</p>
+<p>Tipo: @type</p>
+
+<Button @onclick="async () => await UploadFileAsync()">Subir imagen</Button>
+ *@
