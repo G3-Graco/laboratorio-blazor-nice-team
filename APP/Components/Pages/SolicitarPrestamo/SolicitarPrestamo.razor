@@ -1,53 +1,72 @@
 @page "/solicitarprestamo"
 @rendermode InteractiveServer
 
-
-<h3>Solicitud de préstamo</h3>
-
-<hr>
-
 <Modal @ref="modal" IsVerticallyCentered="true" UseStaticBackdrop="true" CloseOnEscape="false" />
 
+<hr>
+@if (NombreCliente == "")
+{
+    <p><em>Cargando datos...</em></p>
+
+    <hr>
+}
+
+
+<div class="bienvenido">
+    <h4>Bienvenido @NombreCliente</h4>
+</div>
+
+<div class="titulo">
+    <h2>Solicitud de préstamo</h2>
+</div>
+
+
+
 <EditForm Model="@prestamo" OnValidSubmit="Solicitar">
-	<DataAnnotationsValidator />
-    <div>
-        <label for="Sueldo">Sueldo básico: </label>
-        <InputNumber name="Sueldo" id="Sueldo" @bind-Value="Sueldo" min="0" placeholder="100" required />
-    </div>
-    <div>
-        <label for="Monto">Monto a prestar: </label>
-        <InputNumber id="Monto" @bind-Value="prestamo.MontoTotal" min="0" placeholder="40" required />
-        <span class="rojo">No puede puede ser mayor al triple de su sueldo básico</span>
-    </div>
-    <div>
-        <label for="Plazos">Cantidad de plazos: </label>
-        <InputNumber id="Plazos" @bind-Value="prestamo.NumeroCuotas" min="0" placeholder="13" required/>
-        <span class="rojo">Afectará el interés: 1-12 (20%) y 13-24 (30%)</span>
-    </div>
-    <article class="separacion">
-        <div>
-            <label for="Empleo">Tiempo de empleo (meses): </label>
-            <InputNumber name="Empleo" id="Empleo" @bind-Value="Empleo" min="0" placeholder="13" required />
+    <DataAnnotationsValidator />
+    <article class="formdatosprestamo">
+        <div class="form-group">
+            <label for="Sueldo">Sueldo mensual de tu trabajo: </label>
+            <InputNumber class="form-control" name="Sueldo" id="Sueldo" @bind-Value="Sueldo" min="0" placeholder="100" required />
         </div>
-        <div>
+        <div class="form-group">
+            <label for="Monto">Monto a prestar: </label>
+            <InputNumber class="form-control" id="Monto" @bind-Value="prestamo.MontoTotal" min="0" placeholder="40" required />
+            @* <span class="rojo">No puede puede ser mayor al triple de su sueldo básico</span> *@
+        </div>
+        <div class="form-group">
+            <label for="Plazos">Cantidad de cuotas deseadas: </label>
+            <InputNumber class="form-control" id="Plazos" @bind-Value="prestamo.NumeroCuotas" min="0" placeholder="13" required />
+            @* <span class="rojo">Afectará el interés: 1-12 (20%) y 13-24 (30%)</span> *@
+        </div>
+
+
+        <div class="form-group">
+            <label for="Empleo">Tiempo de empleo (meses): </label>
+            <InputNumber class="form-control" name="Empleo" id="Empleo" @bind-Value="Empleo" min="0" placeholder="13" required />
+        </div>
+    </article>
+
+    <article class="separacion">
+        <div class="form-group">
             <label for="Identidad">Documento de identidad: </label>
             <input type="file" accept="image/*" id="Identidad" @ref="IdentidadFile" @onchange="async () => await CargarIdentidad()" />
         </div>
-        <div>
-            <label for="Trabajo">Recibo de sueldo de trabajo: </label>
+        <div class="form-group">
+            <label for="Trabajo">Constancia de trabajo y sueldo: </label>
             <input type="file" accept="image/*" id="Trabajo" @ref="TrabajoFile" @onchange="async () => await CargarTrabajo()" />
         </div>
     </article>
     <div class="boton">
-        <button type="submit">Hacer solicitud</button>
+        <button type="submit" class="btn btn-dark">Hacer solicitud</button>
     </div>
-	<ValidationSummary />
+    <ValidationSummary />
 </EditForm>
 
-<p>@problema</p>
+@* <p>@problema</p> *@
 
 
-@* 
+@*
 <input type="file" @ref="elementReference" @onchange="async () => await OpenFileAsync()"/>
 <p>Nombre de archivo: @fileName</p>
 <p>Tamaño: @size</p>
