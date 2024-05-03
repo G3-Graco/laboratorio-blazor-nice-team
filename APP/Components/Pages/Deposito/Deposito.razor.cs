@@ -121,7 +121,7 @@ namespace APP.Components.Pages.Deposito
 				TipoMovimientoId = 3,
 				Fecha = DateTime.UtcNow,
 				Descripcion = modeloMovimientos.Descripcion,
-				Monto = double.Parse(modeloMovimientos.Monto),
+				Monto = modeloMovimientos.Monto,
 
 			};
 
@@ -173,7 +173,7 @@ namespace APP.Components.Pages.Deposito
 
 		public void Borrar()
 		{
-			modeloMovimientos.Monto = "";
+			modeloMovimientos.Monto = 0;
 			modeloMovimientos.CuentaReceptoraIdentificador = "";
 			modeloMovimientos.Descripcion = "";
 		}

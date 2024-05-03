@@ -31,7 +31,7 @@
 		</div>
 		<div class="form-group">
 			<label for="Monto">Monto a depositar: </label>
-			<InputText class="form-control" id="Monto" @bind-Value="modeloMovimientos.Monto" required />
+			<InputNumber class="form-control" id="Monto" @bind-Value="modeloMovimientos.Monto" min="0.001" required />
 		</div>
 		<div class="form-group">
 			<label for="Descripcion">Descripción: </label>

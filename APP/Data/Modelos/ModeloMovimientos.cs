@@ -4,7 +4,7 @@
 	{
 		public string CuentaOrigenIdentificador { get; set; }
 		public string CuentaReceptoraIdentificador { get; set; }
-		public string Monto { get; set; }
+		public double Monto { get; set; }
 		public string Descripcion { get; set; }
 	}
 }
