@@ -91,9 +91,23 @@
     <GridColumn TItem="Pago" HeaderText="Fecha pago realizado" TextNoWrap="true">
         @context.CuotaPagada.FechaPago
     </GridColumn>
-
 </Grid>
 </article>
 
 
- 
+<article>
+    <h3>Documentos subidos</h3>
+    <table>
+        <tr>
+            <th>Documento de identidad</th>
+            <th>Recibo de trabajo</th>
+        </tr>
+        <tr>
+            @foreach (var documento in documentos) {
+            <td>
+                <img src="data:image;base64, @System.Convert.ToBase64String(documento.documento)" alt="">
+            </td>
+            }
+        </tr>
+    </table>
+</article>

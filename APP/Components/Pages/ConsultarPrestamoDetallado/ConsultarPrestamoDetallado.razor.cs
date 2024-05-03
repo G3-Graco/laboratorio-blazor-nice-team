@@ -35,6 +35,10 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
         public CuotaServicio CuotaServicio { get; set; }
         public List<Cuota>? cuotas = new List<Cuota>();
 
+        [Inject]
+        public DocumentoServicio documentoServicio { get; set; }
+        public List<Documento> documentos = new List<Documento>();
+
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -54,6 +58,7 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
 
                 await ObtenerNombreCliente();
                 await VerificarError();
+                await ObtenerDocumentos();
 
                 StateHasChanged();
             }
@@ -226,6 +231,24 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
             }
 
             return await Task.FromResult(request.ApplyTo(cuotas));
+        }
+
+
+        private async Task ObtenerDocumentos() {
+            documentos = new List<Documento>();
+
+            RespuestaConsumidor<RespuestaAPI<IEnumerable<Documento>>> respuesta = await documentoServicio.ObtenerDocumentos(idprestamo);
+
+            GestionarRespuesta<IEnumerable<Documento>>(respuesta);
+
+            if (!OcurrioError)
+            {
+                documentos = respuesta.Data.Datos.ToList();
+            }
+            else
+            {
+                await MostrarModalError();
+            }
         }
 
     }

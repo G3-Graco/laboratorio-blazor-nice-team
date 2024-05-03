@@ -92,5 +92,21 @@ namespace APP.Data.Servicios
             }
             return respuesta;
         }
+
+        public async Task<RespuestaConsumidor<RespuestaAPI<IEnumerable<Documento>>>> ObtenerDocumentos(int prestamoId) {
+            RespuestaConsumidor<RespuestaAPI<IEnumerable<Documento>>> respuesta = new();
+            try
+            {
+                respuesta = await Consumidor.Execute<Documento, RespuestaAPI<IEnumerable<Documento>>>(
+                    $"https://localhost:7181/api/Documento/Prestamos/{prestamoId}", 
+                    MethodHttp.GET, 
+                    null
+                );
+            }
+            catch (Exception e)
+            {
+            }
+            return respuesta;
+        }
     }
 }
