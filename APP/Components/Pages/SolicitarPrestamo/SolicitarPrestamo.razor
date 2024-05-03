@@ -31,11 +31,11 @@
         </div>
         <div>
             <label for="Identidad">Documento de identidad: </label>
-            <input type="file"  id="Identidad" @ref="IdentidadFile" @onchange="async () => await CargarIdentidad()" />
+            <input type="file" accept="image/*" id="Identidad" @ref="IdentidadFile" @onchange="async () => await CargarIdentidad()" />
         </div>
         <div>
             <label for="Trabajo">Recibo de sueldo de trabajo: </label>
-            <input type="file" id="Trabajo" @ref="TrabajoFile" @onchange="async () => await CargarTrabajo()" />
+            <input type="file" accept="image/*" id="Trabajo" @ref="TrabajoFile" @onchange="async () => await CargarTrabajo()" />
         </div>
     </article>
     <div class="boton">
