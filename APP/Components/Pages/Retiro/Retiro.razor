@@ -44,7 +44,7 @@
 	<article class="formtransferencia">
 		<div class="form-group">
 			<label for="Monto">Monto a retirar: </label>
-			<InputNumber class="form-control" id="Monto" @bind-Value="modeloMovimientos.Monto" required />
+			<InputNumber class="form-control" id="Monto" min="0.001" @bind-Value="modeloMovimientos.Monto" required />
 		</div>
 		<div class="form-group">
 			<label for="Descripcion">Descripción: </label>
