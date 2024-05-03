@@ -36,3 +36,7 @@ table {
 th {
     text-align: center;
 }
+
+img {
+    width: 100%;
+}
