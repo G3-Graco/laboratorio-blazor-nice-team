@@ -132,8 +132,8 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
         {
             if (prestamos.Count == 0)
             {
-                ObtenerPrestamo();
-                VerificarError();
+                await ObtenerPrestamo();
+				await VerificarError();
             }
 
             return await Task.FromResult(request.ApplyTo(prestamos));
@@ -192,8 +192,8 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
         {
             if (pagos.Count == 0)
             {
-                ObtenerPagos();
-                VerificarError();
+				await ObtenerPagos();
+				await VerificarError();
             }
 
             return await Task.FromResult(request.ApplyTo(pagos));
@@ -221,8 +221,8 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
         {
             if (cuotas.Count == 0)
             {
-                ObtenerCuotas();
-                VerificarError();
+				await ObtenerCuotas();
+				await VerificarError();
             }
 
             return await Task.FromResult(request.ApplyTo(cuotas));

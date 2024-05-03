@@ -41,7 +41,7 @@ namespace APP.Data.Servicios
             try
             {
                 respuesta = await Consumidor.Execute<Pago, RespuestaAPI<IEnumerable<Pago>>>(
-                    $"https://localhost:7181/api/Pago/pagosprestamo?idPrestamo{idprestamo}", 
+                    $"https://localhost:7181/api/Pago/pagosprestamo?idPrestamo={idprestamo}", 
                     MethodHttp.GET, 
                     null, 
                     _protectedLocalStorage, 
