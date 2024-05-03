@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-
+@rendermode InteractiveServer
 
 <div class="page">
     <header>
@@ -7,22 +7,24 @@
             <span class="circulo">B</span>
         </NavLink>
         <div class="opciones">
+            @if (!Iniciado) {
             <div>
-                <a href="iniciarsesion">
-                    <p>Inicia Sesión</p>
-                </a>
+            <a href="iniciarsesion">
+                <p>Inicia Sesión</p>
+            </a>
             </div>
             <div>
                 <a href="registrarusuario">
                     <p>Regístrate</p>
                 </a>
             </div>
+            } else {
             <div>
-
                 <a href="" @onclick="CerrarSesion">
                     <p>Cerrar sesion</p>
                 </a>
             </div>
+            }
             <div class="ocultar">
                 <a href="http://">
                     <span class="boton">Cerrar Sesión</span>

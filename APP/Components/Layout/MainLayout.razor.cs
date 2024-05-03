@@ -12,15 +12,21 @@ namespace APP.Components.Layout
 
         [Inject]
         public UsuarioServicio UsuarioServicio { get; set; }
+        private bool Iniciado;
         public async void CerrarSesion()
         {
 
             UsuarioServicio.CerrarSesion();
 
             Navigation.NavigateTo("/inicio", forceLoad: true);
-             
+            
         }
 
+        protected override async Task OnInitializedAsync()
+        {
+            var jwt = await UsuarioServicio._protectedLocalStorage.GetAsync<string>("jwt");
+            Iniciado = jwt.Success;
+        }
 
     }
 }
