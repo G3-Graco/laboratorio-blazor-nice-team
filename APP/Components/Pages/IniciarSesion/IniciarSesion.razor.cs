@@ -53,7 +53,7 @@ namespace APP.Components.Pages.IniciarSesion
 					{
 						{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, async () => {
 						await modal.HideAsync();
-						Navigation.NavigateTo("/", forceLoad: true); 
+						Navigation.NavigateTo("/resumen", forceLoad: true); 
 						})
 						},
 						{ "Mensaje", ModalMensaje }
