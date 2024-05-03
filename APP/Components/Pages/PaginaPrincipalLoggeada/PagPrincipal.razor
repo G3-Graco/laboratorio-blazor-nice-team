@@ -27,7 +27,7 @@
             @context.Identificador
         </GridColumn>
         <GridColumn TItem="Cuenta" HeaderText="Saldo">
-            @context.Saldo
+            @Math.Round(context.Saldo, 2)
         </GridColumn>
     </Grid>
 </article>
@@ -44,11 +44,12 @@
         @context.NumeroCuotas
     </GridColumn>   
     <GridColumn TItem="Prestamo" HeaderText="Monto cuota">
-        @context.CuotaMensual
+        @Math.Round(context.CuotaMensual, 2)
     </GridColumn>
 
     <GridColumn TItem="Prestamo" HeaderText="Monto total">
-        @context.MontoTotal
+            @Math.Round(context.MontoTotal, 2)
+
     </GridColumn>
 
     <GridColumn TItem="Prestamo" HeaderText="Estado del préstamo" TextNoWrap="true">

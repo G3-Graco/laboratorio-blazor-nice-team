@@ -36,10 +36,10 @@
 			@context.Id
 		</GridColumn>
 		<GridColumn TItem="Cuota" HeaderText="Fecha tope de pago">
-			@context.Fecha
+			@context.Fecha.ToLocalTime()
 		</GridColumn>
 		<GridColumn TItem="Cuota" HeaderText="Monto del pago" TextNoWrap="true">
-			@context.Pago
+			@Math.Round(context.Pago, 2)
 		</GridColumn>
 		<GridColumn TItem="Cuota" HeaderText="Id del préstamo al que corresponde" TextNoWrap="true">
 			@context.prestamo.Id
