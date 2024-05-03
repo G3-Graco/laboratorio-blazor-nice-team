@@ -17,12 +17,6 @@ namespace APP.Data.Servicios
             HttpResponseMessage respuesta = new();
             try
             {
-                // respuesta = await Consumidor.Execute<FormFile, RespuestaAPI<Documento>>(
-                //     "https://localhost:7181/api/Documento/CargarIdentidad", 
-                //     MethodHttp.POST, 
-                //     null, formaForm: true, 
-                //     form: archivo, NombreForm: nombre
-                // );
                 string url = "https://localhost:7181/api/Documento/CargarIdentidad";
                 var content = new MultipartFormDataContent();
                 content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
@@ -41,12 +35,6 @@ namespace APP.Data.Servicios
             HttpResponseMessage respuesta = new();
             try
             {
-                // respuesta = await Consumidor.Execute<FormFile, RespuestaAPI<Documento>>(
-                //     "https://localhost:7181/api/Documento/CargarTrabajo", 
-                //     MethodHttp.POST, 
-                //     null, formaForm: true, 
-                //     form: archivo, NombreForm: nombre
-                // );
                 string url = "https://localhost:7181/api/Documento/CargarTrabajo";
                 var content = new MultipartFormDataContent();
                 content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");

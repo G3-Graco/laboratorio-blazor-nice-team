@@ -42,9 +42,6 @@ namespace APP.Components.Pages.PagarPrestamoListar
             {
                 isConnected = true;
 
-                //await ObtenerPrestamos();
-                //await VerificarError();
-
                 await ObtenerNombreCliente();
                 await VerificarError();
 

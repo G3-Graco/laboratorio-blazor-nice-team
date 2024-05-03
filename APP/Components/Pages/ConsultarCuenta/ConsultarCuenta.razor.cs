@@ -39,15 +39,6 @@ namespace APP.Components.Pages.ConsultarCuenta
 			{
 				isConnected = true;
 
-				//await ObtenerCuentas();
-				//await VerificarError();
-
-				//await ObtenerMovimientos();
-				//await VerificarError();
-
-				//await ObtenerPagos();
-				//await VerificarError();
-
 				await ObtenerNombreCliente();
 				await VerificarError();
 

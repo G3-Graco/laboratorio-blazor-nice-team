@@ -241,34 +241,6 @@ namespace APP.Components.Pages.SolicitarPrestamo
                     await MostrarModalError();
 
                 }
-
-            
-                // Console.WriteLine("Por acá");
-                // if (respuestaIdentidad.Content..Datos.Ubicacion == "" || 
-                // 	respuestaTrabajo.Data.Datos.Ubicacion == "")
-                // {
-                // 	problema = "No se pudo guardar todos los documentos";
-                // 	Console.WriteLine(problema);
-                // 	return;
-                // }Console.WriteLine("Después");
-
-                // var documentoIdentidad = respuestaIdentidad.Data.Datos;
-                // var documentoTrabajo = respuestaTrabajo.Data.Datos;
-                // var tipos = await documentoServicio.ObtenerTipos();
-                // tipos.Data.Datos.ToList().ForEach(x => {
-                // 	if (x.Nombre == "Identificación") documentoIdentidad.IdTipo = x.Id;
-                // 	else if (x.Nombre == "Recibo") documentoTrabajo.IdTipo = x.Id;
-                // });
-                // Console.WriteLine(documentoIdentidad.Ubicacion);
-                // Console.WriteLine(documentoTrabajo.Ubicacion);
-                // documentoIdentidad.IdPrestamo = respuesta.Data.Datos.Id;
-                // documentoTrabajo.IdPrestamo = respuesta.Data.Datos.Id;
-                // await documentoServicio.AgregarArchivo(documentoIdentidad);
-                // await documentoServicio.AgregarArchivo(documentoTrabajo);
-                //ModalTitulo = "No se pudo solicitar el préstamo";
-                //ModalMensaje = "Hubo un error en al solicitación";
-                //await MostrarModalError();
-
             }
             catch (Exception e)
             {
@@ -293,37 +265,11 @@ namespace APP.Components.Pages.SolicitarPrestamo
 
                 var informacion = await archivo.ReadFileInfoAsync();
                 IdentidadFileNombre = informacion.Name;
-                // fileName = informacion.Name;
-                // size = $"{informacion.Size}";
-                // type = informacion.Type;
 
                 using (var memoryStream = await archivo.CreateMemoryStreamAsync((int)informacion.Size))
                 {
                     Identidad = new MemoryStream(memoryStream.ToArray());
                 }
-                // var archivo = e.File;
-                // var informacion = new FormFile(Empleo, )
-                // var archivo = await documentoServicio.AgregarArchivo(e);
-                // MemoryStream memoria = new MemoryStream();
-                // await e.File.OpenReadStream().CopyToAsync(memoria);
-                // Identidad = memoria.ToArray();
-
-
-                // var nombre = Path.GetRandomFileName();
-                // var camino = Path.Combine(
-                // 	Environment.ContentRootPath, 
-                // 	Environment.EnvironmentName, 
-                // 	"Carga_insegura", 
-                // 	nombre
-                // );
-                // MemoryStream memoria = new MemoryStream();
-                // await archivo.OpenReadStream().CopyToAsync(memoria); 
-                // Identidad = new FormFile(archivo.OpenReadStream(), 0, archivo.Size, "Identidad", archivo.Name);
-                /*
-				await using FileStream fs = new(camino, FileMode.Create);
-				await archivo.OpenReadStream().CopyToAsync(fs);
-				Identidad = archivo;
-				*/
             }
             catch (Exception ex)
             {
@@ -346,43 +292,11 @@ namespace APP.Components.Pages.SolicitarPrestamo
 
                 var informacion = await archivo.ReadFileInfoAsync();
                 TrabajoFileNombre = informacion.Name;
-                // fileName = informacion.Name;
-                // size = $"{informacion.Size}";
-                // type = informacion.Type;
 
                 using (var memoryStream = await archivo.CreateMemoryStreamAsync((int)informacion.Size))
                 {
                     Trabajo = new MemoryStream(memoryStream.ToArray());
                 }
-                // var archivo = e.File;
-                // var nombre = Path.GetRandomFileName();
-                // var camino = Path.Combine(
-                // 	Environment.ContentRootPath, 
-                // 	Environment.EnvironmentName, 
-                // 	"Carga_insegura", 
-                // 	nombre
-                // );
-                // MemoryStream memoria = new MemoryStream();
-                // await archivo.OpenReadStream().CopyToAsync(memoria); 
-                // Trabajo = new FormFile(archivo.OpenReadStream(), 0, archivo.Size, "Trabajo", $"{archivo.Name}.{archivo.ContentType}");
-                // MemoryStream memoria = new MemoryStream();
-                // await e.File.OpenReadStream().CopyToAsync(memoria); 
-                // Trabajo = memoria.ToArray();
-                // Stream todo = new MemoryStream(Trabajo);
-                // IFormFile informacion = new FormFile(todo, 0, Trabajo.Length, e.File.Name, e.File.Name);
-                /*
-				var archivo = e.File;
-				var nombre = Path.GetRandomFileName();
-				var camino = Path.Combine(
-					Environment.ContentRootPath, 
-					Environment.EnvironmentName, 
-					"Carga_insegura", 
-					nombre
-				);
-				await using FileStream fs = new(camino, FileMode.Create);
-				await archivo.OpenReadStream().CopyToAsync(fs);
-				Trabajo = archivo;
-				*/
             }
             catch (Exception ex)
             {
@@ -438,61 +352,6 @@ namespace APP.Components.Pages.SolicitarPrestamo
 
             return OcurrioError;
         }
-
-
-
-
-        // ElementReference elementReference;
-        // string message = string.Empty;
-        // string imgPath = null;
-
-        // string fileName = string.Empty;
-        // string type = string.Empty;
-        // string size = string.Empty;
-
-        // Stream fileStream = null;
-
-        // async Task OpenFileAsync()
-        // {
-        //     var file = (await fileReader.CreateReference(elementReference).EnumerateFilesAsync()).FirstOrDefault();
-
-        //     if (file == null)
-        //     {
-        //         problema = "No tiene un archivo";
-        //         return;
-        //     }
-
-        //     var fileInfo = await file.ReadFileInfoAsync();
-        //     fileName = fileInfo.Name;
-        //     size = $"{fileInfo.Size}";
-        //     type = fileInfo.Type;
-
-        //     using (var memoryStream = await file.CreateMemoryStreamAsync((int)fileInfo.Size))
-        //     {
-        //         fileStream = new MemoryStream(memoryStream.ToArray());
-        //     }
-        // }
-
-        // async Task UploadFileAsync()
-        // {
-        //     string url = "https://localhost:7181/api/Documento/CargarArchivo";
-
-        //     var content = new MultipartFormDataContent();
-        //     content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
-
-        //     content.Add(new StreamContent(fileStream, (int)fileStream.Length), "image", fileName);
-        //     HttpClient httpClient = new HttpClient();
-
-        //     var response = httpClient.PostAsync(url, content);
-
-        //     message = "Imagen guardada con éxito";
-
-        //     problema = "Se agregó el archivo";
-        // }
-
-
-
-
 
     }
 

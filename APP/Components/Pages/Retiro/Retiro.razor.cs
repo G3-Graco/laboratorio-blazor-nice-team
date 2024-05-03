@@ -146,7 +146,6 @@ namespace APP.Components.Pages.Retiro
 			{
 				Id = 0,
 				CuentaOrigenIdentificador = Int64.Parse(modeloCuenta.CuentaIdentificador),
-				//CuentaReceptoraIdentificador = Int64.Parse(modeloMovimientos.CuentaReceptoraIdentificador),
 				TipoMovimientoId = 2,
 				Fecha = DateTime.UtcNow,
 				Descripcion = modeloMovimientos.Descripcion,
@@ -204,7 +203,6 @@ namespace APP.Components.Pages.Retiro
 		public void Borrar()
 		{
 			modeloMovimientos.Monto = 0;
-			//modeloMovimientos.CuentaReceptoraIdentificador = "";
 			modeloMovimientos.Descripcion = "";
 		}
 

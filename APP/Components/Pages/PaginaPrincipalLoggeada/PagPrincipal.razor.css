@@ -1,7 +1,4 @@
-﻿
-
-
-.bienvenido {
+﻿.bienvenido {
     display: flex;
     justify-content: flex-end;
 }

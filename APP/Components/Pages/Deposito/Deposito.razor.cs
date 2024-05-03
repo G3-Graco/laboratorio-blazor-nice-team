@@ -123,7 +123,6 @@ namespace APP.Components.Pages.Deposito
 			Movimiento deposito = new Movimiento
 			{
 				Id = 0,
-				//CuentaOrigenIdentificador = Int64.Parse(modeloCuenta.CuentaIdentificador),
 				CuentaReceptoraIdentificador = Int64.Parse(modeloMovimientos.CuentaReceptoraIdentificador),
 				TipoMovimientoId = 3,
 				Fecha = DateTime.UtcNow,

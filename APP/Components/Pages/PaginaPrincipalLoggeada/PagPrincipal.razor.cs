@@ -30,24 +30,11 @@ namespace APP.Components.Pages.PaginaPrincipalLoggeada
 
         public List<Prestamo>? prestamos = new List<Prestamo>();
 
-
-
-        //protected override async Task OnInitializedAsync()
-        //{
-        //    await ObtenerCuentas();
-        //}
-
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
                 isConnected = true;
-
-				//await ObtenerCuentas();
-    //            await VerificarError();
-
-				//await ObtenerPrestamosActivos();
-				//await VerificarError();
 
                 await ObtenerNombreCliente();
 				await VerificarError();
