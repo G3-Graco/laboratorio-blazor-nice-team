@@ -17,7 +17,7 @@ namespace APP.Components.Layout
         {
             UsuarioServicio.CerrarSesion();
             Iniciado = false;
-            Navigation.NavigateTo("/inicio", forceLoad: true);
+            Navigation.NavigateTo("/", forceLoad: true);
             
         }
 
