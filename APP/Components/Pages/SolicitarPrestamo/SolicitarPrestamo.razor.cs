@@ -116,21 +116,21 @@ namespace APP.Components.Pages.SolicitarPrestamo
 				var respuesta = await prestamoServicio.CrearPrestamo(modeloPresta);
 				if (respuesta.Ok)
 				{
-					string[] lista = IdentidadFileNombre.Split('.');
-					lista[^2] = lista[^2] + $"-{respuesta.Data.Datos.Id}";
+					string[] listaI = IdentidadFileNombre.Split('.');
+					listaI[^2] = listaI[^2] + $"-{respuesta.Data.Datos.Id}";
 					IdentidadFileNombre = "";
-					lista.ToList().ForEach(x => {
-						if (lista.ToList().IndexOf(x) != lista.Length - 1) IdentidadFileNombre = IdentidadFileNombre + x + '.';
+					listaI.ToList().ForEach(x => {
+						if (listaI.ToList().IndexOf(x) != listaI.Length - 1) IdentidadFileNombre = IdentidadFileNombre + x + '.';
 						else IdentidadFileNombre += x;
 					});
-					lista = TrabajoFileNombre.Split('.');
-					lista[^2] = lista[^2] + $"-{respuesta.Data.Datos.Id}";
+					var respuestaIdentidad = await documentoServicio.SubirIdentidad(Identidad, IdentidadFileNombre);
+					string[] listaT = TrabajoFileNombre.Split('.');
+					listaT[^2] = listaT[^2] + $"-{respuesta.Data.Datos.Id}";
 					TrabajoFileNombre = "";
-					lista.ToList().ForEach(x => {
-						if (lista.ToList().IndexOf(x) != lista.Length - 1) TrabajoFileNombre = TrabajoFileNombre + x + '.';
+					listaT.ToList().ForEach(x => {
+						if (listaT.ToList().IndexOf(x) != listaT.Length - 1) TrabajoFileNombre = TrabajoFileNombre + x + '.';
 						else TrabajoFileNombre += x;
 					});
-					var respuestaIdentidad = await documentoServicio.SubirIdentidad(Identidad, IdentidadFileNombre);
 					var respuestaTrabajo = await documentoServicio.SubirTrabajo(Trabajo, TrabajoFileNombre);
 					ModalTitulo = "Solicitud de préstamo exitósa";
 					ModalMensaje = "Felicidades el préstamo fue solicitado exitósamente";

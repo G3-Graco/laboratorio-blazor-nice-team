@@ -47,7 +47,7 @@ namespace APP.Data.Servicios
                 //     null, formaForm: true, 
                 //     form: archivo, NombreForm: nombre
                 // );
-                string url = "https://localhost:7181/api/Documento/CargarArchivo";
+                string url = "https://localhost:7181/api/Documento/CargarTrabajo";
                 var content = new MultipartFormDataContent();
                 content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
                 content.Add(new StreamContent(archivo, (int)archivo.Length), "image", nombre);
