@@ -37,6 +37,11 @@ namespace APP.Components.Pages.Transferencia
 		public string ModalMensaje = "";
 		public bool OcurrioError = false;
 
+
+		private bool spinnerVisible = false;
+		private void EsconderSpinner() => spinnerVisible = false;
+		private void MostrarSpinner() => spinnerVisible = true;
+
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
 			if (firstRender)
@@ -124,6 +129,7 @@ namespace APP.Components.Pages.Transferencia
 
 		public async void Transferir()
 		{
+			MostrarSpinner();
 			Movimiento transferencia = new Movimiento
 			{
 				Id = 0,
@@ -157,6 +163,7 @@ namespace APP.Components.Pages.Transferencia
 
 			RespuestaConsumidor<RespuestaAPI<Movimiento>> respuesta = await movimientoServicio.RealizarMovimiento(transferencia);
 			GestionarRespuesta<Movimiento>(respuesta);
+			EsconderSpinner();
 
 
 			if (!OcurrioError)

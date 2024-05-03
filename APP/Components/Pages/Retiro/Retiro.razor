@@ -1,13 +1,15 @@
 @page "/retiro"
 @rendermode InteractiveServer
 
-<Modal @ref="modal" IsVerticallyCentered="true" UseStaticBackdrop="true" CloseOnEscape="false" />
+<Modal @ref="modal" IsVerticallyCentered="true" UseStaticBackdrop="true" CloseOnEscape="false" ShowCloseButton="false" />
 
-<hr>
 @if (NombreCliente == "")
 {
-	<p><em>Cargando datos...</em></p>
-
+	<hr>
+	<div class="d-flex justify-content-center">
+		<p><em>Cargando datos...</em></p>
+		<Spinner Type="SpinnerType.Border" Class="ms-auto" Color="SpinnerColor.Success" Size="SpinnerSize.ExtraLarge" />
+	</div>
 	<hr>
 }
 
@@ -51,9 +53,10 @@
 			<InputText class="form-control" id="Descripcion" @bind-Value="modeloMovimientos.Descripcion" required />
 		</div>
 
-		<div class="botones">
-			<button type="button" class="btn btn-light" @onclick="Borrar">Borrar</button>
+		<div class="botones inputspinner">
 			<button type="submit" class="btn btn-dark">Retirar</button>
+			<Spinner Class="me-3" Type="SpinnerType.Dots" Color="SpinnerColor.Success" Visible="@spinnerVisible" Size="SpinnerSize.ExtraLarge" />
+
 		</div>
 
 	</article>

@@ -1,13 +1,15 @@
 @page "/solicitarprestamo"
 @rendermode InteractiveServer
 
-<Modal @ref="modal" IsVerticallyCentered="true" UseStaticBackdrop="true" CloseOnEscape="false" />
+<Modal @ref="modal" IsVerticallyCentered="true" UseStaticBackdrop="true" CloseOnEscape="false" ShowCloseButton="false" />
 
-<hr>
 @if (NombreCliente == "")
 {
-    <p><em>Cargando datos...</em></p>
-
+    <hr>
+    <div class="d-flex justify-content-center">
+        <p><em>Cargando datos...</em></p>
+        <Spinner Type="SpinnerType.Border" Class="ms-auto" Color="SpinnerColor.Success" Size="SpinnerSize.ExtraLarge" />
+    </div>
     <hr>
 }
 
@@ -57,9 +59,11 @@
             <input type="file" accept="image/*" id="Trabajo" @ref="TrabajoFile" @onchange="async () => await CargarTrabajo()" />
         </div>
     </article>
-    <div class="boton">
-        <button type="submit" class="btn btn-dark">Hacer solicitud</button>
-    </div>
+    <div class="boton inputspinner">
+            <button type="submit" class="btn btn-dark">Hacer solicitud</button>
+            <Spinner Class="me-3" Type="SpinnerType.Dots" Color="SpinnerColor.Success" Visible="@spinnerVisible" Size="SpinnerSize.ExtraLarge" />
+        </div>
+
     <ValidationSummary />
 </EditForm>
 

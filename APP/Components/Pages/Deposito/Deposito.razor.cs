@@ -35,6 +35,11 @@ namespace APP.Components.Pages.Deposito
 
 		private string Cambio { get; set; }
 
+		private bool spinnerVisible = false;
+		private void EsconderSpinner() => spinnerVisible = false;
+		private void MostrarSpinner() => spinnerVisible = true;
+
+
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
 			if (firstRender)
@@ -113,6 +118,8 @@ namespace APP.Components.Pages.Deposito
 
 		public async void Depositar()
 		{
+			MostrarSpinner();
+
 			Movimiento deposito = new Movimiento
 			{
 				Id = 0,
@@ -145,6 +152,8 @@ namespace APP.Components.Pages.Deposito
 
 			RespuestaConsumidor<RespuestaAPI<Movimiento>> respuesta = await movimientoServicio.RealizarMovimiento(deposito);
 			GestionarRespuesta<Movimiento>(respuesta);
+
+			EsconderSpinner();
 
 
 			if (!OcurrioError)

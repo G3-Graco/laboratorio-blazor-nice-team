@@ -77,3 +77,10 @@ h3 {
     .formdatosprestamo .form-group {
         width: 20vw;
     }
+
+.inputspinner {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    align-items: center;
+}

@@ -21,6 +21,10 @@ namespace APP.Components.Pages.IniciarSesion
 		public string ModalTitulo = "";
 		public string ModalMensaje = "";
 
+		private bool spinnerVisible = false;
+		private void EsconderSpinner() => spinnerVisible = false;
+		private void MostrarSpinner() => spinnerVisible = true;
+
 		public async Task MostrarModalError()
 		{
 			var parametros = new Dictionary<string, object>
@@ -33,9 +37,10 @@ namespace APP.Components.Pages.IniciarSesion
 		}
 
 		public async void InicioSesion()
-		{
-
+		{		
+			MostrarSpinner();
 			RespuestaConsumidor<RespuestaAPI<RespuestaIniciarSesion>> respuesta = await UsuarioServicio.IniciarSesion(usuario);
+			EsconderSpinner();
 
 			if (respuesta.Ok)
 			{
@@ -72,6 +77,7 @@ namespace APP.Components.Pages.IniciarSesion
 				await MostrarModalError();
 
 			}
+			
 		}
 
 		public async Task CerrarModal()

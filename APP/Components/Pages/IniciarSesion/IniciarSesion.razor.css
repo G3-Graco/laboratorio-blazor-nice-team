@@ -29,3 +29,10 @@ p {
     text-align: center;
     padding-top: 10px;
 }
+
+.inputspinner {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    align-items: center;
+}

@@ -5,16 +5,10 @@
 	<h2>Regístrate</h2>
 </div>
 
-<Modal @ref="modal" IsVerticallyCentered="true">
-	<BodyTemplate>
-		
-	</BodyTemplate>
-	<FooterTemplate>
-		<Button Color="ButtonColor.Primary" @onclick="CerrarModal" >Cerrar</Button>
-	</FooterTemplate>
-</Modal>
+<Modal @ref="modal" IsVerticallyCentered="true" UseStaticBackdrop="true" CloseOnEscape="false" ShowCloseButton="false" />
 
-<EditForm Model="@modeloRegistrarUsuario" OnValidSubmit="Registrar" Title=@modalTitulo Message=@modalMensaje>
+
+<EditForm Model="@modeloRegistrarUsuario" OnValidSubmit="Registrar">
 	<DataAnnotationsValidator />
 	<article class="formregistrar">
 		<div>
@@ -75,8 +69,9 @@
 	
 			</div>
 
-			<div>
+			<div class="inputspinner">
 				<input type="submit" class="btn btn-dark" value="Registrar" />
+				<Spinner Class="me-3" Type="SpinnerType.Dots" Color="SpinnerColor.Success" Visible="@spinnerVisible" Size="SpinnerSize.ExtraLarge" />
 			</div>
 		</div>
 	</article>

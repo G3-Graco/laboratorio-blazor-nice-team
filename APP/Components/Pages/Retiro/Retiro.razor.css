@@ -50,3 +50,10 @@ h3 {
     .titulo h2 {
         margin: 0px;
     }
+
+.inputspinner {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    align-items: center;
+}

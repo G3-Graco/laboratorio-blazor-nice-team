@@ -37,6 +37,11 @@ namespace APP.Components.Pages.Retiro
 		public string ModalMensaje = "";
 		public bool OcurrioError = false;
 
+		private bool spinnerVisible = false;
+		private void EsconderSpinner() => spinnerVisible = false;
+		private void MostrarSpinner() => spinnerVisible = true;
+
+
 		private string Cambio { get; set; }
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -136,6 +141,7 @@ namespace APP.Components.Pages.Retiro
 
 		public async void Retirar()
 		{
+			MostrarSpinner();
 			Movimiento retiro = new Movimiento
 			{
 				Id = 0,
@@ -168,6 +174,8 @@ namespace APP.Components.Pages.Retiro
 
 			RespuestaConsumidor<RespuestaAPI<Movimiento>> respuesta = await movimientoServicio.RealizarMovimiento(retiro);
 			GestionarRespuesta<Movimiento>(respuesta);
+
+			EsconderSpinner();
 
 
 			if (!OcurrioError)

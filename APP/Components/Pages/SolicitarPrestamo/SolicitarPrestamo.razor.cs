@@ -40,7 +40,9 @@ namespace APP.Components.Pages.SolicitarPrestamo
         [Inject]
         public IFileReaderService fileReader { get; set; }
 
-
+        private bool spinnerVisible = false;
+        private void EsconderSpinner() => spinnerVisible = false;
+        private void MostrarSpinner() => spinnerVisible = true;
 
         private double Sueldo { get; set; }
 
@@ -107,6 +109,8 @@ namespace APP.Components.Pages.SolicitarPrestamo
         {
             try
             {
+                MostrarSpinner();
+
                 if (string.IsNullOrEmpty(TrabajoFileNombre) || string.IsNullOrEmpty(IdentidadFileNombre))
                 {
                     ModalTitulo = "Error";
@@ -205,6 +209,8 @@ namespace APP.Components.Pages.SolicitarPrestamo
                         });
 
                         var respuestaTrabajo = await documentoServicio.SubirTrabajo(Trabajo, TrabajoFileNombre);
+
+                        EsconderSpinner();
 
                         ModalTitulo = "Solicitud de préstamo exitósa";
                         ModalMensaje = "Felicidades el préstamo fue solicitado exitósamente";

@@ -2,6 +2,7 @@
 using APP.Data.Servicios;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace APP.Components.Pages.RegistroUsuario
 {
@@ -15,12 +16,18 @@ namespace APP.Components.Pages.RegistroUsuario
 
 		public ModeloRegistrarUsuario modeloRegistrarUsuario = new ModeloRegistrarUsuario();
 
-		private Modal modal = default!;
-		public string modalTitulo = "";
-		public string modalMensaje = "";
+        private Modal modal = default!;
+        public string ModalTitulo = "";
+        public string ModalMensaje = "";
+        public bool OcurrioError = false;
 
-		public string Contrasena = "password";
+        public string Contrasena = "password";
 		public IconName Icono = IconName.EyeSlash;
+
+		private bool spinnerVisible = false;
+		private void EsconderSpinner() => spinnerVisible = false;
+		private void MostrarSpinner() => spinnerVisible = true;
+
 
 		public void VerContrasena()
         {
@@ -42,41 +49,69 @@ namespace APP.Components.Pages.RegistroUsuario
         {
             modeloRegistrarUsuario.FechaNacimiento = DateOnly.FromDateTime(DateTime.Now);
         }
+        public async Task MostrarModalError()
+        {
+            var parametros = new Dictionary<string, object>
+            {
+                { "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, CerrarModal) },
+                { "Mensaje", ModalMensaje }
+            };
+
+            await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+        }
+        public async Task VerificarError()
+        {
+            if (OcurrioError)
+            {
+                await MostrarModalError();
+            }
+        }
+        public async Task CerrarModal()
+        {
+            await modal.HideAsync();
+        }
+
         public async void Registrar()
         {
-
+			MostrarSpinner();
 			RespuestaConsumidor<RespuestaAPI<ModeloRegistrarUsuario>> respuesta = await UsuarioServicio.RegistrarUsuario(modeloRegistrarUsuario);
+			EsconderSpinner();
 
 			if (respuesta.Ok)
 			{
 				if (respuesta.Data.Ok)
 				{
-                    await modal.ShowAsync<string>("Registrado", "Usuario registrado exitosamente");
-                    Navigation.NavigateTo("/iniciarsesion", forceLoad: true);
-					//nice
+                    ModalTitulo = "Registrado";
+                    ModalMensaje = "Usuario registrado exitosamente";
+
+                    var parametros = new Dictionary<string, object>
+                    {
+                        { "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, async () => {
+                        await modal.HideAsync();
+                        Navigation.NavigateTo("/iniciarsesion", forceLoad: true);
+                        })
+                        },
+                        { "Mensaje", ModalMensaje }
+                    };
+
+                    await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+
 				}
 				else
 				{
-					modalTitulo = "Error";
-					modalMensaje = respuesta.Data.Mensaje;
-					await modal.ShowAsync();
-					// modal.ShowAsync<string>("Error", respuesta.Data.Mensaje);
-				}
+					ModalTitulo = "Error";
+					ModalMensaje = respuesta.Data.Mensaje;
+                    await MostrarModalError();
+                }
 				
 			}
 			else
 			{
-				modalMensaje = respuesta.Mensaje;
-				modalTitulo = "Error";
-				//modalMensaje = $"statuscode:{respuesta.StatusCode}, ok:{respuesta.Ok}, data:{respuesta.Data}, mensaje:{respuesta.Mensaje}";
-				await modal.ShowAsync();
-				//await modal.ShowAsync<string>($"Error: {respuesta.StatusCode}", respuesta.Mensaje);
-			}
-		}
-
-		public async Task CerrarModal()
-		{
-			await modal.HideAsync();
+				ModalMensaje = respuesta.Mensaje;
+				ModalTitulo = "Error";
+                await MostrarModalError();
+             
+            }
 		}
     }
 }
