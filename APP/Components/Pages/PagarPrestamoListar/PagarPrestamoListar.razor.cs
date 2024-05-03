@@ -35,7 +35,8 @@ namespace APP.Components.Pages.PagarPrestamoListar
 
 
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+
+		protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
@@ -146,16 +147,20 @@ namespace APP.Components.Pages.PagarPrestamoListar
 			}
 		}
 
+        private Task OnSelectedItemsChanged(HashSet<Cuota> cuotas)
+        {
+			cuotaSeleccionada = cuotas is not null && cuotas.Any() ? cuotas : new();
+			return Task.CompletedTask;
+        }
+
         private async Task PagarCuotaSeleccionada()
         {
-            IEnumerable<Cuota> cuotaSeleccionado = cuotas is not null && cuotas.Any() ? cuotas : new();
-
-            List<Cuota> cuotasListaSeleccionada = cuotaSeleccionado.ToList();
+            List<Cuota> cuotasListaSeleccionada = cuotaSeleccionada.ToList();
 
             if (cuotasListaSeleccionada.Count == 0)
             {
                 ModalTitulo = "Error";
-                ModalMensaje = "Primero debe consultar un préstamo";
+                ModalMensaje = "Primero debe seleccionar una cuota para pagar";
 
                 await MostrarModalError();
             }

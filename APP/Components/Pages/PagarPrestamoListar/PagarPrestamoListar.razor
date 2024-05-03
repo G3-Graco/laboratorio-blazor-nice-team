@@ -25,7 +25,12 @@
 <article>
 	<h3>Cuotas disponibles para pagar</h3>
 
-	<Grid TItem="Cuota" class="table table-hover table-bordered table-striped" DataProvider="CuotasDataProvider" AllowSelection="true" EmptyText="No hay alguna cuota para mostrar">
+	<Grid TItem="Cuota"
+		class="table table-hover table-bordered table-striped"
+		DataProvider="CuotasDataProvider" AllowSelection="true"
+		EmptyText="No hay alguna cuota para mostrar"
+		SelectedItemsChanged="OnSelectedItemsChanged"
+		Responsive="true">
 
 		<GridColumn TItem="Cuota" HeaderText="Id">
 			@context.Id

@@ -135,16 +135,20 @@ namespace APP.Components.Pages.ConsultarPrestamo
             }
         }
 
+        private Task OnSelectedItemsChanged(HashSet<Prestamo> prestamos)
+        {
+            prestamoSeleccionado = prestamos is not null && prestamos.Any() ? prestamos : new();
+            return Task.CompletedTask;
+        }
+
         private async Task ConsultarPrestamoSeleccionado()
         {
-            IEnumerable<Prestamo> prestamoSeleccionado = prestamos is not null && prestamos.Any() ? prestamos : new();
-
             List<Prestamo> prestamosListaSeleccionada = prestamoSeleccionado.ToList();
 
             if (prestamosListaSeleccionada.Count == 0)
             {
                 ModalTitulo = "Error";
-                ModalMensaje = "Primero debe consultar un préstamo";
+                ModalMensaje = "Primero debe seleccionar un préstamo";
                 await MostrarModalError();
             }
             else

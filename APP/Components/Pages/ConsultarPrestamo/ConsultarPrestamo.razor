@@ -24,7 +24,13 @@
 <article>
 <h3>Prestamo a detalle</h3>
 
-<Grid TItem="Prestamo" class="table table-hover table-bordered table-striped" DataProvider="PrestamoDataProvider" AllowSelection="true" EmptyText="No hay algún préstamo para mostrar">
+<Grid TItem="Prestamo"
+    class="table table-hover table-bordered table-striped"
+    DataProvider="PrestamoDataProvider"
+    AllowSelection="true"
+    EmptyText="No hay algún préstamo para mostrar"
+    SelectedItemsChanged="OnSelectedItemsChanged"
+    Responsive="true">
 
     <GridColumn TItem="Prestamo" HeaderText="Id">
         @context.Id
@@ -33,7 +39,7 @@
         @context.Fecha
     </GridColumn>
 
-    <GridColumn TItem="Prestamo" HeaderText="Monto total">
+    <GridColumn TItem="Prestamo" HeaderText="Monto total prestado">
         @context.MontoTotal
     </GridColumn>
 
