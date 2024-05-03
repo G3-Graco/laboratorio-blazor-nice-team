@@ -29,7 +29,7 @@
 			@context.Identificador
 		</GridColumn>
 		<GridColumn TItem="Cuenta" HeaderText="Saldo">
-			@context.Saldo
+			@Math.Round(context.Saldo, 2)
 		</GridColumn>
 	</Grid>
 </article>
@@ -45,11 +45,11 @@
 			@context.TipoMovimiento.Nombre
 		</GridColumn>
 		<GridColumn TItem="Movimiento" HeaderText="Fecha">
-			@context.Fecha
+			@context.Fecha.ToLocalTime()
 		</GridColumn>
 
 		<GridColumn TItem="Movimiento" HeaderText="Monto">
-			@context.Monto
+			@Math.Round(context.Monto, 2)
 		</GridColumn>
 
 		<GridColumn TItem="Movimiento" HeaderText="Cuenta receptora" TextNoWrap="true">
@@ -76,11 +76,11 @@
 			@context.CuotaPagada.prestamo.Id
 		</GridColumn>
 		<GridColumn TItem="Pago" HeaderText="Monto" TextNoWrap="true">
-			@context.CuotaPagada.prestamo.CuotaMensual
+			@Math.Round(context.CuotaPagada.prestamo.CuotaMensual, 2)
 		</GridColumn>
 
 		<GridColumn TItem="Pago" HeaderText="Fecha pago" TextNoWrap="true">
-			@context.CuotaPagada.FechaPago
+			@context.CuotaPagada.FechaPago.ToLocalTime()
 		</GridColumn>
 
 	</Grid>
