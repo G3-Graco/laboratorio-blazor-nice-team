@@ -173,7 +173,7 @@ namespace APP.Components.Pages.Retiro
 			if (!OcurrioError)
 			{
 				ModalTitulo = "Éxito";
-	            ModalMensaje = "Se hizo el depósito exitósamente";
+	            ModalMensaje = "Se hizo el retiro exitósamente";
 
 				var parametros = new Dictionary<string, object>
 					{
