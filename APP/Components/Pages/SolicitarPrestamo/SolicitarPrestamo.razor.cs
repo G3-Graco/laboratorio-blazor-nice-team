@@ -116,7 +116,8 @@ namespace APP.Components.Pages.SolicitarPrestamo
                     ModalTitulo = "Error";
                     ModalMensaje = "Tienes que subir ambos archivos solicitados para solicitar el préstamo";
                     await MostrarModalError();
-                    return;
+					EsconderSpinner();
+					return;
                 }
 
                 var cliente = await clienteServicio.ConsultarCliente();
@@ -125,7 +126,8 @@ namespace APP.Components.Pages.SolicitarPrestamo
                 if (OcurrioError)
                 {
                     await MostrarModalError();
-                    return;
+					EsconderSpinner();
+					return;
                 }
 
 
@@ -136,7 +138,8 @@ namespace APP.Components.Pages.SolicitarPrestamo
                 if (OcurrioError)
                 {
                     await MostrarModalError();
-                    return;
+					EsconderSpinner();
+					return;
                 }
 
 
@@ -147,21 +150,25 @@ namespace APP.Components.Pages.SolicitarPrestamo
                 {
                     ModalTitulo = "No se pudo solicitar el préstamo";
                     ModalMensaje = "Se requiere tener un trabajo en el que se haya trabajado al menos 3 meses";
-                    await MostrarModalError();
+					EsconderSpinner();
+					await MostrarModalError();
                     return;
                 }
                 if (prestamo.MontoTotal > (Sueldo * 3))
                 {
                     ModalTitulo = "No se pudo solicitar el préstamo";
                     ModalMensaje = "El monto no puede ser mayor al triple del sueldo";
-                    await MostrarModalError();
+					EsconderSpinner();
+					await MostrarModalError();
                     return;
                 }
                 if ((DateTime.Now.Year - edad.Year) < 18)
                 {
                     ModalTitulo = "No se pudo solicitar el préstamo";
                     ModalMensaje = "No puede hacer préstamos si es menor de eddad";
-                    await MostrarModalError();
+					EsconderSpinner();
+					await MostrarModalError();
+
                     return;
                 }
                 plazos.Data.Datos.ToList().ForEach(x =>
@@ -230,15 +237,16 @@ namespace APP.Components.Pages.SolicitarPrestamo
                     {
                         ModalTitulo = "Error";
                         ModalMensaje = respuesta.Data.Mensaje;
-                        await MostrarModalError();
+						EsconderSpinner();
+						await MostrarModalError();
                     }
                 }
                 else
                 {
                     ModalTitulo = "Error";
                     ModalMensaje = respuesta.Mensaje;
-
-                    await MostrarModalError();
+					EsconderSpinner();
+					await MostrarModalError();
 
                 }
             }
@@ -246,7 +254,8 @@ namespace APP.Components.Pages.SolicitarPrestamo
             {
                 ModalTitulo = "No se pudo solicitar el préstamo";
                 ModalMensaje = e.Message;
-                await MostrarModalError();
+				EsconderSpinner();
+				await MostrarModalError();
             }
 
         }
