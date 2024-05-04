@@ -45,7 +45,11 @@
 			@context.Id
 		</GridColumn>
 		<GridColumn TItem="Movimiento" HeaderText="Cuenta origen" TextNoWrap="true">
-			@context.CuentaOrigenIdentificador
+			@if (context.CuentaOrigenIdentificador == 0) {
+				<p>No aplica</p>
+			} else {
+				<p>@context.CuentaOrigenIdentificador</p>
+			}
 		</GridColumn>
 
 		<GridColumn TItem="Movimiento" HeaderText="Tipo de movimiento">
@@ -60,7 +64,11 @@
 		</GridColumn>
 
 		<GridColumn TItem="Movimiento" HeaderText="Cuenta receptora" TextNoWrap="true">
-			@context.CuentaReceptoraIdentificador
+			@if (context.CuentaReceptoraIdentificador == 0) {
+				<p>No aplica</p>
+			} else {
+				<p>@context.CuentaReceptoraIdentificador</p>
+			}
 		</GridColumn>
 
 		<GridColumn TItem="Movimiento" HeaderText="Descripcion" TextNoWrap="true">
