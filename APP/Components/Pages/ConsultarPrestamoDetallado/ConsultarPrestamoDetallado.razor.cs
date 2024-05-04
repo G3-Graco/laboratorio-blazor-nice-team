@@ -10,8 +10,9 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
     {
         [Parameter]
 		public int idprestamo { get; set; }
-
-        private bool isConnected;
+		[Inject]
+		public NavigationManager Navigation { get; set; }
+		private bool isConnected;
         private Modal modal = default!;
         public string ModalTitulo = "";
         public string ModalMensaje = "";
@@ -49,10 +50,12 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
                 await ObntenerMontoPendienteTotal();
 
                 await ObtenerNombreCliente();
-                await VerificarError();
+                
                 await ObtenerDocumentos();
 
-                StateHasChanged();
+				await VerificarError();
+
+				StateHasChanged();
             }
         }
         public async Task MostrarModalError()
@@ -117,7 +120,26 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
             if (!OcurrioError)
             {
                 Prestamo prestamoconsultado = respuesta.Data.Datos.FirstOrDefault(p => p.Id == idprestamo);
-                prestamos.Add(prestamoconsultado);
+                if (prestamoconsultado == null)
+				{
+					ModalTitulo = "Error";
+					ModalMensaje = "No se ha podido consultar este préstamo.";
+					var parametros = new Dictionary<string, object>
+					{
+						{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, async () => {
+						await modal.HideAsync();
+						Navigation.NavigateTo("/resumen", forceLoad: true);
+						}) },
+						{ "Mensaje", ModalMensaje }
+					};
+
+					await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+				}
+                else
+                {
+					prestamos.Add(prestamoconsultado);
+				}
+                
             }
             else
             {
@@ -164,6 +186,7 @@ namespace APP.Components.Pages.ConsultarPrestamoDetallado
             else
             {
                 await MostrarModalError();
+
             }
         }
 

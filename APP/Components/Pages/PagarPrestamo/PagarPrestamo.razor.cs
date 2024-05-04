@@ -42,7 +42,46 @@ namespace APP.Components.Pages.PagarPrestamo
             {
                 isConnected = true;
 
-                await ObtenerPagoDatos();
+				var respuesta = await CuotaServicio.ConsultarCuotasPagables();
+
+				GestionarRespuesta<IEnumerable<Cuota>>(respuesta);
+
+				bool cuotaPagable = false;
+				if (!OcurrioError)
+				{		
+					foreach(var cuota in respuesta.Data.Datos)
+					{
+						if (cuota.Id == idcuota)
+						{
+							cuotaPagable = true;
+						}
+					}
+				}
+				else
+				{
+					await MostrarModalError();
+				}
+
+				if (!cuotaPagable)
+				{
+					ModalTitulo = "Error";
+					ModalMensaje = "Esta cuota no es pagable.";
+
+					var parametros = new Dictionary<string, object>
+					{
+						{ "OnclickCallback", EventCallback.Factory.Create<MouseEventArgs>(this, async () => {
+						await modal.HideAsync();
+						Navigation.NavigateTo("/resumen", forceLoad: true);
+						})
+						},
+						{ "Mensaje", ModalMensaje }
+					};
+
+					await modal.ShowAsync<ContenidoModal>(ModalTitulo, parameters: parametros);
+				}
+
+
+				await ObtenerPagoDatos();
 
                 await ObtenerNombreCliente();
                 await VerificarError();
