@@ -44,6 +44,10 @@
 		<GridColumn TItem="Movimiento" HeaderText="Id del movimiento">
 			@context.Id
 		</GridColumn>
+		<GridColumn TItem="Movimiento" HeaderText="Cuenta origen" TextNoWrap="true">
+			@context.CuentaOrigenIdentificador
+		</GridColumn>
+
 		<GridColumn TItem="Movimiento" HeaderText="Tipo de movimiento">
 			@context.TipoMovimiento.Nombre
 		</GridColumn>
