@@ -153,7 +153,7 @@ namespace APP.Components.Pages.SolicitarPrestamo
                 if (prestamo.MontoTotal > (Sueldo * 3))
                 {
                     ModalTitulo = "No se pudo solicitar el préstamo";
-                    ModalMensaje = "El monto no puede ser menor al triple del sueldo";
+                    ModalMensaje = "El monto no puede ser mayor al triple del sueldo";
                     await MostrarModalError();
                     return;
                 }
