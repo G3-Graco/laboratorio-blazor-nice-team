@@ -109,7 +109,9 @@
     padding-left: 20px;
     padding-right: 20px;
     position: fixed;
+    height: 400px;
     width: 14%;
+    overflow: scroll;
 }
 
 .columna a:link, .columna a:active, .columna a:hover, .columna a:visited {
